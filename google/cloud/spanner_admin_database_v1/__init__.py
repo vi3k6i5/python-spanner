@@ -18,6 +18,7 @@
 from .services.database_admin import DatabaseAdminClient
 from .types.backup import Backup
 from .types.backup import BackupInfo
+from .types.backup import CreateBackupEncryptionConfig
 from .types.backup import CreateBackupMetadata
 from .types.backup import CreateBackupRequest
 from .types.backup import DeleteBackupRequest
@@ -27,6 +28,8 @@ from .types.backup import ListBackupOperationsResponse
 from .types.backup import ListBackupsRequest
 from .types.backup import ListBackupsResponse
 from .types.backup import UpdateBackupRequest
+from .types.common import EncryptionConfig
+from .types.common import EncryptionInfo
 from .types.common import OperationProgress
 from .types.spanner_database_admin import CreateDatabaseMetadata
 from .types.spanner_database_admin import CreateDatabaseRequest
@@ -40,6 +43,7 @@ from .types.spanner_database_admin import ListDatabaseOperationsResponse
 from .types.spanner_database_admin import ListDatabasesRequest
 from .types.spanner_database_admin import ListDatabasesResponse
 from .types.spanner_database_admin import OptimizeRestoredDatabaseMetadata
+from .types.spanner_database_admin import RestoreDatabaseEncryptionConfig
 from .types.spanner_database_admin import RestoreDatabaseMetadata
 from .types.spanner_database_admin import RestoreDatabaseRequest
 from .types.spanner_database_admin import RestoreInfo
@@ -49,35 +53,39 @@ from .types.spanner_database_admin import UpdateDatabaseDdlRequest
 
 
 __all__ = (
-    "Backup",
-    "BackupInfo",
-    "CreateBackupMetadata",
-    "CreateBackupRequest",
-    "CreateDatabaseMetadata",
-    "CreateDatabaseRequest",
-    "Database",
-    "DeleteBackupRequest",
-    "DropDatabaseRequest",
-    "GetBackupRequest",
-    "GetDatabaseDdlRequest",
-    "GetDatabaseDdlResponse",
-    "GetDatabaseRequest",
-    "ListBackupOperationsRequest",
-    "ListBackupOperationsResponse",
-    "ListBackupsRequest",
-    "ListBackupsResponse",
-    "ListDatabaseOperationsRequest",
-    "ListDatabaseOperationsResponse",
-    "ListDatabasesRequest",
-    "ListDatabasesResponse",
-    "OperationProgress",
-    "OptimizeRestoredDatabaseMetadata",
-    "RestoreDatabaseMetadata",
-    "RestoreDatabaseRequest",
-    "RestoreInfo",
-    "RestoreSourceType",
-    "UpdateBackupRequest",
-    "UpdateDatabaseDdlMetadata",
-    "UpdateDatabaseDdlRequest",
-    "DatabaseAdminClient",
+    'Backup',
+    'BackupInfo',
+    'CreateBackupEncryptionConfig',
+    'CreateBackupMetadata',
+    'CreateBackupRequest',
+    'CreateDatabaseMetadata',
+    'CreateDatabaseRequest',
+    'Database',
+    'DeleteBackupRequest',
+    'DropDatabaseRequest',
+    'EncryptionConfig',
+    'EncryptionInfo',
+    'GetBackupRequest',
+    'GetDatabaseDdlRequest',
+    'GetDatabaseDdlResponse',
+    'GetDatabaseRequest',
+    'ListBackupOperationsRequest',
+    'ListBackupOperationsResponse',
+    'ListBackupsRequest',
+    'ListBackupsResponse',
+    'ListDatabaseOperationsRequest',
+    'ListDatabaseOperationsResponse',
+    'ListDatabasesRequest',
+    'ListDatabasesResponse',
+    'OperationProgress',
+    'OptimizeRestoredDatabaseMetadata',
+    'RestoreDatabaseEncryptionConfig',
+    'RestoreDatabaseMetadata',
+    'RestoreDatabaseRequest',
+    'RestoreInfo',
+    'RestoreSourceType',
+    'UpdateBackupRequest',
+    'UpdateDatabaseDdlMetadata',
+    'UpdateDatabaseDdlRequest',
+'DatabaseAdminClient',
 )

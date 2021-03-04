@@ -21,18 +21,19 @@ import re
 from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
-from google.api_core import exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
+import google.api_core.client_options as ClientOptions # type: ignore
+from google.api_core import exceptions                 # type: ignore
+from google.api_core import gapic_v1                   # type: ignore
+from google.api_core import retry as retries           # type: ignore
+from google.auth import credentials                    # type: ignore
+from google.oauth2 import service_account              # type: ignore
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.spanner_admin_database_v1.services.database_admin import pagers
 from google.cloud.spanner_admin_database_v1.types import backup
 from google.cloud.spanner_admin_database_v1.types import backup as gsad_backup
+from google.cloud.spanner_admin_database_v1.types import common
 from google.cloud.spanner_admin_database_v1.types import spanner_database_admin
 from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
 from google.iam.v1 import policy_pb2 as policy  # type: ignore
@@ -62,42 +63,60 @@ class DatabaseAdminAsyncClient:
 
     backup_path = staticmethod(DatabaseAdminClient.backup_path)
     parse_backup_path = staticmethod(DatabaseAdminClient.parse_backup_path)
+    crypto_key_path = staticmethod(DatabaseAdminClient.crypto_key_path)
+    parse_crypto_key_path = staticmethod(DatabaseAdminClient.parse_crypto_key_path)
+    crypto_key_version_path = staticmethod(DatabaseAdminClient.crypto_key_version_path)
+    parse_crypto_key_version_path = staticmethod(DatabaseAdminClient.parse_crypto_key_version_path)
     database_path = staticmethod(DatabaseAdminClient.database_path)
     parse_database_path = staticmethod(DatabaseAdminClient.parse_database_path)
     instance_path = staticmethod(DatabaseAdminClient.instance_path)
     parse_instance_path = staticmethod(DatabaseAdminClient.parse_instance_path)
 
-    common_billing_account_path = staticmethod(
-        DatabaseAdminClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        DatabaseAdminClient.parse_common_billing_account_path
-    )
+    common_billing_account_path = staticmethod(DatabaseAdminClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(DatabaseAdminClient.parse_common_billing_account_path)
 
     common_folder_path = staticmethod(DatabaseAdminClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        DatabaseAdminClient.parse_common_folder_path
-    )
+    parse_common_folder_path = staticmethod(DatabaseAdminClient.parse_common_folder_path)
 
-    common_organization_path = staticmethod(
-        DatabaseAdminClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        DatabaseAdminClient.parse_common_organization_path
-    )
+    common_organization_path = staticmethod(DatabaseAdminClient.common_organization_path)
+    parse_common_organization_path = staticmethod(DatabaseAdminClient.parse_common_organization_path)
 
     common_project_path = staticmethod(DatabaseAdminClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        DatabaseAdminClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(DatabaseAdminClient.parse_common_project_path)
 
     common_location_path = staticmethod(DatabaseAdminClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        DatabaseAdminClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(DatabaseAdminClient.parse_common_location_path)
 
-    from_service_account_info = DatabaseAdminClient.from_service_account_info
-    from_service_account_file = DatabaseAdminClient.from_service_account_file
+    @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            DatabaseAdminAsyncClient: The constructed client.
+        """
+        return DatabaseAdminClient.from_service_account_info.__func__(DatabaseAdminAsyncClient, info, *args, **kwargs)  # type: ignore
+
+    @classmethod
+    def from_service_account_file(cls, filename: str, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            DatabaseAdminAsyncClient: The constructed client.
+        """
+        return DatabaseAdminClient.from_service_account_file.__func__(DatabaseAdminAsyncClient, filename, *args, **kwargs)  # type: ignore
+
     from_service_account_json = from_service_account_file
 
     @property
@@ -109,18 +128,14 @@ class DatabaseAdminAsyncClient:
         """
         return self._client.transport
 
-    get_transport_class = functools.partial(
-        type(DatabaseAdminClient).get_transport_class, type(DatabaseAdminClient)
-    )
+    get_transport_class = functools.partial(type(DatabaseAdminClient).get_transport_class, type(DatabaseAdminClient))
 
-    def __init__(
-        self,
-        *,
-        credentials: credentials.Credentials = None,
-        transport: Union[str, DatabaseAdminTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-    ) -> None:
+    def __init__(self, *,
+            credentials: credentials.Credentials = None,
+            transport: Union[str, DatabaseAdminTransport] = 'grpc_asyncio',
+            client_options: ClientOptions = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            ) -> None:
         """Instantiate the database admin client.
 
         Args:
@@ -159,17 +174,17 @@ class DatabaseAdminAsyncClient:
             transport=transport,
             client_options=client_options,
             client_info=client_info,
+
         )
 
-    async def list_databases(
-        self,
-        request: spanner_database_admin.ListDatabasesRequest = None,
-        *,
-        parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListDatabasesAsyncPager:
+    async def list_databases(self,
+            request: spanner_database_admin.ListDatabasesRequest = None,
+            *,
+            parent: str = None,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> pagers.ListDatabasesAsyncPager:
         r"""Lists Cloud Spanner databases.
 
         Args:
@@ -194,7 +209,7 @@ class DatabaseAdminAsyncClient:
         Returns:
             google.cloud.spanner_admin_database_v1.services.database_admin.pagers.ListDatabasesAsyncPager:
                 The response for
-                [ListDatabases][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabases].
+                   [ListDatabases][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabases].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -205,10 +220,8 @@ class DatabaseAdminAsyncClient:
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         request = spanner_database_admin.ListDatabasesRequest(request)
 
@@ -227,7 +240,8 @@ class DatabaseAdminAsyncClient:
                 maximum=32.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    exceptions.DeadlineExceeded,
+                    exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=3600.0,
@@ -237,31 +251,40 @@ class DatabaseAdminAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('parent', request.parent),
+            )),
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
         response = pagers.ListDatabasesAsyncPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
         return response
 
-    async def create_database(
-        self,
-        request: spanner_database_admin.CreateDatabaseRequest = None,
-        *,
-        parent: str = None,
-        create_statement: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation_async.AsyncOperation:
+    async def create_database(self,
+            request: spanner_database_admin.CreateDatabaseRequest = None,
+            *,
+            parent: str = None,
+            create_statement: str = None,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> operation_async.AsyncOperation:
         r"""Creates a new Cloud Spanner database and starts to prepare it
         for serving. The returned [long-running
         operation][google.longrunning.Operation] will have a name of the
@@ -318,10 +341,8 @@ class DatabaseAdminAsyncClient:
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, create_statement])
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         request = spanner_database_admin.CreateDatabaseRequest(request)
 
@@ -344,11 +365,18 @@ class DatabaseAdminAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('parent', request.parent),
+            )),
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation_async.from_gapic(
@@ -361,15 +389,14 @@ class DatabaseAdminAsyncClient:
         # Done; return the response.
         return response
 
-    async def get_database(
-        self,
-        request: spanner_database_admin.GetDatabaseRequest = None,
-        *,
-        name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> spanner_database_admin.Database:
+    async def get_database(self,
+            request: spanner_database_admin.GetDatabaseRequest = None,
+            *,
+            name: str = None,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> spanner_database_admin.Database:
         r"""Gets the state of a Cloud Spanner database.
 
         Args:
@@ -400,10 +427,8 @@ class DatabaseAdminAsyncClient:
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         request = spanner_database_admin.GetDatabaseRequest(request)
 
@@ -422,7 +447,8 @@ class DatabaseAdminAsyncClient:
                 maximum=32.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    exceptions.DeadlineExceeded,
+                    exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=3600.0,
@@ -432,25 +458,31 @@ class DatabaseAdminAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('name', request.name),
+            )),
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
 
-    async def update_database_ddl(
-        self,
-        request: spanner_database_admin.UpdateDatabaseDdlRequest = None,
-        *,
-        database: str = None,
-        statements: Sequence[str] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation_async.AsyncOperation:
+    async def update_database_ddl(self,
+            request: spanner_database_admin.UpdateDatabaseDdlRequest = None,
+            *,
+            database: str = None,
+            statements: Sequence[str] = None,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> operation_async.AsyncOperation:
         r"""Updates the schema of a Cloud Spanner database by
         creating/altering/dropping tables, columns, indexes, etc. The
         returned [long-running operation][google.longrunning.Operation]
@@ -525,10 +557,8 @@ class DatabaseAdminAsyncClient:
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([database, statements])
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         request = spanner_database_admin.UpdateDatabaseDdlRequest(request)
 
@@ -550,7 +580,8 @@ class DatabaseAdminAsyncClient:
                 maximum=32.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    exceptions.DeadlineExceeded,
+                    exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=3600.0,
@@ -560,11 +591,18 @@ class DatabaseAdminAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("database", request.database),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('database', request.database),
+            )),
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation_async.from_gapic(
@@ -577,15 +615,14 @@ class DatabaseAdminAsyncClient:
         # Done; return the response.
         return response
 
-    async def drop_database(
-        self,
-        request: spanner_database_admin.DropDatabaseRequest = None,
-        *,
-        database: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> None:
+    async def drop_database(self,
+            request: spanner_database_admin.DropDatabaseRequest = None,
+            *,
+            database: str = None,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> None:
         r"""Drops (aka deletes) a Cloud Spanner database. Completed backups
         for the database will be retained according to their
         ``expire_time``.
@@ -611,10 +648,8 @@ class DatabaseAdminAsyncClient:
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([database])
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         request = spanner_database_admin.DropDatabaseRequest(request)
 
@@ -633,7 +668,8 @@ class DatabaseAdminAsyncClient:
                 maximum=32.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    exceptions.DeadlineExceeded,
+                    exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=3600.0,
@@ -643,23 +679,27 @@ class DatabaseAdminAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("database", request.database),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('database', request.database),
+            )),
         )
 
         # Send the request.
         await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
-    async def get_database_ddl(
-        self,
-        request: spanner_database_admin.GetDatabaseDdlRequest = None,
-        *,
-        database: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> spanner_database_admin.GetDatabaseDdlResponse:
+    async def get_database_ddl(self,
+            request: spanner_database_admin.GetDatabaseDdlRequest = None,
+            *,
+            database: str = None,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> spanner_database_admin.GetDatabaseDdlResponse:
         r"""Returns the schema of a Cloud Spanner database as a list of
         formatted DDL statements. This method does not show pending
         schema updates, those may be queried using the
@@ -687,7 +727,7 @@ class DatabaseAdminAsyncClient:
         Returns:
             google.cloud.spanner_admin_database_v1.types.GetDatabaseDdlResponse:
                 The response for
-                [GetDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDdl].
+                   [GetDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDdl].
 
         """
         # Create or coerce a protobuf request object.
@@ -695,10 +735,8 @@ class DatabaseAdminAsyncClient:
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([database])
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         request = spanner_database_admin.GetDatabaseDdlRequest(request)
 
@@ -717,7 +755,8 @@ class DatabaseAdminAsyncClient:
                 maximum=32.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    exceptions.DeadlineExceeded,
+                    exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=3600.0,
@@ -727,24 +766,30 @@ class DatabaseAdminAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("database", request.database),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('database', request.database),
+            )),
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
 
-    async def set_iam_policy(
-        self,
-        request: iam_policy.SetIamPolicyRequest = None,
-        *,
-        resource: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> policy.Policy:
+    async def set_iam_policy(self,
+            request: iam_policy.SetIamPolicyRequest = None,
+            *,
+            resource: str = None,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> policy.Policy:
         r"""Sets the access control policy on a database or backup resource.
         Replaces any existing policy.
 
@@ -839,10 +884,8 @@ class DatabaseAdminAsyncClient:
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([resource])
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
@@ -850,7 +893,7 @@ class DatabaseAdminAsyncClient:
             request = iam_policy.SetIamPolicyRequest(**request)
 
         elif not request:
-            request = iam_policy.SetIamPolicyRequest(resource=resource,)
+            request = iam_policy.SetIamPolicyRequest(resource=resource, )
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -863,24 +906,30 @@ class DatabaseAdminAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('resource', request.resource),
+            )),
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
 
-    async def get_iam_policy(
-        self,
-        request: iam_policy.GetIamPolicyRequest = None,
-        *,
-        resource: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> policy.Policy:
+    async def get_iam_policy(self,
+            request: iam_policy.GetIamPolicyRequest = None,
+            *,
+            resource: str = None,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> policy.Policy:
         r"""Gets the access control policy for a database or backup
         resource. Returns an empty policy if a database or backup exists
         but does not have a policy set.
@@ -976,10 +1025,8 @@ class DatabaseAdminAsyncClient:
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([resource])
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
@@ -987,7 +1034,7 @@ class DatabaseAdminAsyncClient:
             request = iam_policy.GetIamPolicyRequest(**request)
 
         elif not request:
-            request = iam_policy.GetIamPolicyRequest(resource=resource,)
+            request = iam_policy.GetIamPolicyRequest(resource=resource, )
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -998,7 +1045,8 @@ class DatabaseAdminAsyncClient:
                 maximum=32.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    exceptions.DeadlineExceeded,
+                    exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=30.0,
@@ -1008,25 +1056,31 @@ class DatabaseAdminAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('resource', request.resource),
+            )),
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
 
-    async def test_iam_permissions(
-        self,
-        request: iam_policy.TestIamPermissionsRequest = None,
-        *,
-        resource: str = None,
-        permissions: Sequence[str] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> iam_policy.TestIamPermissionsResponse:
+    async def test_iam_permissions(self,
+            request: iam_policy.TestIamPermissionsRequest = None,
+            *,
+            resource: str = None,
+            permissions: Sequence[str] = None,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> iam_policy.TestIamPermissionsResponse:
         r"""Returns permissions that the caller has on the specified
         database or backup resource.
 
@@ -1076,10 +1130,8 @@ class DatabaseAdminAsyncClient:
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([resource, permissions])
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
@@ -1087,9 +1139,7 @@ class DatabaseAdminAsyncClient:
             request = iam_policy.TestIamPermissionsRequest(**request)
 
         elif not request:
-            request = iam_policy.TestIamPermissionsRequest(
-                resource=resource, permissions=permissions,
-            )
+            request = iam_policy.TestIamPermissionsRequest(resource=resource, permissions=permissions, )
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1102,26 +1152,32 @@ class DatabaseAdminAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('resource', request.resource),
+            )),
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
 
-    async def create_backup(
-        self,
-        request: gsad_backup.CreateBackupRequest = None,
-        *,
-        parent: str = None,
-        backup: gsad_backup.Backup = None,
-        backup_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation_async.AsyncOperation:
+    async def create_backup(self,
+            request: gsad_backup.CreateBackupRequest = None,
+            *,
+            parent: str = None,
+            backup: gsad_backup.Backup = None,
+            backup_id: str = None,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> operation_async.AsyncOperation:
         r"""Starts creating a new Cloud Spanner Backup. The returned backup
         [long-running operation][google.longrunning.Operation] will have
         a name of the format
@@ -1187,10 +1243,8 @@ class DatabaseAdminAsyncClient:
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, backup, backup_id])
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         request = gsad_backup.CreateBackupRequest(request)
 
@@ -1215,11 +1269,18 @@ class DatabaseAdminAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('parent', request.parent),
+            )),
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation_async.from_gapic(
@@ -1232,15 +1293,14 @@ class DatabaseAdminAsyncClient:
         # Done; return the response.
         return response
 
-    async def get_backup(
-        self,
-        request: backup.GetBackupRequest = None,
-        *,
-        name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> backup.Backup:
+    async def get_backup(self,
+            request: backup.GetBackupRequest = None,
+            *,
+            name: str = None,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> backup.Backup:
         r"""Gets metadata on a pending or completed
         [Backup][google.spanner.admin.database.v1.Backup].
 
@@ -1271,10 +1331,8 @@ class DatabaseAdminAsyncClient:
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         request = backup.GetBackupRequest(request)
 
@@ -1293,7 +1351,8 @@ class DatabaseAdminAsyncClient:
                 maximum=32.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    exceptions.DeadlineExceeded,
+                    exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=3600.0,
@@ -1303,25 +1362,31 @@ class DatabaseAdminAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('name', request.name),
+            )),
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
 
-    async def update_backup(
-        self,
-        request: gsad_backup.UpdateBackupRequest = None,
-        *,
-        backup: gsad_backup.Backup = None,
-        update_mask: field_mask.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> gsad_backup.Backup:
+    async def update_backup(self,
+            request: gsad_backup.UpdateBackupRequest = None,
+            *,
+            backup: gsad_backup.Backup = None,
+            update_mask: field_mask.FieldMask = None,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> gsad_backup.Backup:
         r"""Updates a pending or completed
         [Backup][google.spanner.admin.database.v1.Backup].
 
@@ -1369,10 +1434,8 @@ class DatabaseAdminAsyncClient:
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([backup, update_mask])
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         request = gsad_backup.UpdateBackupRequest(request)
 
@@ -1393,7 +1456,8 @@ class DatabaseAdminAsyncClient:
                 maximum=32.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    exceptions.DeadlineExceeded,
+                    exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=3600.0,
@@ -1403,26 +1467,30 @@ class DatabaseAdminAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("backup.name", request.backup.name),)
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('backup.name', request.backup.name),
+            )),
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
 
-    async def delete_backup(
-        self,
-        request: backup.DeleteBackupRequest = None,
-        *,
-        name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> None:
+    async def delete_backup(self,
+            request: backup.DeleteBackupRequest = None,
+            *,
+            name: str = None,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> None:
         r"""Deletes a pending or completed
         [Backup][google.spanner.admin.database.v1.Backup].
 
@@ -1450,10 +1518,8 @@ class DatabaseAdminAsyncClient:
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         request = backup.DeleteBackupRequest(request)
 
@@ -1472,7 +1538,8 @@ class DatabaseAdminAsyncClient:
                 maximum=32.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    exceptions.DeadlineExceeded,
+                    exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=3600.0,
@@ -1482,23 +1549,27 @@ class DatabaseAdminAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('name', request.name),
+            )),
         )
 
         # Send the request.
         await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
-    async def list_backups(
-        self,
-        request: backup.ListBackupsRequest = None,
-        *,
-        parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListBackupsAsyncPager:
+    async def list_backups(self,
+            request: backup.ListBackupsRequest = None,
+            *,
+            parent: str = None,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> pagers.ListBackupsAsyncPager:
         r"""Lists completed and pending backups. Backups returned are
         ordered by ``create_time`` in descending order, starting from
         the most recent ``create_time``.
@@ -1524,7 +1595,7 @@ class DatabaseAdminAsyncClient:
         Returns:
             google.cloud.spanner_admin_database_v1.services.database_admin.pagers.ListBackupsAsyncPager:
                 The response for
-                [ListBackups][google.spanner.admin.database.v1.DatabaseAdmin.ListBackups].
+                   [ListBackups][google.spanner.admin.database.v1.DatabaseAdmin.ListBackups].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1535,10 +1606,8 @@ class DatabaseAdminAsyncClient:
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         request = backup.ListBackupsRequest(request)
 
@@ -1557,7 +1626,8 @@ class DatabaseAdminAsyncClient:
                 maximum=32.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    exceptions.DeadlineExceeded,
+                    exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=3600.0,
@@ -1567,32 +1637,41 @@ class DatabaseAdminAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('parent', request.parent),
+            )),
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
         response = pagers.ListBackupsAsyncPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
         return response
 
-    async def restore_database(
-        self,
-        request: spanner_database_admin.RestoreDatabaseRequest = None,
-        *,
-        parent: str = None,
-        database_id: str = None,
-        backup: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation_async.AsyncOperation:
+    async def restore_database(self,
+            request: spanner_database_admin.RestoreDatabaseRequest = None,
+            *,
+            parent: str = None,
+            database_id: str = None,
+            backup: str = None,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> operation_async.AsyncOperation:
         r"""Create a new database by restoring from a completed backup. The
         new database must be in the same project and in an instance with
         the same instance configuration as the instance containing the
@@ -1666,10 +1745,8 @@ class DatabaseAdminAsyncClient:
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent, database_id, backup])
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         request = spanner_database_admin.RestoreDatabaseRequest(request)
 
@@ -1694,11 +1771,18 @@ class DatabaseAdminAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('parent', request.parent),
+            )),
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation_async.from_gapic(
@@ -1711,15 +1795,14 @@ class DatabaseAdminAsyncClient:
         # Done; return the response.
         return response
 
-    async def list_database_operations(
-        self,
-        request: spanner_database_admin.ListDatabaseOperationsRequest = None,
-        *,
-        parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListDatabaseOperationsAsyncPager:
+    async def list_database_operations(self,
+            request: spanner_database_admin.ListDatabaseOperationsRequest = None,
+            *,
+            parent: str = None,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> pagers.ListDatabaseOperationsAsyncPager:
         r"""Lists database
         [longrunning-operations][google.longrunning.Operation]. A
         database operation has a name of the form
@@ -1764,10 +1847,8 @@ class DatabaseAdminAsyncClient:
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         request = spanner_database_admin.ListDatabaseOperationsRequest(request)
 
@@ -1786,7 +1867,8 @@ class DatabaseAdminAsyncClient:
                 maximum=32.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    exceptions.DeadlineExceeded,
+                    exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=3600.0,
@@ -1796,30 +1878,39 @@ class DatabaseAdminAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('parent', request.parent),
+            )),
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
         response = pagers.ListDatabaseOperationsAsyncPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
         return response
 
-    async def list_backup_operations(
-        self,
-        request: backup.ListBackupOperationsRequest = None,
-        *,
-        parent: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListBackupOperationsAsyncPager:
+    async def list_backup_operations(self,
+            request: backup.ListBackupOperationsRequest = None,
+            *,
+            parent: str = None,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> pagers.ListBackupOperationsAsyncPager:
         r"""Lists the backup [long-running
         operations][google.longrunning.Operation] in the given instance.
         A backup operation has a name of the form
@@ -1866,10 +1957,8 @@ class DatabaseAdminAsyncClient:
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         request = backup.ListBackupOperationsRequest(request)
 
@@ -1888,7 +1977,8 @@ class DatabaseAdminAsyncClient:
                 maximum=32.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    exceptions.DeadlineExceeded,
+                    exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=3600.0,
@@ -1898,30 +1988,47 @@ class DatabaseAdminAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('parent', request.parent),
+            )),
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
         response = pagers.ListBackupOperationsAsyncPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
         return response
 
 
+
+
+
+
+
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
         gapic_version=pkg_resources.get_distribution(
-            "google-cloud-spanner-admin-database",
+            'google-cloud-spanner-admin-database',
         ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
-__all__ = ("DatabaseAdminAsyncClient",)
+__all__ = (
+    'DatabaseAdminAsyncClient',
+)

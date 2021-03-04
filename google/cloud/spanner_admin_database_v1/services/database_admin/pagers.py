@@ -15,7 +15,7 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple, Optional
 
 from google.cloud.spanner_admin_database_v1.types import backup
 from google.cloud.spanner_admin_database_v1.types import spanner_database_admin
@@ -39,15 +39,12 @@ class ListDatabasesPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[..., spanner_database_admin.ListDatabasesResponse],
-        request: spanner_database_admin.ListDatabasesRequest,
-        response: spanner_database_admin.ListDatabasesResponse,
-        *,
-        metadata: Sequence[Tuple[str, str]] = ()
-    ):
+    def __init__(self,
+            method: Callable[..., spanner_database_admin.ListDatabasesResponse],
+            request: spanner_database_admin.ListDatabasesRequest,
+            response: spanner_database_admin.ListDatabasesResponse,
+            *,
+            metadata: Sequence[Tuple[str, str]] = ()):
         """Instantiate the pager.
 
         Args:
@@ -81,7 +78,7 @@ class ListDatabasesPager:
             yield from page.databases
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
 class ListDatabasesAsyncPager:
@@ -101,15 +98,12 @@ class ListDatabasesAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[..., Awaitable[spanner_database_admin.ListDatabasesResponse]],
-        request: spanner_database_admin.ListDatabasesRequest,
-        response: spanner_database_admin.ListDatabasesResponse,
-        *,
-        metadata: Sequence[Tuple[str, str]] = ()
-    ):
+    def __init__(self,
+            method: Callable[..., Awaitable[spanner_database_admin.ListDatabasesResponse]],
+            request: spanner_database_admin.ListDatabasesRequest,
+            response: spanner_database_admin.ListDatabasesResponse,
+            *,
+            metadata: Sequence[Tuple[str, str]] = ()):
         """Instantiate the pager.
 
         Args:
@@ -131,9 +125,7 @@ class ListDatabasesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterable[spanner_database_admin.ListDatabasesResponse]:
+    async def pages(self) -> AsyncIterable[spanner_database_admin.ListDatabasesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
@@ -149,7 +141,7 @@ class ListDatabasesAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
 class ListBackupsPager:
@@ -169,15 +161,12 @@ class ListBackupsPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[..., backup.ListBackupsResponse],
-        request: backup.ListBackupsRequest,
-        response: backup.ListBackupsResponse,
-        *,
-        metadata: Sequence[Tuple[str, str]] = ()
-    ):
+    def __init__(self,
+            method: Callable[..., backup.ListBackupsResponse],
+            request: backup.ListBackupsRequest,
+            response: backup.ListBackupsResponse,
+            *,
+            metadata: Sequence[Tuple[str, str]] = ()):
         """Instantiate the pager.
 
         Args:
@@ -211,7 +200,7 @@ class ListBackupsPager:
             yield from page.backups
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
 class ListBackupsAsyncPager:
@@ -231,15 +220,12 @@ class ListBackupsAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[..., Awaitable[backup.ListBackupsResponse]],
-        request: backup.ListBackupsRequest,
-        response: backup.ListBackupsResponse,
-        *,
-        metadata: Sequence[Tuple[str, str]] = ()
-    ):
+    def __init__(self,
+            method: Callable[..., Awaitable[backup.ListBackupsResponse]],
+            request: backup.ListBackupsRequest,
+            response: backup.ListBackupsResponse,
+            *,
+            metadata: Sequence[Tuple[str, str]] = ()):
         """Instantiate the pager.
 
         Args:
@@ -277,7 +263,7 @@ class ListBackupsAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
 class ListDatabaseOperationsPager:
@@ -297,15 +283,12 @@ class ListDatabaseOperationsPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[..., spanner_database_admin.ListDatabaseOperationsResponse],
-        request: spanner_database_admin.ListDatabaseOperationsRequest,
-        response: spanner_database_admin.ListDatabaseOperationsResponse,
-        *,
-        metadata: Sequence[Tuple[str, str]] = ()
-    ):
+    def __init__(self,
+            method: Callable[..., spanner_database_admin.ListDatabaseOperationsResponse],
+            request: spanner_database_admin.ListDatabaseOperationsRequest,
+            response: spanner_database_admin.ListDatabaseOperationsResponse,
+            *,
+            metadata: Sequence[Tuple[str, str]] = ()):
         """Instantiate the pager.
 
         Args:
@@ -339,7 +322,7 @@ class ListDatabaseOperationsPager:
             yield from page.operations
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
 class ListDatabaseOperationsAsyncPager:
@@ -359,17 +342,12 @@ class ListDatabaseOperationsAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[
-            ..., Awaitable[spanner_database_admin.ListDatabaseOperationsResponse]
-        ],
-        request: spanner_database_admin.ListDatabaseOperationsRequest,
-        response: spanner_database_admin.ListDatabaseOperationsResponse,
-        *,
-        metadata: Sequence[Tuple[str, str]] = ()
-    ):
+    def __init__(self,
+            method: Callable[..., Awaitable[spanner_database_admin.ListDatabaseOperationsResponse]],
+            request: spanner_database_admin.ListDatabaseOperationsRequest,
+            response: spanner_database_admin.ListDatabaseOperationsResponse,
+            *,
+            metadata: Sequence[Tuple[str, str]] = ()):
         """Instantiate the pager.
 
         Args:
@@ -391,9 +369,7 @@ class ListDatabaseOperationsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterable[spanner_database_admin.ListDatabaseOperationsResponse]:
+    async def pages(self) -> AsyncIterable[spanner_database_admin.ListDatabaseOperationsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
@@ -409,7 +385,7 @@ class ListDatabaseOperationsAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
 class ListBackupOperationsPager:
@@ -429,15 +405,12 @@ class ListBackupOperationsPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[..., backup.ListBackupOperationsResponse],
-        request: backup.ListBackupOperationsRequest,
-        response: backup.ListBackupOperationsResponse,
-        *,
-        metadata: Sequence[Tuple[str, str]] = ()
-    ):
+    def __init__(self,
+            method: Callable[..., backup.ListBackupOperationsResponse],
+            request: backup.ListBackupOperationsRequest,
+            response: backup.ListBackupOperationsResponse,
+            *,
+            metadata: Sequence[Tuple[str, str]] = ()):
         """Instantiate the pager.
 
         Args:
@@ -471,7 +444,7 @@ class ListBackupOperationsPager:
             yield from page.operations
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
 class ListBackupOperationsAsyncPager:
@@ -491,15 +464,12 @@ class ListBackupOperationsAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[..., Awaitable[backup.ListBackupOperationsResponse]],
-        request: backup.ListBackupOperationsRequest,
-        response: backup.ListBackupOperationsResponse,
-        *,
-        metadata: Sequence[Tuple[str, str]] = ()
-    ):
+    def __init__(self,
+            method: Callable[..., Awaitable[backup.ListBackupOperationsResponse]],
+            request: backup.ListBackupOperationsRequest,
+            response: backup.ListBackupOperationsResponse,
+            *,
+            metadata: Sequence[Tuple[str, str]] = ()):
         """Instantiate the pager.
 
         Args:
@@ -537,4 +507,4 @@ class ListBackupOperationsAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)

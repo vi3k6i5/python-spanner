@@ -21,7 +21,7 @@ import pkg_resources
 
 from google import auth  # type: ignore
 from google.api_core import exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
+from google.api_core import gapic_v1    # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials  # type: ignore
 
@@ -33,31 +33,31 @@ from google.protobuf import empty_pb2 as empty  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-spanner",).version,
+        gapic_version=pkg_resources.get_distribution(
+            'google-cloud-spanner',
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
-
 
 class SpannerTransport(abc.ABC):
     """Abstract transport class for Spanner."""
 
     AUTH_SCOPES = (
-        "https://www.googleapis.com/auth/cloud-platform",
-        "https://www.googleapis.com/auth/spanner.data",
+        'https://www.googleapis.com/auth/cloud-platform',
+        'https://www.googleapis.com/auth/spanner.data',
     )
 
     def __init__(
-        self,
-        *,
-        host: str = "spanner.googleapis.com",
-        credentials: credentials.Credentials = None,
-        credentials_file: typing.Optional[str] = None,
-        scopes: typing.Optional[typing.Sequence[str]] = AUTH_SCOPES,
-        quota_project_id: typing.Optional[str] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-        **kwargs,
-    ) -> None:
+            self, *,
+            host: str = 'spanner.googleapis.com',
+            credentials: credentials.Credentials = None,
+            credentials_file: typing.Optional[str] = None,
+            scopes: typing.Optional[typing.Sequence[str]] = AUTH_SCOPES,
+            quota_project_id: typing.Optional[str] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            **kwargs,
+            ) -> None:
         """Instantiate the transport.
 
         Args:
@@ -80,26 +80,24 @@ class SpannerTransport(abc.ABC):
                 your own client library.
         """
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
-        if ":" not in host:
-            host += ":443"
+        if ':' not in host:
+            host += ':443'
         self._host = host
 
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
             credentials, _ = auth.load_credentials_from_file(
-                credentials_file, scopes=scopes, quota_project_id=quota_project_id
-            )
+                                credentials_file,
+                                scopes=scopes,
+                                quota_project_id=quota_project_id
+                            )
 
         elif credentials is None:
-            credentials, _ = auth.default(
-                scopes=scopes, quota_project_id=quota_project_id
-            )
+            credentials, _ = auth.default(scopes=scopes, quota_project_id=quota_project_id)
 
         # Save the credentials.
         self._credentials = credentials
@@ -116,7 +114,9 @@ class SpannerTransport(abc.ABC):
                     initial=0.25,
                     maximum=32.0,
                     multiplier=1.3,
-                    predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
+                    predicate=retries.if_exception_type(
+                        exceptions.ServiceUnavailable,
+                    ),
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
@@ -127,7 +127,9 @@ class SpannerTransport(abc.ABC):
                     initial=0.25,
                     maximum=32.0,
                     multiplier=1.3,
-                    predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
+                    predicate=retries.if_exception_type(
+                        exceptions.ServiceUnavailable,
+                    ),
                 ),
                 default_timeout=60.0,
                 client_info=client_info,
@@ -138,7 +140,9 @@ class SpannerTransport(abc.ABC):
                     initial=0.25,
                     maximum=32.0,
                     multiplier=1.3,
-                    predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
+                    predicate=retries.if_exception_type(
+                        exceptions.ServiceUnavailable,
+                    ),
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
@@ -149,7 +153,9 @@ class SpannerTransport(abc.ABC):
                     initial=0.25,
                     maximum=32.0,
                     multiplier=1.3,
-                    predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
+                    predicate=retries.if_exception_type(
+                        exceptions.ServiceUnavailable,
+                    ),
                 ),
                 default_timeout=3600.0,
                 client_info=client_info,
@@ -160,7 +166,9 @@ class SpannerTransport(abc.ABC):
                     initial=0.25,
                     maximum=32.0,
                     multiplier=1.3,
-                    predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
+                    predicate=retries.if_exception_type(
+                        exceptions.ServiceUnavailable,
+                    ),
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
@@ -171,7 +179,9 @@ class SpannerTransport(abc.ABC):
                     initial=0.25,
                     maximum=32.0,
                     multiplier=1.3,
-                    predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
+                    predicate=retries.if_exception_type(
+                        exceptions.ServiceUnavailable,
+                    ),
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
@@ -187,7 +197,9 @@ class SpannerTransport(abc.ABC):
                     initial=0.25,
                     maximum=32.0,
                     multiplier=1.3,
-                    predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
+                    predicate=retries.if_exception_type(
+                        exceptions.ServiceUnavailable,
+                    ),
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
@@ -198,13 +210,17 @@ class SpannerTransport(abc.ABC):
                     initial=0.25,
                     maximum=32.0,
                     multiplier=1.3,
-                    predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
+                    predicate=retries.if_exception_type(
+                        exceptions.ServiceUnavailable,
+                    ),
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
             ),
             self.streaming_read: gapic_v1.method.wrap_method(
-                self.streaming_read, default_timeout=3600.0, client_info=client_info,
+                self.streaming_read,
+                default_timeout=3600.0,
+                client_info=client_info,
             ),
             self.begin_transaction: gapic_v1.method.wrap_method(
                 self.begin_transaction,
@@ -212,7 +228,9 @@ class SpannerTransport(abc.ABC):
                     initial=0.25,
                     maximum=32.0,
                     multiplier=1.3,
-                    predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
+                    predicate=retries.if_exception_type(
+                        exceptions.ServiceUnavailable,
+                    ),
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
@@ -223,7 +241,9 @@ class SpannerTransport(abc.ABC):
                     initial=0.25,
                     maximum=32.0,
                     multiplier=1.3,
-                    predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
+                    predicate=retries.if_exception_type(
+                        exceptions.ServiceUnavailable,
+                    ),
                 ),
                 default_timeout=3600.0,
                 client_info=client_info,
@@ -234,7 +254,9 @@ class SpannerTransport(abc.ABC):
                     initial=0.25,
                     maximum=32.0,
                     multiplier=1.3,
-                    predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
+                    predicate=retries.if_exception_type(
+                        exceptions.ServiceUnavailable,
+                    ),
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
@@ -245,7 +267,9 @@ class SpannerTransport(abc.ABC):
                     initial=0.25,
                     maximum=32.0,
                     multiplier=1.3,
-                    predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
+                    predicate=retries.if_exception_type(
+                        exceptions.ServiceUnavailable,
+                    ),
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
@@ -256,165 +280,152 @@ class SpannerTransport(abc.ABC):
                     initial=0.25,
                     maximum=32.0,
                     multiplier=1.3,
-                    predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
+                    predicate=retries.if_exception_type(
+                        exceptions.ServiceUnavailable,
+                    ),
                 ),
                 default_timeout=30.0,
                 client_info=client_info,
             ),
+
         }
 
     @property
-    def create_session(
-        self,
-    ) -> typing.Callable[
-        [spanner.CreateSessionRequest],
-        typing.Union[spanner.Session, typing.Awaitable[spanner.Session]],
-    ]:
+    def create_session(self) -> typing.Callable[
+            [spanner.CreateSessionRequest],
+            typing.Union[
+                spanner.Session,
+                typing.Awaitable[spanner.Session]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def batch_create_sessions(
-        self,
-    ) -> typing.Callable[
-        [spanner.BatchCreateSessionsRequest],
-        typing.Union[
-            spanner.BatchCreateSessionsResponse,
-            typing.Awaitable[spanner.BatchCreateSessionsResponse],
-        ],
-    ]:
+    def batch_create_sessions(self) -> typing.Callable[
+            [spanner.BatchCreateSessionsRequest],
+            typing.Union[
+                spanner.BatchCreateSessionsResponse,
+                typing.Awaitable[spanner.BatchCreateSessionsResponse]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def get_session(
-        self,
-    ) -> typing.Callable[
-        [spanner.GetSessionRequest],
-        typing.Union[spanner.Session, typing.Awaitable[spanner.Session]],
-    ]:
+    def get_session(self) -> typing.Callable[
+            [spanner.GetSessionRequest],
+            typing.Union[
+                spanner.Session,
+                typing.Awaitable[spanner.Session]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def list_sessions(
-        self,
-    ) -> typing.Callable[
-        [spanner.ListSessionsRequest],
-        typing.Union[
-            spanner.ListSessionsResponse, typing.Awaitable[spanner.ListSessionsResponse]
-        ],
-    ]:
+    def list_sessions(self) -> typing.Callable[
+            [spanner.ListSessionsRequest],
+            typing.Union[
+                spanner.ListSessionsResponse,
+                typing.Awaitable[spanner.ListSessionsResponse]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def delete_session(
-        self,
-    ) -> typing.Callable[
-        [spanner.DeleteSessionRequest],
-        typing.Union[empty.Empty, typing.Awaitable[empty.Empty]],
-    ]:
+    def delete_session(self) -> typing.Callable[
+            [spanner.DeleteSessionRequest],
+            typing.Union[
+                empty.Empty,
+                typing.Awaitable[empty.Empty]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def execute_sql(
-        self,
-    ) -> typing.Callable[
-        [spanner.ExecuteSqlRequest],
-        typing.Union[result_set.ResultSet, typing.Awaitable[result_set.ResultSet]],
-    ]:
+    def execute_sql(self) -> typing.Callable[
+            [spanner.ExecuteSqlRequest],
+            typing.Union[
+                result_set.ResultSet,
+                typing.Awaitable[result_set.ResultSet]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def execute_streaming_sql(
-        self,
-    ) -> typing.Callable[
-        [spanner.ExecuteSqlRequest],
-        typing.Union[
-            result_set.PartialResultSet, typing.Awaitable[result_set.PartialResultSet]
-        ],
-    ]:
+    def execute_streaming_sql(self) -> typing.Callable[
+            [spanner.ExecuteSqlRequest],
+            typing.Union[
+                result_set.PartialResultSet,
+                typing.Awaitable[result_set.PartialResultSet]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def execute_batch_dml(
-        self,
-    ) -> typing.Callable[
-        [spanner.ExecuteBatchDmlRequest],
-        typing.Union[
-            spanner.ExecuteBatchDmlResponse,
-            typing.Awaitable[spanner.ExecuteBatchDmlResponse],
-        ],
-    ]:
+    def execute_batch_dml(self) -> typing.Callable[
+            [spanner.ExecuteBatchDmlRequest],
+            typing.Union[
+                spanner.ExecuteBatchDmlResponse,
+                typing.Awaitable[spanner.ExecuteBatchDmlResponse]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def read(
-        self,
-    ) -> typing.Callable[
-        [spanner.ReadRequest],
-        typing.Union[result_set.ResultSet, typing.Awaitable[result_set.ResultSet]],
-    ]:
+    def read(self) -> typing.Callable[
+            [spanner.ReadRequest],
+            typing.Union[
+                result_set.ResultSet,
+                typing.Awaitable[result_set.ResultSet]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def streaming_read(
-        self,
-    ) -> typing.Callable[
-        [spanner.ReadRequest],
-        typing.Union[
-            result_set.PartialResultSet, typing.Awaitable[result_set.PartialResultSet]
-        ],
-    ]:
+    def streaming_read(self) -> typing.Callable[
+            [spanner.ReadRequest],
+            typing.Union[
+                result_set.PartialResultSet,
+                typing.Awaitable[result_set.PartialResultSet]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def begin_transaction(
-        self,
-    ) -> typing.Callable[
-        [spanner.BeginTransactionRequest],
-        typing.Union[
-            transaction.Transaction, typing.Awaitable[transaction.Transaction]
-        ],
-    ]:
+    def begin_transaction(self) -> typing.Callable[
+            [spanner.BeginTransactionRequest],
+            typing.Union[
+                transaction.Transaction,
+                typing.Awaitable[transaction.Transaction]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def commit(
-        self,
-    ) -> typing.Callable[
-        [spanner.CommitRequest],
-        typing.Union[spanner.CommitResponse, typing.Awaitable[spanner.CommitResponse]],
-    ]:
+    def commit(self) -> typing.Callable[
+            [spanner.CommitRequest],
+            typing.Union[
+                spanner.CommitResponse,
+                typing.Awaitable[spanner.CommitResponse]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def rollback(
-        self,
-    ) -> typing.Callable[
-        [spanner.RollbackRequest],
-        typing.Union[empty.Empty, typing.Awaitable[empty.Empty]],
-    ]:
+    def rollback(self) -> typing.Callable[
+            [spanner.RollbackRequest],
+            typing.Union[
+                empty.Empty,
+                typing.Awaitable[empty.Empty]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def partition_query(
-        self,
-    ) -> typing.Callable[
-        [spanner.PartitionQueryRequest],
-        typing.Union[
-            spanner.PartitionResponse, typing.Awaitable[spanner.PartitionResponse]
-        ],
-    ]:
+    def partition_query(self) -> typing.Callable[
+            [spanner.PartitionQueryRequest],
+            typing.Union[
+                spanner.PartitionResponse,
+                typing.Awaitable[spanner.PartitionResponse]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def partition_read(
-        self,
-    ) -> typing.Callable[
-        [spanner.PartitionReadRequest],
-        typing.Union[
-            spanner.PartitionResponse, typing.Awaitable[spanner.PartitionResponse]
-        ],
-    ]:
+    def partition_read(self) -> typing.Callable[
+            [spanner.PartitionReadRequest],
+            typing.Union[
+                spanner.PartitionResponse,
+                typing.Awaitable[spanner.PartitionResponse]
+            ]]:
         raise NotImplementedError()
 
 
-__all__ = ("SpannerTransport",)
+__all__ = (
+    'SpannerTransport',
+)

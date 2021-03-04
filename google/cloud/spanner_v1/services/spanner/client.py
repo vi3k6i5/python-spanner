@@ -23,14 +23,14 @@ from typing import Callable, Dict, Optional, Iterable, Sequence, Tuple, Type, Un
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
-from google.auth.transport import mtls  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
-from google.oauth2 import service_account  # type: ignore
+from google.api_core import exceptions                            # type: ignore
+from google.api_core import gapic_v1                              # type: ignore
+from google.api_core import retry as retries                      # type: ignore
+from google.auth import credentials                               # type: ignore
+from google.auth.transport import mtls                            # type: ignore
+from google.auth.transport.grpc import SslCredentials             # type: ignore
+from google.auth.exceptions import MutualTLSChannelError          # type: ignore
+from google.oauth2 import service_account                         # type: ignore
 
 from google.cloud.spanner_v1.services.spanner import pagers
 from google.cloud.spanner_v1.types import mutation
@@ -53,12 +53,13 @@ class SpannerClientMeta(type):
     support objects (e.g. transport) without polluting the client instance
     objects.
     """
-
     _transport_registry = OrderedDict()  # type: Dict[str, Type[SpannerTransport]]
-    _transport_registry["grpc"] = SpannerGrpcTransport
-    _transport_registry["grpc_asyncio"] = SpannerGrpcAsyncIOTransport
+    _transport_registry['grpc'] = SpannerGrpcTransport
+    _transport_registry['grpc_asyncio'] = SpannerGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[SpannerTransport]:
+    def get_transport_class(cls,
+            label: str = None,
+        ) -> Type[SpannerTransport]:
         """Return an appropriate transport class.
 
         Args:
@@ -112,7 +113,7 @@ class SpannerClient(metaclass=SpannerClientMeta):
 
         return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
 
-    DEFAULT_ENDPOINT = "spanner.googleapis.com"
+    DEFAULT_ENDPOINT = 'spanner.googleapis.com'
     DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore
         DEFAULT_ENDPOINT
     )
@@ -147,8 +148,9 @@ class SpannerClient(metaclass=SpannerClientMeta):
         Returns:
             SpannerClient: The constructed client.
         """
-        credentials = service_account.Credentials.from_service_account_file(filename)
-        kwargs["credentials"] = credentials
+        credentials = service_account.Credentials.from_service_account_file(
+            filename)
+        kwargs['credentials'] = credentials
         return cls(*args, **kwargs)
 
     from_service_account_json = from_service_account_file
@@ -163,104 +165,88 @@ class SpannerClient(metaclass=SpannerClientMeta):
         return self._transport
 
     @staticmethod
-    def database_path(project: str, instance: str, database: str,) -> str:
+    def database_path(project: str,instance: str,database: str,) -> str:
         """Return a fully-qualified database string."""
-        return "projects/{project}/instances/{instance}/databases/{database}".format(
-            project=project, instance=instance, database=database,
-        )
+        return "projects/{project}/instances/{instance}/databases/{database}".format(project=project, instance=instance, database=database, )
 
     @staticmethod
-    def parse_database_path(path: str) -> Dict[str, str]:
+    def parse_database_path(path: str) -> Dict[str,str]:
         """Parse a database path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/instances/(?P<instance>.+?)/databases/(?P<database>.+?)$",
-            path,
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/instances/(?P<instance>.+?)/databases/(?P<database>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def session_path(project: str, instance: str, database: str, session: str,) -> str:
+    def session_path(project: str,instance: str,database: str,session: str,) -> str:
         """Return a fully-qualified session string."""
-        return "projects/{project}/instances/{instance}/databases/{database}/sessions/{session}".format(
-            project=project, instance=instance, database=database, session=session,
-        )
+        return "projects/{project}/instances/{instance}/databases/{database}/sessions/{session}".format(project=project, instance=instance, database=database, session=session, )
 
     @staticmethod
-    def parse_session_path(path: str) -> Dict[str, str]:
+    def parse_session_path(path: str) -> Dict[str,str]:
         """Parse a session path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/instances/(?P<instance>.+?)/databases/(?P<database>.+?)/sessions/(?P<session>.+?)$",
-            path,
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/instances/(?P<instance>.+?)/databases/(?P<database>.+?)/sessions/(?P<session>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(billing_account: str, ) -> str:
         """Return a fully-qualified billing_account string."""
-        return "billingAccounts/{billing_account}".format(
-            billing_account=billing_account,
-        )
+        return "billingAccounts/{billing_account}".format(billing_account=billing_account, )
 
     @staticmethod
-    def parse_common_billing_account_path(path: str) -> Dict[str, str]:
+    def parse_common_billing_account_path(path: str) -> Dict[str,str]:
         """Parse a billing_account path into its component segments."""
         m = re.match(r"^billingAccounts/(?P<billing_account>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(folder: str, ) -> str:
         """Return a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(folder=folder, )
 
     @staticmethod
-    def parse_common_folder_path(path: str) -> Dict[str, str]:
+    def parse_common_folder_path(path: str) -> Dict[str,str]:
         """Parse a folder path into its component segments."""
         m = re.match(r"^folders/(?P<folder>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(organization: str, ) -> str:
         """Return a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(organization=organization, )
 
     @staticmethod
-    def parse_common_organization_path(path: str) -> Dict[str, str]:
+    def parse_common_organization_path(path: str) -> Dict[str,str]:
         """Parse a organization path into its component segments."""
         m = re.match(r"^organizations/(?P<organization>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(project: str, ) -> str:
         """Return a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(project=project, )
 
     @staticmethod
-    def parse_common_project_path(path: str) -> Dict[str, str]:
+    def parse_common_project_path(path: str) -> Dict[str,str]:
         """Parse a project path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(project: str, location: str, ) -> str:
         """Return a fully-qualified location string."""
-        return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
-        )
+        return "projects/{project}/locations/{location}".format(project=project, location=location, )
 
     @staticmethod
-    def parse_common_location_path(path: str) -> Dict[str, str]:
+    def parse_common_location_path(path: str) -> Dict[str,str]:
         """Parse a location path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)$", path)
         return m.groupdict() if m else {}
 
-    def __init__(
-        self,
-        *,
-        credentials: Optional[credentials.Credentials] = None,
-        transport: Union[str, SpannerTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-    ) -> None:
+    def __init__(self, *,
+            credentials: Optional[credentials.Credentials] = None,
+            transport: Union[str, SpannerTransport, None] = None,
+            client_options: Optional[client_options_lib.ClientOptions] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            ) -> None:
         """Instantiate the spanner client.
 
         Args:
@@ -304,9 +290,7 @@ class SpannerClient(metaclass=SpannerClientMeta):
             client_options = client_options_lib.ClientOptions()
 
         # Create SSL credentials for mutual TLS if needed.
-        use_client_cert = bool(
-            util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
-        )
+        use_client_cert = bool(util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")))
 
         client_cert_source_func = None
         is_mtls = False
@@ -316,9 +300,7 @@ class SpannerClient(metaclass=SpannerClientMeta):
                 client_cert_source_func = client_options.client_cert_source
             else:
                 is_mtls = mtls.has_default_client_cert_source()
-                client_cert_source_func = (
-                    mtls.default_client_cert_source() if is_mtls else None
-                )
+                client_cert_source_func = mtls.default_client_cert_source() if is_mtls else None
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -330,9 +312,7 @@ class SpannerClient(metaclass=SpannerClientMeta):
             elif use_mtls_env == "always":
                 api_endpoint = self.DEFAULT_MTLS_ENDPOINT
             elif use_mtls_env == "auto":
-                api_endpoint = (
-                    self.DEFAULT_MTLS_ENDPOINT if is_mtls else self.DEFAULT_ENDPOINT
-                )
+                api_endpoint = self.DEFAULT_MTLS_ENDPOINT if is_mtls else self.DEFAULT_ENDPOINT
             else:
                 raise MutualTLSChannelError(
                     "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted values: never, auto, always"
@@ -344,10 +324,8 @@ class SpannerClient(metaclass=SpannerClientMeta):
         if isinstance(transport, SpannerTransport):
             # transport is a SpannerTransport instance.
             if credentials or client_options.credentials_file:
-                raise ValueError(
-                    "When providing a transport instance, "
-                    "provide its credentials directly."
-                )
+                raise ValueError('When providing a transport instance, '
+                                 'provide its credentials directly.')
             if client_options.scopes:
                 raise ValueError(
                     "When providing a transport instance, "
@@ -366,15 +344,14 @@ class SpannerClient(metaclass=SpannerClientMeta):
                 client_info=client_info,
             )
 
-    def create_session(
-        self,
-        request: spanner.CreateSessionRequest = None,
-        *,
-        database: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> spanner.Session:
+    def create_session(self,
+            request: spanner.CreateSessionRequest = None,
+            *,
+            database: str = None,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> spanner.Session:
         r"""Creates a new session. A session can be used to perform
         transactions that read and/or modify data in a Cloud Spanner
         database. Sessions are meant to be reused for many consecutive
@@ -422,10 +399,8 @@ class SpannerClient(metaclass=SpannerClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([database])
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # Minor optimization to avoid making a copy if the user passes
         # in a spanner.CreateSessionRequest.
@@ -447,25 +422,31 @@ class SpannerClient(metaclass=SpannerClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("database", request.database),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('database', request.database),
+            )),
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
 
-    def batch_create_sessions(
-        self,
-        request: spanner.BatchCreateSessionsRequest = None,
-        *,
-        database: str = None,
-        session_count: int = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> spanner.BatchCreateSessionsResponse:
+    def batch_create_sessions(self,
+            request: spanner.BatchCreateSessionsRequest = None,
+            *,
+            database: str = None,
+            session_count: int = None,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> spanner.BatchCreateSessionsResponse:
         r"""Creates multiple new sessions.
         This API can be used to initialize a session cache on
         the clients. See https://goo.gl/TgSFN2 for best
@@ -512,10 +493,8 @@ class SpannerClient(metaclass=SpannerClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([database, session_count])
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # Minor optimization to avoid making a copy if the user passes
         # in a spanner.BatchCreateSessionsRequest.
@@ -539,24 +518,30 @@ class SpannerClient(metaclass=SpannerClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("database", request.database),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('database', request.database),
+            )),
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
 
-    def get_session(
-        self,
-        request: spanner.GetSessionRequest = None,
-        *,
-        name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> spanner.Session:
+    def get_session(self,
+            request: spanner.GetSessionRequest = None,
+            *,
+            name: str = None,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> spanner.Session:
         r"""Gets a session. Returns ``NOT_FOUND`` if the session does not
         exist. This is mainly useful for determining whether a session
         is still alive.
@@ -588,10 +573,8 @@ class SpannerClient(metaclass=SpannerClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # Minor optimization to avoid making a copy if the user passes
         # in a spanner.GetSessionRequest.
@@ -613,24 +596,30 @@ class SpannerClient(metaclass=SpannerClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('name', request.name),
+            )),
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
 
-    def list_sessions(
-        self,
-        request: spanner.ListSessionsRequest = None,
-        *,
-        database: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListSessionsPager:
+    def list_sessions(self,
+            request: spanner.ListSessionsRequest = None,
+            *,
+            database: str = None,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> pagers.ListSessionsPager:
         r"""Lists all sessions in a given database.
 
         Args:
@@ -665,10 +654,8 @@ class SpannerClient(metaclass=SpannerClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([database])
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # Minor optimization to avoid making a copy if the user passes
         # in a spanner.ListSessionsRequest.
@@ -690,30 +677,39 @@ class SpannerClient(metaclass=SpannerClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("database", request.database),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('database', request.database),
+            )),
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListSessionsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
         return response
 
-    def delete_session(
-        self,
-        request: spanner.DeleteSessionRequest = None,
-        *,
-        name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> None:
+    def delete_session(self,
+            request: spanner.DeleteSessionRequest = None,
+            *,
+            name: str = None,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> None:
         r"""Ends a session, releasing server resources associated
         with it. This will asynchronously trigger cancellation
         of any operations that are running with this session.
@@ -741,10 +737,8 @@ class SpannerClient(metaclass=SpannerClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # Minor optimization to avoid making a copy if the user passes
         # in a spanner.DeleteSessionRequest.
@@ -766,22 +760,26 @@ class SpannerClient(metaclass=SpannerClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('name', request.name),
+            )),
         )
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
-    def execute_sql(
-        self,
-        request: spanner.ExecuteSqlRequest = None,
-        *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> result_set.ResultSet:
+    def execute_sql(self,
+            request: spanner.ExecuteSqlRequest = None,
+            *,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> result_set.ResultSet:
         r"""Executes an SQL statement, returning all results in a single
         reply. This method cannot be used to return a result set larger
         than 10 MiB; if the query yields more data than that, the query
@@ -831,23 +829,29 @@ class SpannerClient(metaclass=SpannerClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("session", request.session),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('session', request.session),
+            )),
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
 
-    def execute_streaming_sql(
-        self,
-        request: spanner.ExecuteSqlRequest = None,
-        *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> Iterable[result_set.PartialResultSet]:
+    def execute_streaming_sql(self,
+            request: spanner.ExecuteSqlRequest = None,
+            *,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> Iterable[result_set.PartialResultSet]:
         r"""Like [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql], except
         returns the result set as a stream. Unlike
         [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql], there is no
@@ -892,23 +896,29 @@ class SpannerClient(metaclass=SpannerClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("session", request.session),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('session', request.session),
+            )),
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
 
-    def execute_batch_dml(
-        self,
-        request: spanner.ExecuteBatchDmlRequest = None,
-        *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> spanner.ExecuteBatchDmlResponse:
+    def execute_batch_dml(self,
+            request: spanner.ExecuteBatchDmlRequest = None,
+            *,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> spanner.ExecuteBatchDmlResponse:
         r"""Executes a batch of SQL DML statements. This method allows many
         statements to be run with lower latency than submitting them
         sequentially with
@@ -994,23 +1004,29 @@ class SpannerClient(metaclass=SpannerClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("session", request.session),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('session', request.session),
+            )),
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
 
-    def read(
-        self,
-        request: spanner.ReadRequest = None,
-        *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> result_set.ResultSet:
+    def read(self,
+            request: spanner.ReadRequest = None,
+            *,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> result_set.ResultSet:
         r"""Reads rows from the database using key lookups and scans, as a
         simple key/value style alternative to
         [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql]. This method
@@ -1061,23 +1077,29 @@ class SpannerClient(metaclass=SpannerClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("session", request.session),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('session', request.session),
+            )),
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
 
-    def streaming_read(
-        self,
-        request: spanner.ReadRequest = None,
-        *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> Iterable[result_set.PartialResultSet]:
+    def streaming_read(self,
+            request: spanner.ReadRequest = None,
+            *,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> Iterable[result_set.PartialResultSet]:
         r"""Like [Read][google.spanner.v1.Spanner.Read], except returns the
         result set as a stream. Unlike
         [Read][google.spanner.v1.Spanner.Read], there is no limit on the
@@ -1122,25 +1144,31 @@ class SpannerClient(metaclass=SpannerClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("session", request.session),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('session', request.session),
+            )),
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
 
-    def begin_transaction(
-        self,
-        request: spanner.BeginTransactionRequest = None,
-        *,
-        session: str = None,
-        options: transaction.TransactionOptions = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> transaction.Transaction:
+    def begin_transaction(self,
+            request: spanner.BeginTransactionRequest = None,
+            *,
+            session: str = None,
+            options: transaction.TransactionOptions = None,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> transaction.Transaction:
         r"""Begins a new transaction. This step can often be skipped:
         [Read][google.spanner.v1.Spanner.Read],
         [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql] and
@@ -1181,10 +1209,8 @@ class SpannerClient(metaclass=SpannerClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([session, options])
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # Minor optimization to avoid making a copy if the user passes
         # in a spanner.BeginTransactionRequest.
@@ -1208,27 +1234,33 @@ class SpannerClient(metaclass=SpannerClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("session", request.session),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('session', request.session),
+            )),
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
 
-    def commit(
-        self,
-        request: spanner.CommitRequest = None,
-        *,
-        session: str = None,
-        transaction_id: bytes = None,
-        mutations: Sequence[mutation.Mutation] = None,
-        single_use_transaction: transaction.TransactionOptions = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> spanner.CommitResponse:
+    def commit(self,
+            request: spanner.CommitRequest = None,
+            *,
+            session: str = None,
+            transaction_id: bytes = None,
+            mutations: Sequence[mutation.Mutation] = None,
+            single_use_transaction: transaction.TransactionOptions = None,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> spanner.CommitResponse:
         r"""Commits a transaction. The request includes the mutations to be
         applied to rows in the database.
 
@@ -1304,14 +1336,10 @@ class SpannerClient(metaclass=SpannerClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [session, transaction_id, mutations, single_use_transaction]
-        )
+        has_flattened_params = any([session, transaction_id, mutations, single_use_transaction])
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # Minor optimization to avoid making a copy if the user passes
         # in a spanner.CommitRequest.
@@ -1327,11 +1355,10 @@ class SpannerClient(metaclass=SpannerClientMeta):
                 request.session = session
             if transaction_id is not None:
                 request.transaction_id = transaction_id
+            if mutations is not None:
+                request.mutations = mutations
             if single_use_transaction is not None:
                 request.single_use_transaction = single_use_transaction
-
-            if mutations:
-                request.mutations.extend(mutations)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1340,25 +1367,31 @@ class SpannerClient(metaclass=SpannerClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("session", request.session),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('session', request.session),
+            )),
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
 
-    def rollback(
-        self,
-        request: spanner.RollbackRequest = None,
-        *,
-        session: str = None,
-        transaction_id: bytes = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> None:
+    def rollback(self,
+            request: spanner.RollbackRequest = None,
+            *,
+            session: str = None,
+            transaction_id: bytes = None,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> None:
         r"""Rolls back a transaction, releasing any locks it holds. It is a
         good idea to call this for any transaction that includes one or
         more [Read][google.spanner.v1.Spanner.Read] or
@@ -1400,10 +1433,8 @@ class SpannerClient(metaclass=SpannerClientMeta):
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([session, transaction_id])
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         # Minor optimization to avoid making a copy if the user passes
         # in a spanner.RollbackRequest.
@@ -1427,22 +1458,26 @@ class SpannerClient(metaclass=SpannerClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("session", request.session),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('session', request.session),
+            )),
         )
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
-    def partition_query(
-        self,
-        request: spanner.PartitionQueryRequest = None,
-        *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> spanner.PartitionResponse:
+    def partition_query(self,
+            request: spanner.PartitionQueryRequest = None,
+            *,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> spanner.PartitionResponse:
         r"""Creates a set of partition tokens that can be used to execute a
         query operation in parallel. Each of the returned partition
         tokens can be used by
@@ -1492,23 +1527,29 @@ class SpannerClient(metaclass=SpannerClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("session", request.session),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('session', request.session),
+            )),
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
 
-    def partition_read(
-        self,
-        request: spanner.PartitionReadRequest = None,
-        *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> spanner.PartitionResponse:
+    def partition_read(self,
+            request: spanner.PartitionReadRequest = None,
+            *,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> spanner.PartitionResponse:
         r"""Creates a set of partition tokens that can be used to execute a
         read operation in parallel. Each of the returned partition
         tokens can be used by
@@ -1561,22 +1602,38 @@ class SpannerClient(metaclass=SpannerClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("session", request.session),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('session', request.session),
+            )),
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
 
 
+
+
+
+
+
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-spanner",).version,
+        gapic_version=pkg_resources.get_distribution(
+            'google-cloud-spanner',
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
-__all__ = ("SpannerClient",)
+__all__ = (
+    'SpannerClient',
+)

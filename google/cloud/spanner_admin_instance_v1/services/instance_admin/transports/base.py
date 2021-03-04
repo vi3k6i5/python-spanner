@@ -21,7 +21,7 @@ import pkg_resources
 
 from google import auth  # type: ignore
 from google.api_core import exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
+from google.api_core import gapic_v1    # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.api_core import operations_v1  # type: ignore
 from google.auth import credentials  # type: ignore
@@ -36,32 +36,30 @@ from google.protobuf import empty_pb2 as empty  # type: ignore
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
         gapic_version=pkg_resources.get_distribution(
-            "google-cloud-spanner-admin-instance",
+            'google-cloud-spanner-admin-instance',
         ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
-
 class InstanceAdminTransport(abc.ABC):
     """Abstract transport class for InstanceAdmin."""
 
     AUTH_SCOPES = (
-        "https://www.googleapis.com/auth/cloud-platform",
-        "https://www.googleapis.com/auth/spanner.admin",
+        'https://www.googleapis.com/auth/cloud-platform',
+        'https://www.googleapis.com/auth/spanner.admin',
     )
 
     def __init__(
-        self,
-        *,
-        host: str = "spanner.googleapis.com",
-        credentials: credentials.Credentials = None,
-        credentials_file: typing.Optional[str] = None,
-        scopes: typing.Optional[typing.Sequence[str]] = AUTH_SCOPES,
-        quota_project_id: typing.Optional[str] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-        **kwargs,
-    ) -> None:
+            self, *,
+            host: str = 'spanner.googleapis.com',
+            credentials: credentials.Credentials = None,
+            credentials_file: typing.Optional[str] = None,
+            scopes: typing.Optional[typing.Sequence[str]] = AUTH_SCOPES,
+            quota_project_id: typing.Optional[str] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            **kwargs,
+            ) -> None:
         """Instantiate the transport.
 
         Args:
@@ -84,26 +82,24 @@ class InstanceAdminTransport(abc.ABC):
                 your own client library.
         """
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
-        if ":" not in host:
-            host += ":443"
+        if ':' not in host:
+            host += ':443'
         self._host = host
 
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
             credentials, _ = auth.load_credentials_from_file(
-                credentials_file, scopes=scopes, quota_project_id=quota_project_id
-            )
+                                credentials_file,
+                                scopes=scopes,
+                                quota_project_id=quota_project_id
+                            )
 
         elif credentials is None:
-            credentials, _ = auth.default(
-                scopes=scopes, quota_project_id=quota_project_id
-            )
+            credentials, _ = auth.default(scopes=scopes, quota_project_id=quota_project_id)
 
         # Save the credentials.
         self._credentials = credentials
@@ -121,7 +117,8 @@ class InstanceAdminTransport(abc.ABC):
                     maximum=32.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                        exceptions.DeadlineExceeded,
+                        exceptions.ServiceUnavailable,
                     ),
                 ),
                 default_timeout=3600.0,
@@ -134,7 +131,8 @@ class InstanceAdminTransport(abc.ABC):
                     maximum=32.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                        exceptions.DeadlineExceeded,
+                        exceptions.ServiceUnavailable,
                     ),
                 ),
                 default_timeout=3600.0,
@@ -147,7 +145,8 @@ class InstanceAdminTransport(abc.ABC):
                     maximum=32.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                        exceptions.DeadlineExceeded,
+                        exceptions.ServiceUnavailable,
                     ),
                 ),
                 default_timeout=3600.0,
@@ -160,17 +159,22 @@ class InstanceAdminTransport(abc.ABC):
                     maximum=32.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                        exceptions.DeadlineExceeded,
+                        exceptions.ServiceUnavailable,
                     ),
                 ),
                 default_timeout=3600.0,
                 client_info=client_info,
             ),
             self.create_instance: gapic_v1.method.wrap_method(
-                self.create_instance, default_timeout=3600.0, client_info=client_info,
+                self.create_instance,
+                default_timeout=3600.0,
+                client_info=client_info,
             ),
             self.update_instance: gapic_v1.method.wrap_method(
-                self.update_instance, default_timeout=3600.0, client_info=client_info,
+                self.update_instance,
+                default_timeout=3600.0,
+                client_info=client_info,
             ),
             self.delete_instance: gapic_v1.method.wrap_method(
                 self.delete_instance,
@@ -179,14 +183,17 @@ class InstanceAdminTransport(abc.ABC):
                     maximum=32.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                        exceptions.DeadlineExceeded,
+                        exceptions.ServiceUnavailable,
                     ),
                 ),
                 default_timeout=3600.0,
                 client_info=client_info,
             ),
             self.set_iam_policy: gapic_v1.method.wrap_method(
-                self.set_iam_policy, default_timeout=30.0, client_info=client_info,
+                self.set_iam_policy,
+                default_timeout=30.0,
+                client_info=client_info,
             ),
             self.get_iam_policy: gapic_v1.method.wrap_method(
                 self.get_iam_policy,
@@ -195,7 +202,8 @@ class InstanceAdminTransport(abc.ABC):
                     maximum=32.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                        exceptions.DeadlineExceeded,
+                        exceptions.ServiceUnavailable,
                     ),
                 ),
                 default_timeout=30.0,
@@ -206,6 +214,7 @@ class InstanceAdminTransport(abc.ABC):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
+
         }
 
     @property
@@ -214,109 +223,96 @@ class InstanceAdminTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def list_instance_configs(
-        self,
-    ) -> typing.Callable[
-        [spanner_instance_admin.ListInstanceConfigsRequest],
-        typing.Union[
-            spanner_instance_admin.ListInstanceConfigsResponse,
-            typing.Awaitable[spanner_instance_admin.ListInstanceConfigsResponse],
-        ],
-    ]:
+    def list_instance_configs(self) -> typing.Callable[
+            [spanner_instance_admin.ListInstanceConfigsRequest],
+            typing.Union[
+                spanner_instance_admin.ListInstanceConfigsResponse,
+                typing.Awaitable[spanner_instance_admin.ListInstanceConfigsResponse]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def get_instance_config(
-        self,
-    ) -> typing.Callable[
-        [spanner_instance_admin.GetInstanceConfigRequest],
-        typing.Union[
-            spanner_instance_admin.InstanceConfig,
-            typing.Awaitable[spanner_instance_admin.InstanceConfig],
-        ],
-    ]:
+    def get_instance_config(self) -> typing.Callable[
+            [spanner_instance_admin.GetInstanceConfigRequest],
+            typing.Union[
+                spanner_instance_admin.InstanceConfig,
+                typing.Awaitable[spanner_instance_admin.InstanceConfig]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def list_instances(
-        self,
-    ) -> typing.Callable[
-        [spanner_instance_admin.ListInstancesRequest],
-        typing.Union[
-            spanner_instance_admin.ListInstancesResponse,
-            typing.Awaitable[spanner_instance_admin.ListInstancesResponse],
-        ],
-    ]:
+    def list_instances(self) -> typing.Callable[
+            [spanner_instance_admin.ListInstancesRequest],
+            typing.Union[
+                spanner_instance_admin.ListInstancesResponse,
+                typing.Awaitable[spanner_instance_admin.ListInstancesResponse]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def get_instance(
-        self,
-    ) -> typing.Callable[
-        [spanner_instance_admin.GetInstanceRequest],
-        typing.Union[
-            spanner_instance_admin.Instance,
-            typing.Awaitable[spanner_instance_admin.Instance],
-        ],
-    ]:
+    def get_instance(self) -> typing.Callable[
+            [spanner_instance_admin.GetInstanceRequest],
+            typing.Union[
+                spanner_instance_admin.Instance,
+                typing.Awaitable[spanner_instance_admin.Instance]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def create_instance(
-        self,
-    ) -> typing.Callable[
-        [spanner_instance_admin.CreateInstanceRequest],
-        typing.Union[operations.Operation, typing.Awaitable[operations.Operation]],
-    ]:
+    def create_instance(self) -> typing.Callable[
+            [spanner_instance_admin.CreateInstanceRequest],
+            typing.Union[
+                operations.Operation,
+                typing.Awaitable[operations.Operation]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def update_instance(
-        self,
-    ) -> typing.Callable[
-        [spanner_instance_admin.UpdateInstanceRequest],
-        typing.Union[operations.Operation, typing.Awaitable[operations.Operation]],
-    ]:
+    def update_instance(self) -> typing.Callable[
+            [spanner_instance_admin.UpdateInstanceRequest],
+            typing.Union[
+                operations.Operation,
+                typing.Awaitable[operations.Operation]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def delete_instance(
-        self,
-    ) -> typing.Callable[
-        [spanner_instance_admin.DeleteInstanceRequest],
-        typing.Union[empty.Empty, typing.Awaitable[empty.Empty]],
-    ]:
+    def delete_instance(self) -> typing.Callable[
+            [spanner_instance_admin.DeleteInstanceRequest],
+            typing.Union[
+                empty.Empty,
+                typing.Awaitable[empty.Empty]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> typing.Callable[
-        [iam_policy.SetIamPolicyRequest],
-        typing.Union[policy.Policy, typing.Awaitable[policy.Policy]],
-    ]:
+    def set_iam_policy(self) -> typing.Callable[
+            [iam_policy.SetIamPolicyRequest],
+            typing.Union[
+                policy.Policy,
+                typing.Awaitable[policy.Policy]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> typing.Callable[
-        [iam_policy.GetIamPolicyRequest],
-        typing.Union[policy.Policy, typing.Awaitable[policy.Policy]],
-    ]:
+    def get_iam_policy(self) -> typing.Callable[
+            [iam_policy.GetIamPolicyRequest],
+            typing.Union[
+                policy.Policy,
+                typing.Awaitable[policy.Policy]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> typing.Callable[
-        [iam_policy.TestIamPermissionsRequest],
-        typing.Union[
-            iam_policy.TestIamPermissionsResponse,
-            typing.Awaitable[iam_policy.TestIamPermissionsResponse],
-        ],
-    ]:
+    def test_iam_permissions(self) -> typing.Callable[
+            [iam_policy.TestIamPermissionsRequest],
+            typing.Union[
+                iam_policy.TestIamPermissionsResponse,
+                typing.Awaitable[iam_policy.TestIamPermissionsResponse]
+            ]]:
         raise NotImplementedError()
 
 
-__all__ = ("InstanceAdminTransport",)
+__all__ = (
+    'InstanceAdminTransport',
+)

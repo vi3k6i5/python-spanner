@@ -19,6 +19,6 @@ from .client import SpannerClient
 from .async_client import SpannerAsyncClient
 
 __all__ = (
-    "SpannerClient",
-    "SpannerAsyncClient",
+    'SpannerClient',
+    'SpannerAsyncClient',
 )

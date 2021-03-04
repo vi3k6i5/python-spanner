@@ -29,29 +29,30 @@ from google.rpc import status_pb2 as gr_status  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.spanner.v1",
+    package='google.spanner.v1',
     manifest={
-        "CreateSessionRequest",
-        "BatchCreateSessionsRequest",
-        "BatchCreateSessionsResponse",
-        "Session",
-        "GetSessionRequest",
-        "ListSessionsRequest",
-        "ListSessionsResponse",
-        "DeleteSessionRequest",
-        "ExecuteSqlRequest",
-        "ExecuteBatchDmlRequest",
-        "ExecuteBatchDmlResponse",
-        "PartitionOptions",
-        "PartitionQueryRequest",
-        "PartitionReadRequest",
-        "Partition",
-        "PartitionResponse",
-        "ReadRequest",
-        "BeginTransactionRequest",
-        "CommitRequest",
-        "CommitResponse",
-        "RollbackRequest",
+        'CreateSessionRequest',
+        'BatchCreateSessionsRequest',
+        'BatchCreateSessionsResponse',
+        'Session',
+        'GetSessionRequest',
+        'ListSessionsRequest',
+        'ListSessionsResponse',
+        'DeleteSessionRequest',
+        'RequestOptions',
+        'ExecuteSqlRequest',
+        'ExecuteBatchDmlRequest',
+        'ExecuteBatchDmlResponse',
+        'PartitionOptions',
+        'PartitionQueryRequest',
+        'PartitionReadRequest',
+        'Partition',
+        'PartitionResponse',
+        'ReadRequest',
+        'BeginTransactionRequest',
+        'CommitRequest',
+        'CommitResponse',
+        'RollbackRequest',
     },
 )
 
@@ -70,7 +71,9 @@ class CreateSessionRequest(proto.Message):
 
     database = proto.Field(proto.STRING, number=1)
 
-    session = proto.Field(proto.MESSAGE, number=2, message="Session",)
+    session = proto.Field(proto.MESSAGE, number=2,
+        message='Session',
+    )
 
 
 class BatchCreateSessionsRequest(proto.Message):
@@ -96,7 +99,9 @@ class BatchCreateSessionsRequest(proto.Message):
 
     database = proto.Field(proto.STRING, number=1)
 
-    session_template = proto.Field(proto.MESSAGE, number=2, message="Session",)
+    session_template = proto.Field(proto.MESSAGE, number=2,
+        message='Session',
+    )
 
     session_count = proto.Field(proto.INT32, number=3)
 
@@ -110,7 +115,9 @@ class BatchCreateSessionsResponse(proto.Message):
             The freshly created sessions.
     """
 
-    session = proto.RepeatedField(proto.MESSAGE, number=1, message="Session",)
+    session = proto.RepeatedField(proto.MESSAGE, number=1,
+        message='Session',
+    )
 
 
 class Session(proto.Message):
@@ -147,10 +154,12 @@ class Session(proto.Message):
 
     labels = proto.MapField(proto.STRING, proto.STRING, number=2)
 
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp.Timestamp,)
+    create_time = proto.Field(proto.MESSAGE, number=3,
+        message=timestamp.Timestamp,
+    )
 
-    approximate_last_use_time = proto.Field(
-        proto.MESSAGE, number=4, message=timestamp.Timestamp,
+    approximate_last_use_time = proto.Field(proto.MESSAGE, number=4,
+        message=timestamp.Timestamp,
     )
 
 
@@ -223,7 +232,9 @@ class ListSessionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    sessions = proto.RepeatedField(proto.MESSAGE, number=1, message="Session",)
+    sessions = proto.RepeatedField(proto.MESSAGE, number=1,
+        message='Session',
+    )
 
     next_page_token = proto.Field(proto.STRING, number=2)
 
@@ -238,6 +249,35 @@ class DeleteSessionRequest(proto.Message):
     """
 
     name = proto.Field(proto.STRING, number=1)
+
+
+class RequestOptions(proto.Message):
+    r"""Common request options for various APIs.
+
+    Attributes:
+        request_tag (str):
+            A per-request tag which can be applied to queries or reads,
+            used for statistics collection. Both request_tag and
+            transaction_tag can be specified for a read or query that
+            belongs to a transaction. This field is ignored for requests
+            where it's not applicable (e.g. CommitRequest).
+            ``request_tag`` must be a valid identifier of the form:
+            ``[a-zA-Z][a-zA-Z0-9_\-]`` between 2 and 64 characters in
+            length
+        transaction_tag (str):
+            A tag used for statistics collection about this transaction.
+            Both request_tag and transaction_tag can be specified for a
+            read or query that belongs to a transaction. The value of
+            transaction_tag should be the same for all requests
+            belonging to the same transaction. If this request doesn’t
+            belong to any transaction, transaction_tag will be ignored.
+            ``transaction_tag`` must be a valid identifier of the
+            format: [a-zA-Z][a-zA-Z0-9_-]{0,49}
+    """
+
+    request_tag = proto.Field(proto.STRING, number=2)
+
+    transaction_tag = proto.Field(proto.STRING, number=3)
 
 
 class ExecuteSqlRequest(proto.Message):
@@ -335,8 +375,9 @@ class ExecuteSqlRequest(proto.Message):
         query_options (google.cloud.spanner_v1.types.ExecuteSqlRequest.QueryOptions):
             Query optimizer configuration to use for the
             given query.
+        request_options (google.cloud.spanner_v1.types.RequestOptions):
+            Common options for this request.
     """
-
     class QueryMode(proto.Enum):
         r"""Mode in which the statement must be processed."""
         NORMAL = 0
@@ -374,27 +415,37 @@ class ExecuteSqlRequest(proto.Message):
 
     session = proto.Field(proto.STRING, number=1)
 
-    transaction = proto.Field(
-        proto.MESSAGE, number=2, message=gs_transaction.TransactionSelector,
+    transaction = proto.Field(proto.MESSAGE, number=2,
+        message=gs_transaction.TransactionSelector,
     )
 
     sql = proto.Field(proto.STRING, number=3)
 
-    params = proto.Field(proto.MESSAGE, number=4, message=struct.Struct,)
+    params = proto.Field(proto.MESSAGE, number=4,
+        message=struct.Struct,
+    )
 
-    param_types = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=5, message=gs_type.Type,
+    param_types = proto.MapField(proto.STRING, proto.MESSAGE, number=5,
+        message=gs_type.Type,
     )
 
     resume_token = proto.Field(proto.BYTES, number=6)
 
-    query_mode = proto.Field(proto.ENUM, number=7, enum=QueryMode,)
+    query_mode = proto.Field(proto.ENUM, number=7,
+        enum=QueryMode,
+    )
 
     partition_token = proto.Field(proto.BYTES, number=8)
 
     seqno = proto.Field(proto.INT64, number=9)
 
-    query_options = proto.Field(proto.MESSAGE, number=10, message=QueryOptions,)
+    query_options = proto.Field(proto.MESSAGE, number=10,
+        message=QueryOptions,
+    )
+
+    request_options = proto.Field(proto.MESSAGE, number=11,
+        message='RequestOptions',
+    )
 
 
 class ExecuteBatchDmlRequest(proto.Message):
@@ -434,8 +485,9 @@ class ExecuteBatchDmlRequest(proto.Message):
             sequence number, the transaction may be aborted.
             Replays of previously handled requests will
             yield the same response as the first execution.
+        request_options (google.cloud.spanner_v1.types.RequestOptions):
+            Common options for this request.
     """
-
     class Statement(proto.Message):
         r"""A single DML statement.
 
@@ -475,21 +527,29 @@ class ExecuteBatchDmlRequest(proto.Message):
 
         sql = proto.Field(proto.STRING, number=1)
 
-        params = proto.Field(proto.MESSAGE, number=2, message=struct.Struct,)
+        params = proto.Field(proto.MESSAGE, number=2,
+            message=struct.Struct,
+        )
 
-        param_types = proto.MapField(
-            proto.STRING, proto.MESSAGE, number=3, message=gs_type.Type,
+        param_types = proto.MapField(proto.STRING, proto.MESSAGE, number=3,
+            message=gs_type.Type,
         )
 
     session = proto.Field(proto.STRING, number=1)
 
-    transaction = proto.Field(
-        proto.MESSAGE, number=2, message=gs_transaction.TransactionSelector,
+    transaction = proto.Field(proto.MESSAGE, number=2,
+        message=gs_transaction.TransactionSelector,
     )
 
-    statements = proto.RepeatedField(proto.MESSAGE, number=3, message=Statement,)
+    statements = proto.RepeatedField(proto.MESSAGE, number=3,
+        message=Statement,
+    )
 
     seqno = proto.Field(proto.INT64, number=4)
+
+    request_options = proto.Field(proto.MESSAGE, number=5,
+        message='RequestOptions',
+    )
 
 
 class ExecuteBatchDmlResponse(proto.Message):
@@ -547,11 +607,13 @@ class ExecuteBatchDmlResponse(proto.Message):
             statement.
     """
 
-    result_sets = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=result_set.ResultSet,
+    result_sets = proto.RepeatedField(proto.MESSAGE, number=1,
+        message=result_set.ResultSet,
     )
 
-    status = proto.Field(proto.MESSAGE, number=2, message=gr_status.Status,)
+    status = proto.Field(proto.MESSAGE, number=2,
+        message=gr_status.Status,
+    )
 
 
 class PartitionOptions(proto.Message):
@@ -645,20 +707,22 @@ class PartitionQueryRequest(proto.Message):
 
     session = proto.Field(proto.STRING, number=1)
 
-    transaction = proto.Field(
-        proto.MESSAGE, number=2, message=gs_transaction.TransactionSelector,
+    transaction = proto.Field(proto.MESSAGE, number=2,
+        message=gs_transaction.TransactionSelector,
     )
 
     sql = proto.Field(proto.STRING, number=3)
 
-    params = proto.Field(proto.MESSAGE, number=4, message=struct.Struct,)
-
-    param_types = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=5, message=gs_type.Type,
+    params = proto.Field(proto.MESSAGE, number=4,
+        message=struct.Struct,
     )
 
-    partition_options = proto.Field(
-        proto.MESSAGE, number=6, message="PartitionOptions",
+    param_types = proto.MapField(proto.STRING, proto.MESSAGE, number=5,
+        message=gs_type.Type,
+    )
+
+    partition_options = proto.Field(proto.MESSAGE, number=6,
+        message='PartitionOptions',
     )
 
 
@@ -713,8 +777,8 @@ class PartitionReadRequest(proto.Message):
 
     session = proto.Field(proto.STRING, number=1)
 
-    transaction = proto.Field(
-        proto.MESSAGE, number=2, message=gs_transaction.TransactionSelector,
+    transaction = proto.Field(proto.MESSAGE, number=2,
+        message=gs_transaction.TransactionSelector,
     )
 
     table = proto.Field(proto.STRING, number=3)
@@ -723,10 +787,12 @@ class PartitionReadRequest(proto.Message):
 
     columns = proto.RepeatedField(proto.STRING, number=5)
 
-    key_set = proto.Field(proto.MESSAGE, number=6, message=keys.KeySet,)
+    key_set = proto.Field(proto.MESSAGE, number=6,
+        message=keys.KeySet,
+    )
 
-    partition_options = proto.Field(
-        proto.MESSAGE, number=9, message="PartitionOptions",
+    partition_options = proto.Field(proto.MESSAGE, number=9,
+        message='PartitionOptions',
     )
 
 
@@ -758,10 +824,12 @@ class PartitionResponse(proto.Message):
             Transaction created by this request.
     """
 
-    partitions = proto.RepeatedField(proto.MESSAGE, number=1, message="Partition",)
+    partitions = proto.RepeatedField(proto.MESSAGE, number=1,
+        message='Partition',
+    )
 
-    transaction = proto.Field(
-        proto.MESSAGE, number=2, message=gs_transaction.Transaction,
+    transaction = proto.Field(proto.MESSAGE, number=2,
+        message=gs_transaction.Transaction,
     )
 
 
@@ -835,12 +903,14 @@ class ReadRequest(proto.Message):
             must be an exact match for the values of fields common to
             this message and the PartitionReadRequest message used to
             create this partition_token.
+        request_options (google.cloud.spanner_v1.types.RequestOptions):
+            Common options for this request.
     """
 
     session = proto.Field(proto.STRING, number=1)
 
-    transaction = proto.Field(
-        proto.MESSAGE, number=2, message=gs_transaction.TransactionSelector,
+    transaction = proto.Field(proto.MESSAGE, number=2,
+        message=gs_transaction.TransactionSelector,
     )
 
     table = proto.Field(proto.STRING, number=3)
@@ -849,13 +919,19 @@ class ReadRequest(proto.Message):
 
     columns = proto.RepeatedField(proto.STRING, number=5)
 
-    key_set = proto.Field(proto.MESSAGE, number=6, message=keys.KeySet,)
+    key_set = proto.Field(proto.MESSAGE, number=6,
+        message=keys.KeySet,
+    )
 
     limit = proto.Field(proto.INT64, number=8)
 
     resume_token = proto.Field(proto.BYTES, number=9)
 
     partition_token = proto.Field(proto.BYTES, number=10)
+
+    request_options = proto.Field(proto.MESSAGE, number=11,
+        message='RequestOptions',
+    )
 
 
 class BeginTransactionRequest(proto.Message):
@@ -868,12 +944,18 @@ class BeginTransactionRequest(proto.Message):
             transaction runs.
         options (google.cloud.spanner_v1.types.TransactionOptions):
             Required. Options for the new transaction.
+        request_options (google.cloud.spanner_v1.types.RequestOptions):
+            Common options for this request.
     """
 
     session = proto.Field(proto.STRING, number=1)
 
-    options = proto.Field(
-        proto.MESSAGE, number=2, message=gs_transaction.TransactionOptions,
+    options = proto.Field(proto.MESSAGE, number=2,
+        message=gs_transaction.TransactionOptions,
+    )
+
+    request_options = proto.Field(proto.MESSAGE, number=3,
+        message='RequestOptions',
     )
 
 
@@ -906,22 +988,27 @@ class CommitRequest(proto.Message):
             be included in the
             [CommitResponse][google.spanner.v1.CommitResponse.commit_stats].
             Default value is ``false``.
+        request_options (google.cloud.spanner_v1.types.RequestOptions):
+            Common options for this request.
     """
 
     session = proto.Field(proto.STRING, number=1)
 
-    transaction_id = proto.Field(proto.BYTES, number=2, oneof="transaction")
+    transaction_id = proto.Field(proto.BYTES, number=2, oneof='transaction')
 
-    single_use_transaction = proto.Field(
-        proto.MESSAGE,
-        number=3,
-        oneof="transaction",
+    single_use_transaction = proto.Field(proto.MESSAGE, number=3, oneof='transaction',
         message=gs_transaction.TransactionOptions,
     )
 
-    mutations = proto.RepeatedField(proto.MESSAGE, number=4, message=mutation.Mutation,)
+    mutations = proto.RepeatedField(proto.MESSAGE, number=4,
+        message=mutation.Mutation,
+    )
 
     return_commit_stats = proto.Field(proto.BOOL, number=5)
+
+    request_options = proto.Field(proto.MESSAGE, number=6,
+        message='RequestOptions',
+    )
 
 
 class CommitResponse(proto.Message):
@@ -936,7 +1023,6 @@ class CommitResponse(proto.Message):
             For more information, see
             [CommitRequest.return_commit_stats][google.spanner.v1.CommitRequest.return_commit_stats].
     """
-
     class CommitStats(proto.Message):
         r"""Additional statistics about a commit.
 
@@ -955,11 +1041,13 @@ class CommitResponse(proto.Message):
 
         mutation_count = proto.Field(proto.INT64, number=1)
 
-    commit_timestamp = proto.Field(
-        proto.MESSAGE, number=1, message=timestamp.Timestamp,
+    commit_timestamp = proto.Field(proto.MESSAGE, number=1,
+        message=timestamp.Timestamp,
     )
 
-    commit_stats = proto.Field(proto.MESSAGE, number=2, message=CommitStats,)
+    commit_stats = proto.Field(proto.MESSAGE, number=2,
+        message=CommitStats,
+    )
 
 
 class RollbackRequest(proto.Message):

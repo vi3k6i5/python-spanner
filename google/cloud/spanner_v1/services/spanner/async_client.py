@@ -21,12 +21,12 @@ import re
 from typing import Dict, AsyncIterable, Awaitable, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
-from google.api_core import exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
+import google.api_core.client_options as ClientOptions # type: ignore
+from google.api_core import exceptions                 # type: ignore
+from google.api_core import gapic_v1                   # type: ignore
+from google.api_core import retry as retries           # type: ignore
+from google.auth import credentials                    # type: ignore
+from google.oauth2 import service_account              # type: ignore
 
 from google.cloud.spanner_v1.services.spanner import pagers
 from google.cloud.spanner_v1.types import mutation
@@ -58,20 +58,14 @@ class SpannerAsyncClient:
     session_path = staticmethod(SpannerClient.session_path)
     parse_session_path = staticmethod(SpannerClient.parse_session_path)
 
-    common_billing_account_path = staticmethod(
-        SpannerClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        SpannerClient.parse_common_billing_account_path
-    )
+    common_billing_account_path = staticmethod(SpannerClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(SpannerClient.parse_common_billing_account_path)
 
     common_folder_path = staticmethod(SpannerClient.common_folder_path)
     parse_common_folder_path = staticmethod(SpannerClient.parse_common_folder_path)
 
     common_organization_path = staticmethod(SpannerClient.common_organization_path)
-    parse_common_organization_path = staticmethod(
-        SpannerClient.parse_common_organization_path
-    )
+    parse_common_organization_path = staticmethod(SpannerClient.parse_common_organization_path)
 
     common_project_path = staticmethod(SpannerClient.common_project_path)
     parse_common_project_path = staticmethod(SpannerClient.parse_common_project_path)
@@ -79,8 +73,36 @@ class SpannerAsyncClient:
     common_location_path = staticmethod(SpannerClient.common_location_path)
     parse_common_location_path = staticmethod(SpannerClient.parse_common_location_path)
 
-    from_service_account_info = SpannerClient.from_service_account_info
-    from_service_account_file = SpannerClient.from_service_account_file
+    @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            SpannerAsyncClient: The constructed client.
+        """
+        return SpannerClient.from_service_account_info.__func__(SpannerAsyncClient, info, *args, **kwargs)  # type: ignore
+
+    @classmethod
+    def from_service_account_file(cls, filename: str, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            SpannerAsyncClient: The constructed client.
+        """
+        return SpannerClient.from_service_account_file.__func__(SpannerAsyncClient, filename, *args, **kwargs)  # type: ignore
+
     from_service_account_json = from_service_account_file
 
     @property
@@ -92,18 +114,14 @@ class SpannerAsyncClient:
         """
         return self._client.transport
 
-    get_transport_class = functools.partial(
-        type(SpannerClient).get_transport_class, type(SpannerClient)
-    )
+    get_transport_class = functools.partial(type(SpannerClient).get_transport_class, type(SpannerClient))
 
-    def __init__(
-        self,
-        *,
-        credentials: credentials.Credentials = None,
-        transport: Union[str, SpannerTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-    ) -> None:
+    def __init__(self, *,
+            credentials: credentials.Credentials = None,
+            transport: Union[str, SpannerTransport] = 'grpc_asyncio',
+            client_options: ClientOptions = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            ) -> None:
         """Instantiate the spanner client.
 
         Args:
@@ -142,17 +160,17 @@ class SpannerAsyncClient:
             transport=transport,
             client_options=client_options,
             client_info=client_info,
+
         )
 
-    async def create_session(
-        self,
-        request: spanner.CreateSessionRequest = None,
-        *,
-        database: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> spanner.Session:
+    async def create_session(self,
+            request: spanner.CreateSessionRequest = None,
+            *,
+            database: str = None,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> spanner.Session:
         r"""Creates a new session. A session can be used to perform
         transactions that read and/or modify data in a Cloud Spanner
         database. Sessions are meant to be reused for many consecutive
@@ -200,10 +218,8 @@ class SpannerAsyncClient:
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([database])
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         request = spanner.CreateSessionRequest(request)
 
@@ -221,7 +237,9 @@ class SpannerAsyncClient:
                 initial=0.25,
                 maximum=32.0,
                 multiplier=1.3,
-                predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
+                predicate=retries.if_exception_type(
+                    exceptions.ServiceUnavailable,
+                ),
             ),
             default_timeout=30.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -230,25 +248,31 @@ class SpannerAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("database", request.database),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('database', request.database),
+            )),
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
 
-    async def batch_create_sessions(
-        self,
-        request: spanner.BatchCreateSessionsRequest = None,
-        *,
-        database: str = None,
-        session_count: int = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> spanner.BatchCreateSessionsResponse:
+    async def batch_create_sessions(self,
+            request: spanner.BatchCreateSessionsRequest = None,
+            *,
+            database: str = None,
+            session_count: int = None,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> spanner.BatchCreateSessionsResponse:
         r"""Creates multiple new sessions.
         This API can be used to initialize a session cache on
         the clients. See https://goo.gl/TgSFN2 for best
@@ -295,10 +319,8 @@ class SpannerAsyncClient:
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([database, session_count])
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         request = spanner.BatchCreateSessionsRequest(request)
 
@@ -318,7 +340,9 @@ class SpannerAsyncClient:
                 initial=0.25,
                 maximum=32.0,
                 multiplier=1.3,
-                predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
+                predicate=retries.if_exception_type(
+                    exceptions.ServiceUnavailable,
+                ),
             ),
             default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -327,24 +351,30 @@ class SpannerAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("database", request.database),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('database', request.database),
+            )),
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
 
-    async def get_session(
-        self,
-        request: spanner.GetSessionRequest = None,
-        *,
-        name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> spanner.Session:
+    async def get_session(self,
+            request: spanner.GetSessionRequest = None,
+            *,
+            name: str = None,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> spanner.Session:
         r"""Gets a session. Returns ``NOT_FOUND`` if the session does not
         exist. This is mainly useful for determining whether a session
         is still alive.
@@ -376,10 +406,8 @@ class SpannerAsyncClient:
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         request = spanner.GetSessionRequest(request)
 
@@ -397,7 +425,9 @@ class SpannerAsyncClient:
                 initial=0.25,
                 maximum=32.0,
                 multiplier=1.3,
-                predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
+                predicate=retries.if_exception_type(
+                    exceptions.ServiceUnavailable,
+                ),
             ),
             default_timeout=30.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -406,24 +436,30 @@ class SpannerAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('name', request.name),
+            )),
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
 
-    async def list_sessions(
-        self,
-        request: spanner.ListSessionsRequest = None,
-        *,
-        database: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListSessionsAsyncPager:
+    async def list_sessions(self,
+            request: spanner.ListSessionsRequest = None,
+            *,
+            database: str = None,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> pagers.ListSessionsAsyncPager:
         r"""Lists all sessions in a given database.
 
         Args:
@@ -458,10 +494,8 @@ class SpannerAsyncClient:
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([database])
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         request = spanner.ListSessionsRequest(request)
 
@@ -479,7 +513,9 @@ class SpannerAsyncClient:
                 initial=0.25,
                 maximum=32.0,
                 multiplier=1.3,
-                predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
+                predicate=retries.if_exception_type(
+                    exceptions.ServiceUnavailable,
+                ),
             ),
             default_timeout=3600.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -488,30 +524,39 @@ class SpannerAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("database", request.database),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('database', request.database),
+            )),
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
         response = pagers.ListSessionsAsyncPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
         return response
 
-    async def delete_session(
-        self,
-        request: spanner.DeleteSessionRequest = None,
-        *,
-        name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> None:
+    async def delete_session(self,
+            request: spanner.DeleteSessionRequest = None,
+            *,
+            name: str = None,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> None:
         r"""Ends a session, releasing server resources associated
         with it. This will asynchronously trigger cancellation
         of any operations that are running with this session.
@@ -539,10 +584,8 @@ class SpannerAsyncClient:
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([name])
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         request = spanner.DeleteSessionRequest(request)
 
@@ -560,7 +603,9 @@ class SpannerAsyncClient:
                 initial=0.25,
                 maximum=32.0,
                 multiplier=1.3,
-                predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
+                predicate=retries.if_exception_type(
+                    exceptions.ServiceUnavailable,
+                ),
             ),
             default_timeout=30.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -569,22 +614,26 @@ class SpannerAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('name', request.name),
+            )),
         )
 
         # Send the request.
         await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
-    async def execute_sql(
-        self,
-        request: spanner.ExecuteSqlRequest = None,
-        *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> result_set.ResultSet:
+    async def execute_sql(self,
+            request: spanner.ExecuteSqlRequest = None,
+            *,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> result_set.ResultSet:
         r"""Executes an SQL statement, returning all results in a single
         reply. This method cannot be used to return a result set larger
         than 10 MiB; if the query yields more data than that, the query
@@ -630,7 +679,9 @@ class SpannerAsyncClient:
                 initial=0.25,
                 maximum=32.0,
                 multiplier=1.3,
-                predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
+                predicate=retries.if_exception_type(
+                    exceptions.ServiceUnavailable,
+                ),
             ),
             default_timeout=30.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -639,23 +690,29 @@ class SpannerAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("session", request.session),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('session', request.session),
+            )),
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
 
-    def execute_streaming_sql(
-        self,
-        request: spanner.ExecuteSqlRequest = None,
-        *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> Awaitable[AsyncIterable[result_set.PartialResultSet]]:
+    def execute_streaming_sql(self,
+            request: spanner.ExecuteSqlRequest = None,
+            *,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> Awaitable[AsyncIterable[result_set.PartialResultSet]]:
         r"""Like [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql], except
         returns the result set as a stream. Unlike
         [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql], there is no
@@ -699,23 +756,29 @@ class SpannerAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("session", request.session),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('session', request.session),
+            )),
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
 
-    async def execute_batch_dml(
-        self,
-        request: spanner.ExecuteBatchDmlRequest = None,
-        *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> spanner.ExecuteBatchDmlResponse:
+    async def execute_batch_dml(self,
+            request: spanner.ExecuteBatchDmlRequest = None,
+            *,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> spanner.ExecuteBatchDmlResponse:
         r"""Executes a batch of SQL DML statements. This method allows many
         statements to be run with lower latency than submitting them
         sequentially with
@@ -797,7 +860,9 @@ class SpannerAsyncClient:
                 initial=0.25,
                 maximum=32.0,
                 multiplier=1.3,
-                predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
+                predicate=retries.if_exception_type(
+                    exceptions.ServiceUnavailable,
+                ),
             ),
             default_timeout=30.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -806,23 +871,29 @@ class SpannerAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("session", request.session),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('session', request.session),
+            )),
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
 
-    async def read(
-        self,
-        request: spanner.ReadRequest = None,
-        *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> result_set.ResultSet:
+    async def read(self,
+            request: spanner.ReadRequest = None,
+            *,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> result_set.ResultSet:
         r"""Reads rows from the database using key lookups and scans, as a
         simple key/value style alternative to
         [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql]. This method
@@ -869,7 +940,9 @@ class SpannerAsyncClient:
                 initial=0.25,
                 maximum=32.0,
                 multiplier=1.3,
-                predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
+                predicate=retries.if_exception_type(
+                    exceptions.ServiceUnavailable,
+                ),
             ),
             default_timeout=30.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -878,23 +951,29 @@ class SpannerAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("session", request.session),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('session', request.session),
+            )),
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
 
-    def streaming_read(
-        self,
-        request: spanner.ReadRequest = None,
-        *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> Awaitable[AsyncIterable[result_set.PartialResultSet]]:
+    def streaming_read(self,
+            request: spanner.ReadRequest = None,
+            *,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> Awaitable[AsyncIterable[result_set.PartialResultSet]]:
         r"""Like [Read][google.spanner.v1.Spanner.Read], except returns the
         result set as a stream. Unlike
         [Read][google.spanner.v1.Spanner.Read], there is no limit on the
@@ -938,25 +1017,31 @@ class SpannerAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("session", request.session),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('session', request.session),
+            )),
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
 
-    async def begin_transaction(
-        self,
-        request: spanner.BeginTransactionRequest = None,
-        *,
-        session: str = None,
-        options: transaction.TransactionOptions = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> transaction.Transaction:
+    async def begin_transaction(self,
+            request: spanner.BeginTransactionRequest = None,
+            *,
+            session: str = None,
+            options: transaction.TransactionOptions = None,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> transaction.Transaction:
         r"""Begins a new transaction. This step can often be skipped:
         [Read][google.spanner.v1.Spanner.Read],
         [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql] and
@@ -997,10 +1082,8 @@ class SpannerAsyncClient:
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([session, options])
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         request = spanner.BeginTransactionRequest(request)
 
@@ -1020,7 +1103,9 @@ class SpannerAsyncClient:
                 initial=0.25,
                 maximum=32.0,
                 multiplier=1.3,
-                predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
+                predicate=retries.if_exception_type(
+                    exceptions.ServiceUnavailable,
+                ),
             ),
             default_timeout=30.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -1029,27 +1114,33 @@ class SpannerAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("session", request.session),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('session', request.session),
+            )),
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
 
-    async def commit(
-        self,
-        request: spanner.CommitRequest = None,
-        *,
-        session: str = None,
-        transaction_id: bytes = None,
-        mutations: Sequence[mutation.Mutation] = None,
-        single_use_transaction: transaction.TransactionOptions = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> spanner.CommitResponse:
+    async def commit(self,
+            request: spanner.CommitRequest = None,
+            *,
+            session: str = None,
+            transaction_id: bytes = None,
+            mutations: Sequence[mutation.Mutation] = None,
+            single_use_transaction: transaction.TransactionOptions = None,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> spanner.CommitResponse:
         r"""Commits a transaction. The request includes the mutations to be
         applied to rows in the database.
 
@@ -1125,14 +1216,10 @@ class SpannerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [session, transaction_id, mutations, single_use_transaction]
-        )
+        has_flattened_params = any([session, transaction_id, mutations, single_use_transaction])
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         request = spanner.CommitRequest(request)
 
@@ -1157,7 +1244,9 @@ class SpannerAsyncClient:
                 initial=0.25,
                 maximum=32.0,
                 multiplier=1.3,
-                predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
+                predicate=retries.if_exception_type(
+                    exceptions.ServiceUnavailable,
+                ),
             ),
             default_timeout=3600.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -1166,25 +1255,31 @@ class SpannerAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("session", request.session),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('session', request.session),
+            )),
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
 
-    async def rollback(
-        self,
-        request: spanner.RollbackRequest = None,
-        *,
-        session: str = None,
-        transaction_id: bytes = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> None:
+    async def rollback(self,
+            request: spanner.RollbackRequest = None,
+            *,
+            session: str = None,
+            transaction_id: bytes = None,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> None:
         r"""Rolls back a transaction, releasing any locks it holds. It is a
         good idea to call this for any transaction that includes one or
         more [Read][google.spanner.v1.Spanner.Read] or
@@ -1226,10 +1321,8 @@ class SpannerAsyncClient:
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([session, transaction_id])
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
 
         request = spanner.RollbackRequest(request)
 
@@ -1249,7 +1342,9 @@ class SpannerAsyncClient:
                 initial=0.25,
                 maximum=32.0,
                 multiplier=1.3,
-                predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
+                predicate=retries.if_exception_type(
+                    exceptions.ServiceUnavailable,
+                ),
             ),
             default_timeout=30.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -1258,22 +1353,26 @@ class SpannerAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("session", request.session),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('session', request.session),
+            )),
         )
 
         # Send the request.
         await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
-    async def partition_query(
-        self,
-        request: spanner.PartitionQueryRequest = None,
-        *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> spanner.PartitionResponse:
+    async def partition_query(self,
+            request: spanner.PartitionQueryRequest = None,
+            *,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> spanner.PartitionResponse:
         r"""Creates a set of partition tokens that can be used to execute a
         query operation in parallel. Each of the returned partition
         tokens can be used by
@@ -1319,7 +1418,9 @@ class SpannerAsyncClient:
                 initial=0.25,
                 maximum=32.0,
                 multiplier=1.3,
-                predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
+                predicate=retries.if_exception_type(
+                    exceptions.ServiceUnavailable,
+                ),
             ),
             default_timeout=30.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -1328,23 +1429,29 @@ class SpannerAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("session", request.session),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('session', request.session),
+            )),
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
 
-    async def partition_read(
-        self,
-        request: spanner.PartitionReadRequest = None,
-        *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> spanner.PartitionResponse:
+    async def partition_read(self,
+            request: spanner.PartitionReadRequest = None,
+            *,
+            retry: retries.Retry = gapic_v1.method.DEFAULT,
+            timeout: float = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> spanner.PartitionResponse:
         r"""Creates a set of partition tokens that can be used to execute a
         read operation in parallel. Each of the returned partition
         tokens can be used by
@@ -1393,7 +1500,9 @@ class SpannerAsyncClient:
                 initial=0.25,
                 maximum=32.0,
                 multiplier=1.3,
-                predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
+                predicate=retries.if_exception_type(
+                    exceptions.ServiceUnavailable,
+                ),
             ),
             default_timeout=30.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -1402,22 +1511,38 @@ class SpannerAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("session", request.session),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('session', request.session),
+            )),
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
 
 
+
+
+
+
+
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-spanner",).version,
+        gapic_version=pkg_resources.get_distribution(
+            'google-cloud-spanner',
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
-__all__ = ("SpannerAsyncClient",)
+__all__ = (
+    'SpannerAsyncClient',
+)

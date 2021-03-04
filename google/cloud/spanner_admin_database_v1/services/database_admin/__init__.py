@@ -19,6 +19,6 @@ from .client import DatabaseAdminClient
 from .async_client import DatabaseAdminAsyncClient
 
 __all__ = (
-    "DatabaseAdminClient",
-    "DatabaseAdminAsyncClient",
+    'DatabaseAdminClient',
+    'DatabaseAdminAsyncClient',
 )

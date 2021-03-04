@@ -18,14 +18,14 @@
 import warnings
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple
 
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import grpc_helpers_async  # type: ignore
-from google.api_core import operations_v1  # type: ignore
-from google import auth  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.api_core import gapic_v1                   # type: ignore
+from google.api_core import grpc_helpers_async         # type: ignore
+from google.api_core import operations_v1              # type: ignore
+from google import auth                                # type: ignore
+from google.auth import credentials                    # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
-import grpc  # type: ignore
+import grpc                        # type: ignore
 from grpc.experimental import aio  # type: ignore
 
 from google.cloud.spanner_admin_database_v1.types import backup
@@ -62,15 +62,13 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
     _stubs: Dict[str, Callable] = {}
 
     @classmethod
-    def create_channel(
-        cls,
-        host: str = "spanner.googleapis.com",
-        credentials: credentials.Credentials = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        quota_project_id: Optional[str] = None,
-        **kwargs,
-    ) -> aio.Channel:
+    def create_channel(cls,
+                       host: str = 'spanner.googleapis.com',
+                       credentials: credentials.Credentials = None,
+                       credentials_file: Optional[str] = None,
+                       scopes: Optional[Sequence[str]] = None,
+                       quota_project_id: Optional[str] = None,
+                       **kwargs) -> aio.Channel:
         """Create and return a gRPC AsyncIO channel object.
         Args:
             address (Optional[str]): The host for the channel to use.
@@ -99,24 +97,22 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
             credentials_file=credentials_file,
             scopes=scopes,
             quota_project_id=quota_project_id,
-            **kwargs,
+            **kwargs
         )
 
-    def __init__(
-        self,
-        *,
-        host: str = "spanner.googleapis.com",
-        credentials: credentials.Credentials = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        channel: aio.Channel = None,
-        api_mtls_endpoint: str = None,
-        client_cert_source: Callable[[], Tuple[bytes, bytes]] = None,
-        ssl_channel_credentials: grpc.ChannelCredentials = None,
-        client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
-        quota_project_id=None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-    ) -> None:
+    def __init__(self, *,
+            host: str = 'spanner.googleapis.com',
+            credentials: credentials.Credentials = None,
+            credentials_file: Optional[str] = None,
+            scopes: Optional[Sequence[str]] = None,
+            channel: aio.Channel = None,
+            api_mtls_endpoint: str = None,
+            client_cert_source: Callable[[], Tuple[bytes, bytes]] = None,
+            ssl_channel_credentials: grpc.ChannelCredentials = None,
+            client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
+            quota_project_id=None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            ) -> None:
         """Instantiate the transport.
 
         Args:
@@ -179,16 +175,10 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
         elif api_mtls_endpoint:
-            host = (
-                api_mtls_endpoint
-                if ":" in api_mtls_endpoint
-                else api_mtls_endpoint + ":443"
-            )
+            host = api_mtls_endpoint if ":" in api_mtls_endpoint else api_mtls_endpoint + ":443"
 
             if credentials is None:
-                credentials, _ = auth.default(
-                    scopes=self.AUTH_SCOPES, quota_project_id=quota_project_id
-                )
+                credentials, _ = auth.default(scopes=self.AUTH_SCOPES, quota_project_id=quota_project_id)
 
             # Create SSL credentials with client_cert_source or application
             # default SSL credentials.
@@ -218,9 +208,7 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
             host = host if ":" in host else host + ":443"
 
             if credentials is None:
-                credentials, _ = auth.default(
-                    scopes=self.AUTH_SCOPES, quota_project_id=quota_project_id
-                )
+                credentials, _ = auth.default(scopes=self.AUTH_SCOPES, quota_project_id=quota_project_id)
 
             if client_cert_source_for_mtls and not ssl_channel_credentials:
                 cert, key = client_cert_source_for_mtls()
@@ -282,12 +270,9 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
         return self._operations_client
 
     @property
-    def list_databases(
-        self,
-    ) -> Callable[
-        [spanner_database_admin.ListDatabasesRequest],
-        Awaitable[spanner_database_admin.ListDatabasesResponse],
-    ]:
+    def list_databases(self) -> Callable[
+            [spanner_database_admin.ListDatabasesRequest],
+            Awaitable[spanner_database_admin.ListDatabasesResponse]]:
         r"""Return a callable for the list databases method over gRPC.
 
         Lists Cloud Spanner databases.
@@ -302,20 +287,18 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "list_databases" not in self._stubs:
-            self._stubs["list_databases"] = self.grpc_channel.unary_unary(
-                "/google.spanner.admin.database.v1.DatabaseAdmin/ListDatabases",
+        if 'list_databases' not in self._stubs:
+            self._stubs['list_databases'] = self.grpc_channel.unary_unary(
+                '/google.spanner.admin.database.v1.DatabaseAdmin/ListDatabases',
                 request_serializer=spanner_database_admin.ListDatabasesRequest.serialize,
                 response_deserializer=spanner_database_admin.ListDatabasesResponse.deserialize,
             )
-        return self._stubs["list_databases"]
+        return self._stubs['list_databases']
 
     @property
-    def create_database(
-        self,
-    ) -> Callable[
-        [spanner_database_admin.CreateDatabaseRequest], Awaitable[operations.Operation]
-    ]:
+    def create_database(self) -> Callable[
+            [spanner_database_admin.CreateDatabaseRequest],
+            Awaitable[operations.Operation]]:
         r"""Return a callable for the create database method over gRPC.
 
         Creates a new Cloud Spanner database and starts to prepare it
@@ -339,21 +322,18 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "create_database" not in self._stubs:
-            self._stubs["create_database"] = self.grpc_channel.unary_unary(
-                "/google.spanner.admin.database.v1.DatabaseAdmin/CreateDatabase",
+        if 'create_database' not in self._stubs:
+            self._stubs['create_database'] = self.grpc_channel.unary_unary(
+                '/google.spanner.admin.database.v1.DatabaseAdmin/CreateDatabase',
                 request_serializer=spanner_database_admin.CreateDatabaseRequest.serialize,
                 response_deserializer=operations.Operation.FromString,
             )
-        return self._stubs["create_database"]
+        return self._stubs['create_database']
 
     @property
-    def get_database(
-        self,
-    ) -> Callable[
-        [spanner_database_admin.GetDatabaseRequest],
-        Awaitable[spanner_database_admin.Database],
-    ]:
+    def get_database(self) -> Callable[
+            [spanner_database_admin.GetDatabaseRequest],
+            Awaitable[spanner_database_admin.Database]]:
         r"""Return a callable for the get database method over gRPC.
 
         Gets the state of a Cloud Spanner database.
@@ -368,21 +348,18 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "get_database" not in self._stubs:
-            self._stubs["get_database"] = self.grpc_channel.unary_unary(
-                "/google.spanner.admin.database.v1.DatabaseAdmin/GetDatabase",
+        if 'get_database' not in self._stubs:
+            self._stubs['get_database'] = self.grpc_channel.unary_unary(
+                '/google.spanner.admin.database.v1.DatabaseAdmin/GetDatabase',
                 request_serializer=spanner_database_admin.GetDatabaseRequest.serialize,
                 response_deserializer=spanner_database_admin.Database.deserialize,
             )
-        return self._stubs["get_database"]
+        return self._stubs['get_database']
 
     @property
-    def update_database_ddl(
-        self,
-    ) -> Callable[
-        [spanner_database_admin.UpdateDatabaseDdlRequest],
-        Awaitable[operations.Operation],
-    ]:
+    def update_database_ddl(self) -> Callable[
+            [spanner_database_admin.UpdateDatabaseDdlRequest],
+            Awaitable[operations.Operation]]:
         r"""Return a callable for the update database ddl method over gRPC.
 
         Updates the schema of a Cloud Spanner database by
@@ -405,18 +382,18 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "update_database_ddl" not in self._stubs:
-            self._stubs["update_database_ddl"] = self.grpc_channel.unary_unary(
-                "/google.spanner.admin.database.v1.DatabaseAdmin/UpdateDatabaseDdl",
+        if 'update_database_ddl' not in self._stubs:
+            self._stubs['update_database_ddl'] = self.grpc_channel.unary_unary(
+                '/google.spanner.admin.database.v1.DatabaseAdmin/UpdateDatabaseDdl',
                 request_serializer=spanner_database_admin.UpdateDatabaseDdlRequest.serialize,
                 response_deserializer=operations.Operation.FromString,
             )
-        return self._stubs["update_database_ddl"]
+        return self._stubs['update_database_ddl']
 
     @property
-    def drop_database(
-        self,
-    ) -> Callable[[spanner_database_admin.DropDatabaseRequest], Awaitable[empty.Empty]]:
+    def drop_database(self) -> Callable[
+            [spanner_database_admin.DropDatabaseRequest],
+            Awaitable[empty.Empty]]:
         r"""Return a callable for the drop database method over gRPC.
 
         Drops (aka deletes) a Cloud Spanner database. Completed backups
@@ -433,21 +410,18 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "drop_database" not in self._stubs:
-            self._stubs["drop_database"] = self.grpc_channel.unary_unary(
-                "/google.spanner.admin.database.v1.DatabaseAdmin/DropDatabase",
+        if 'drop_database' not in self._stubs:
+            self._stubs['drop_database'] = self.grpc_channel.unary_unary(
+                '/google.spanner.admin.database.v1.DatabaseAdmin/DropDatabase',
                 request_serializer=spanner_database_admin.DropDatabaseRequest.serialize,
                 response_deserializer=empty.Empty.FromString,
             )
-        return self._stubs["drop_database"]
+        return self._stubs['drop_database']
 
     @property
-    def get_database_ddl(
-        self,
-    ) -> Callable[
-        [spanner_database_admin.GetDatabaseDdlRequest],
-        Awaitable[spanner_database_admin.GetDatabaseDdlResponse],
-    ]:
+    def get_database_ddl(self) -> Callable[
+            [spanner_database_admin.GetDatabaseDdlRequest],
+            Awaitable[spanner_database_admin.GetDatabaseDdlResponse]]:
         r"""Return a callable for the get database ddl method over gRPC.
 
         Returns the schema of a Cloud Spanner database as a list of
@@ -465,18 +439,18 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "get_database_ddl" not in self._stubs:
-            self._stubs["get_database_ddl"] = self.grpc_channel.unary_unary(
-                "/google.spanner.admin.database.v1.DatabaseAdmin/GetDatabaseDdl",
+        if 'get_database_ddl' not in self._stubs:
+            self._stubs['get_database_ddl'] = self.grpc_channel.unary_unary(
+                '/google.spanner.admin.database.v1.DatabaseAdmin/GetDatabaseDdl',
                 request_serializer=spanner_database_admin.GetDatabaseDdlRequest.serialize,
                 response_deserializer=spanner_database_admin.GetDatabaseDdlResponse.deserialize,
             )
-        return self._stubs["get_database_ddl"]
+        return self._stubs['get_database_ddl']
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[iam_policy.SetIamPolicyRequest], Awaitable[policy.Policy]]:
+    def set_iam_policy(self) -> Callable[
+            [iam_policy.SetIamPolicyRequest],
+            Awaitable[policy.Policy]]:
         r"""Return a callable for the set iam policy method over gRPC.
 
         Sets the access control policy on a database or backup resource.
@@ -499,18 +473,18 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "set_iam_policy" not in self._stubs:
-            self._stubs["set_iam_policy"] = self.grpc_channel.unary_unary(
-                "/google.spanner.admin.database.v1.DatabaseAdmin/SetIamPolicy",
+        if 'set_iam_policy' not in self._stubs:
+            self._stubs['set_iam_policy'] = self.grpc_channel.unary_unary(
+                '/google.spanner.admin.database.v1.DatabaseAdmin/SetIamPolicy',
                 request_serializer=iam_policy.SetIamPolicyRequest.SerializeToString,
                 response_deserializer=policy.Policy.FromString,
             )
-        return self._stubs["set_iam_policy"]
+        return self._stubs['set_iam_policy']
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[iam_policy.GetIamPolicyRequest], Awaitable[policy.Policy]]:
+    def get_iam_policy(self) -> Callable[
+            [iam_policy.GetIamPolicyRequest],
+            Awaitable[policy.Policy]]:
         r"""Return a callable for the get iam policy method over gRPC.
 
         Gets the access control policy for a database or backup
@@ -534,21 +508,18 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "get_iam_policy" not in self._stubs:
-            self._stubs["get_iam_policy"] = self.grpc_channel.unary_unary(
-                "/google.spanner.admin.database.v1.DatabaseAdmin/GetIamPolicy",
+        if 'get_iam_policy' not in self._stubs:
+            self._stubs['get_iam_policy'] = self.grpc_channel.unary_unary(
+                '/google.spanner.admin.database.v1.DatabaseAdmin/GetIamPolicy',
                 request_serializer=iam_policy.GetIamPolicyRequest.SerializeToString,
                 response_deserializer=policy.Policy.FromString,
             )
-        return self._stubs["get_iam_policy"]
+        return self._stubs['get_iam_policy']
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [iam_policy.TestIamPermissionsRequest],
-        Awaitable[iam_policy.TestIamPermissionsResponse],
-    ]:
+    def test_iam_permissions(self) -> Callable[
+            [iam_policy.TestIamPermissionsRequest],
+            Awaitable[iam_policy.TestIamPermissionsResponse]]:
         r"""Return a callable for the test iam permissions method over gRPC.
 
         Returns permissions that the caller has on the specified
@@ -572,18 +543,18 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "test_iam_permissions" not in self._stubs:
-            self._stubs["test_iam_permissions"] = self.grpc_channel.unary_unary(
-                "/google.spanner.admin.database.v1.DatabaseAdmin/TestIamPermissions",
+        if 'test_iam_permissions' not in self._stubs:
+            self._stubs['test_iam_permissions'] = self.grpc_channel.unary_unary(
+                '/google.spanner.admin.database.v1.DatabaseAdmin/TestIamPermissions',
                 request_serializer=iam_policy.TestIamPermissionsRequest.SerializeToString,
                 response_deserializer=iam_policy.TestIamPermissionsResponse.FromString,
             )
-        return self._stubs["test_iam_permissions"]
+        return self._stubs['test_iam_permissions']
 
     @property
-    def create_backup(
-        self,
-    ) -> Callable[[gsad_backup.CreateBackupRequest], Awaitable[operations.Operation]]:
+    def create_backup(self) -> Callable[
+            [gsad_backup.CreateBackupRequest],
+            Awaitable[operations.Operation]]:
         r"""Return a callable for the create backup method over gRPC.
 
         Starts creating a new Cloud Spanner Backup. The returned backup
@@ -610,18 +581,18 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "create_backup" not in self._stubs:
-            self._stubs["create_backup"] = self.grpc_channel.unary_unary(
-                "/google.spanner.admin.database.v1.DatabaseAdmin/CreateBackup",
+        if 'create_backup' not in self._stubs:
+            self._stubs['create_backup'] = self.grpc_channel.unary_unary(
+                '/google.spanner.admin.database.v1.DatabaseAdmin/CreateBackup',
                 request_serializer=gsad_backup.CreateBackupRequest.serialize,
                 response_deserializer=operations.Operation.FromString,
             )
-        return self._stubs["create_backup"]
+        return self._stubs['create_backup']
 
     @property
-    def get_backup(
-        self,
-    ) -> Callable[[backup.GetBackupRequest], Awaitable[backup.Backup]]:
+    def get_backup(self) -> Callable[
+            [backup.GetBackupRequest],
+            Awaitable[backup.Backup]]:
         r"""Return a callable for the get backup method over gRPC.
 
         Gets metadata on a pending or completed
@@ -637,18 +608,18 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "get_backup" not in self._stubs:
-            self._stubs["get_backup"] = self.grpc_channel.unary_unary(
-                "/google.spanner.admin.database.v1.DatabaseAdmin/GetBackup",
+        if 'get_backup' not in self._stubs:
+            self._stubs['get_backup'] = self.grpc_channel.unary_unary(
+                '/google.spanner.admin.database.v1.DatabaseAdmin/GetBackup',
                 request_serializer=backup.GetBackupRequest.serialize,
                 response_deserializer=backup.Backup.deserialize,
             )
-        return self._stubs["get_backup"]
+        return self._stubs['get_backup']
 
     @property
-    def update_backup(
-        self,
-    ) -> Callable[[gsad_backup.UpdateBackupRequest], Awaitable[gsad_backup.Backup]]:
+    def update_backup(self) -> Callable[
+            [gsad_backup.UpdateBackupRequest],
+            Awaitable[gsad_backup.Backup]]:
         r"""Return a callable for the update backup method over gRPC.
 
         Updates a pending or completed
@@ -664,18 +635,18 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "update_backup" not in self._stubs:
-            self._stubs["update_backup"] = self.grpc_channel.unary_unary(
-                "/google.spanner.admin.database.v1.DatabaseAdmin/UpdateBackup",
+        if 'update_backup' not in self._stubs:
+            self._stubs['update_backup'] = self.grpc_channel.unary_unary(
+                '/google.spanner.admin.database.v1.DatabaseAdmin/UpdateBackup',
                 request_serializer=gsad_backup.UpdateBackupRequest.serialize,
                 response_deserializer=gsad_backup.Backup.deserialize,
             )
-        return self._stubs["update_backup"]
+        return self._stubs['update_backup']
 
     @property
-    def delete_backup(
-        self,
-    ) -> Callable[[backup.DeleteBackupRequest], Awaitable[empty.Empty]]:
+    def delete_backup(self) -> Callable[
+            [backup.DeleteBackupRequest],
+            Awaitable[empty.Empty]]:
         r"""Return a callable for the delete backup method over gRPC.
 
         Deletes a pending or completed
@@ -691,18 +662,18 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "delete_backup" not in self._stubs:
-            self._stubs["delete_backup"] = self.grpc_channel.unary_unary(
-                "/google.spanner.admin.database.v1.DatabaseAdmin/DeleteBackup",
+        if 'delete_backup' not in self._stubs:
+            self._stubs['delete_backup'] = self.grpc_channel.unary_unary(
+                '/google.spanner.admin.database.v1.DatabaseAdmin/DeleteBackup',
                 request_serializer=backup.DeleteBackupRequest.serialize,
                 response_deserializer=empty.Empty.FromString,
             )
-        return self._stubs["delete_backup"]
+        return self._stubs['delete_backup']
 
     @property
-    def list_backups(
-        self,
-    ) -> Callable[[backup.ListBackupsRequest], Awaitable[backup.ListBackupsResponse]]:
+    def list_backups(self) -> Callable[
+            [backup.ListBackupsRequest],
+            Awaitable[backup.ListBackupsResponse]]:
         r"""Return a callable for the list backups method over gRPC.
 
         Lists completed and pending backups. Backups returned are
@@ -719,20 +690,18 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "list_backups" not in self._stubs:
-            self._stubs["list_backups"] = self.grpc_channel.unary_unary(
-                "/google.spanner.admin.database.v1.DatabaseAdmin/ListBackups",
+        if 'list_backups' not in self._stubs:
+            self._stubs['list_backups'] = self.grpc_channel.unary_unary(
+                '/google.spanner.admin.database.v1.DatabaseAdmin/ListBackups',
                 request_serializer=backup.ListBackupsRequest.serialize,
                 response_deserializer=backup.ListBackupsResponse.deserialize,
             )
-        return self._stubs["list_backups"]
+        return self._stubs['list_backups']
 
     @property
-    def restore_database(
-        self,
-    ) -> Callable[
-        [spanner_database_admin.RestoreDatabaseRequest], Awaitable[operations.Operation]
-    ]:
+    def restore_database(self) -> Callable[
+            [spanner_database_admin.RestoreDatabaseRequest],
+            Awaitable[operations.Operation]]:
         r"""Return a callable for the restore database method over gRPC.
 
         Create a new database by restoring from a completed backup. The
@@ -765,21 +734,18 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "restore_database" not in self._stubs:
-            self._stubs["restore_database"] = self.grpc_channel.unary_unary(
-                "/google.spanner.admin.database.v1.DatabaseAdmin/RestoreDatabase",
+        if 'restore_database' not in self._stubs:
+            self._stubs['restore_database'] = self.grpc_channel.unary_unary(
+                '/google.spanner.admin.database.v1.DatabaseAdmin/RestoreDatabase',
                 request_serializer=spanner_database_admin.RestoreDatabaseRequest.serialize,
                 response_deserializer=operations.Operation.FromString,
             )
-        return self._stubs["restore_database"]
+        return self._stubs['restore_database']
 
     @property
-    def list_database_operations(
-        self,
-    ) -> Callable[
-        [spanner_database_admin.ListDatabaseOperationsRequest],
-        Awaitable[spanner_database_admin.ListDatabaseOperationsResponse],
-    ]:
+    def list_database_operations(self) -> Callable[
+            [spanner_database_admin.ListDatabaseOperationsRequest],
+            Awaitable[spanner_database_admin.ListDatabaseOperationsResponse]]:
         r"""Return a callable for the list database operations method over gRPC.
 
         Lists database
@@ -803,21 +769,18 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "list_database_operations" not in self._stubs:
-            self._stubs["list_database_operations"] = self.grpc_channel.unary_unary(
-                "/google.spanner.admin.database.v1.DatabaseAdmin/ListDatabaseOperations",
+        if 'list_database_operations' not in self._stubs:
+            self._stubs['list_database_operations'] = self.grpc_channel.unary_unary(
+                '/google.spanner.admin.database.v1.DatabaseAdmin/ListDatabaseOperations',
                 request_serializer=spanner_database_admin.ListDatabaseOperationsRequest.serialize,
                 response_deserializer=spanner_database_admin.ListDatabaseOperationsResponse.deserialize,
             )
-        return self._stubs["list_database_operations"]
+        return self._stubs['list_database_operations']
 
     @property
-    def list_backup_operations(
-        self,
-    ) -> Callable[
-        [backup.ListBackupOperationsRequest],
-        Awaitable[backup.ListBackupOperationsResponse],
-    ]:
+    def list_backup_operations(self) -> Callable[
+            [backup.ListBackupOperationsRequest],
+            Awaitable[backup.ListBackupOperationsResponse]]:
         r"""Return a callable for the list backup operations method over gRPC.
 
         Lists the backup [long-running
@@ -843,13 +806,15 @@ class DatabaseAdminGrpcAsyncIOTransport(DatabaseAdminTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "list_backup_operations" not in self._stubs:
-            self._stubs["list_backup_operations"] = self.grpc_channel.unary_unary(
-                "/google.spanner.admin.database.v1.DatabaseAdmin/ListBackupOperations",
+        if 'list_backup_operations' not in self._stubs:
+            self._stubs['list_backup_operations'] = self.grpc_channel.unary_unary(
+                '/google.spanner.admin.database.v1.DatabaseAdmin/ListBackupOperations',
                 request_serializer=backup.ListBackupOperationsRequest.serialize,
                 response_deserializer=backup.ListBackupOperationsResponse.deserialize,
             )
-        return self._stubs["list_backup_operations"]
+        return self._stubs['list_backup_operations']
 
 
-__all__ = ("DatabaseAdminGrpcAsyncIOTransport",)
+__all__ = (
+    'DatabaseAdminGrpcAsyncIOTransport',
+)

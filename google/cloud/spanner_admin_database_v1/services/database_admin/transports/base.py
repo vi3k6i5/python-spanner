@@ -21,7 +21,7 @@ import pkg_resources
 
 from google import auth  # type: ignore
 from google.api_core import exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
+from google.api_core import gapic_v1    # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.api_core import operations_v1  # type: ignore
 from google.auth import credentials  # type: ignore
@@ -38,32 +38,30 @@ from google.protobuf import empty_pb2 as empty  # type: ignore
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
         gapic_version=pkg_resources.get_distribution(
-            "google-cloud-spanner-admin-database",
+            'google-cloud-spanner-admin-database',
         ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
-
 class DatabaseAdminTransport(abc.ABC):
     """Abstract transport class for DatabaseAdmin."""
 
     AUTH_SCOPES = (
-        "https://www.googleapis.com/auth/cloud-platform",
-        "https://www.googleapis.com/auth/spanner.admin",
+        'https://www.googleapis.com/auth/cloud-platform',
+        'https://www.googleapis.com/auth/spanner.admin',
     )
 
     def __init__(
-        self,
-        *,
-        host: str = "spanner.googleapis.com",
-        credentials: credentials.Credentials = None,
-        credentials_file: typing.Optional[str] = None,
-        scopes: typing.Optional[typing.Sequence[str]] = AUTH_SCOPES,
-        quota_project_id: typing.Optional[str] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-        **kwargs,
-    ) -> None:
+            self, *,
+            host: str = 'spanner.googleapis.com',
+            credentials: credentials.Credentials = None,
+            credentials_file: typing.Optional[str] = None,
+            scopes: typing.Optional[typing.Sequence[str]] = AUTH_SCOPES,
+            quota_project_id: typing.Optional[str] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            **kwargs,
+            ) -> None:
         """Instantiate the transport.
 
         Args:
@@ -86,26 +84,24 @@ class DatabaseAdminTransport(abc.ABC):
                 your own client library.
         """
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
-        if ":" not in host:
-            host += ":443"
+        if ':' not in host:
+            host += ':443'
         self._host = host
 
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
             credentials, _ = auth.load_credentials_from_file(
-                credentials_file, scopes=scopes, quota_project_id=quota_project_id
-            )
+                                credentials_file,
+                                scopes=scopes,
+                                quota_project_id=quota_project_id
+                            )
 
         elif credentials is None:
-            credentials, _ = auth.default(
-                scopes=scopes, quota_project_id=quota_project_id
-            )
+            credentials, _ = auth.default(scopes=scopes, quota_project_id=quota_project_id)
 
         # Save the credentials.
         self._credentials = credentials
@@ -123,14 +119,17 @@ class DatabaseAdminTransport(abc.ABC):
                     maximum=32.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                        exceptions.DeadlineExceeded,
+                        exceptions.ServiceUnavailable,
                     ),
                 ),
                 default_timeout=3600.0,
                 client_info=client_info,
             ),
             self.create_database: gapic_v1.method.wrap_method(
-                self.create_database, default_timeout=3600.0, client_info=client_info,
+                self.create_database,
+                default_timeout=3600.0,
+                client_info=client_info,
             ),
             self.get_database: gapic_v1.method.wrap_method(
                 self.get_database,
@@ -139,7 +138,8 @@ class DatabaseAdminTransport(abc.ABC):
                     maximum=32.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                        exceptions.DeadlineExceeded,
+                        exceptions.ServiceUnavailable,
                     ),
                 ),
                 default_timeout=3600.0,
@@ -152,7 +152,8 @@ class DatabaseAdminTransport(abc.ABC):
                     maximum=32.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                        exceptions.DeadlineExceeded,
+                        exceptions.ServiceUnavailable,
                     ),
                 ),
                 default_timeout=3600.0,
@@ -165,7 +166,8 @@ class DatabaseAdminTransport(abc.ABC):
                     maximum=32.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                        exceptions.DeadlineExceeded,
+                        exceptions.ServiceUnavailable,
                     ),
                 ),
                 default_timeout=3600.0,
@@ -178,14 +180,17 @@ class DatabaseAdminTransport(abc.ABC):
                     maximum=32.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                        exceptions.DeadlineExceeded,
+                        exceptions.ServiceUnavailable,
                     ),
                 ),
                 default_timeout=3600.0,
                 client_info=client_info,
             ),
             self.set_iam_policy: gapic_v1.method.wrap_method(
-                self.set_iam_policy, default_timeout=30.0, client_info=client_info,
+                self.set_iam_policy,
+                default_timeout=30.0,
+                client_info=client_info,
             ),
             self.get_iam_policy: gapic_v1.method.wrap_method(
                 self.get_iam_policy,
@@ -194,7 +199,8 @@ class DatabaseAdminTransport(abc.ABC):
                     maximum=32.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                        exceptions.DeadlineExceeded,
+                        exceptions.ServiceUnavailable,
                     ),
                 ),
                 default_timeout=30.0,
@@ -206,7 +212,9 @@ class DatabaseAdminTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_backup: gapic_v1.method.wrap_method(
-                self.create_backup, default_timeout=3600.0, client_info=client_info,
+                self.create_backup,
+                default_timeout=3600.0,
+                client_info=client_info,
             ),
             self.get_backup: gapic_v1.method.wrap_method(
                 self.get_backup,
@@ -215,7 +223,8 @@ class DatabaseAdminTransport(abc.ABC):
                     maximum=32.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                        exceptions.DeadlineExceeded,
+                        exceptions.ServiceUnavailable,
                     ),
                 ),
                 default_timeout=3600.0,
@@ -228,7 +237,8 @@ class DatabaseAdminTransport(abc.ABC):
                     maximum=32.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                        exceptions.DeadlineExceeded,
+                        exceptions.ServiceUnavailable,
                     ),
                 ),
                 default_timeout=3600.0,
@@ -241,7 +251,8 @@ class DatabaseAdminTransport(abc.ABC):
                     maximum=32.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                        exceptions.DeadlineExceeded,
+                        exceptions.ServiceUnavailable,
                     ),
                 ),
                 default_timeout=3600.0,
@@ -254,14 +265,17 @@ class DatabaseAdminTransport(abc.ABC):
                     maximum=32.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                        exceptions.DeadlineExceeded,
+                        exceptions.ServiceUnavailable,
                     ),
                 ),
                 default_timeout=3600.0,
                 client_info=client_info,
             ),
             self.restore_database: gapic_v1.method.wrap_method(
-                self.restore_database, default_timeout=3600.0, client_info=client_info,
+                self.restore_database,
+                default_timeout=3600.0,
+                client_info=client_info,
             ),
             self.list_database_operations: gapic_v1.method.wrap_method(
                 self.list_database_operations,
@@ -270,7 +284,8 @@ class DatabaseAdminTransport(abc.ABC):
                     maximum=32.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                        exceptions.DeadlineExceeded,
+                        exceptions.ServiceUnavailable,
                     ),
                 ),
                 default_timeout=3600.0,
@@ -283,12 +298,14 @@ class DatabaseAdminTransport(abc.ABC):
                     maximum=32.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                        exceptions.DeadlineExceeded,
+                        exceptions.ServiceUnavailable,
                     ),
                 ),
                 default_timeout=3600.0,
                 client_info=client_info,
             ),
+
         }
 
     @property
@@ -297,177 +314,159 @@ class DatabaseAdminTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def list_databases(
-        self,
-    ) -> typing.Callable[
-        [spanner_database_admin.ListDatabasesRequest],
-        typing.Union[
-            spanner_database_admin.ListDatabasesResponse,
-            typing.Awaitable[spanner_database_admin.ListDatabasesResponse],
-        ],
-    ]:
+    def list_databases(self) -> typing.Callable[
+            [spanner_database_admin.ListDatabasesRequest],
+            typing.Union[
+                spanner_database_admin.ListDatabasesResponse,
+                typing.Awaitable[spanner_database_admin.ListDatabasesResponse]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def create_database(
-        self,
-    ) -> typing.Callable[
-        [spanner_database_admin.CreateDatabaseRequest],
-        typing.Union[operations.Operation, typing.Awaitable[operations.Operation]],
-    ]:
+    def create_database(self) -> typing.Callable[
+            [spanner_database_admin.CreateDatabaseRequest],
+            typing.Union[
+                operations.Operation,
+                typing.Awaitable[operations.Operation]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def get_database(
-        self,
-    ) -> typing.Callable[
-        [spanner_database_admin.GetDatabaseRequest],
-        typing.Union[
-            spanner_database_admin.Database,
-            typing.Awaitable[spanner_database_admin.Database],
-        ],
-    ]:
+    def get_database(self) -> typing.Callable[
+            [spanner_database_admin.GetDatabaseRequest],
+            typing.Union[
+                spanner_database_admin.Database,
+                typing.Awaitable[spanner_database_admin.Database]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def update_database_ddl(
-        self,
-    ) -> typing.Callable[
-        [spanner_database_admin.UpdateDatabaseDdlRequest],
-        typing.Union[operations.Operation, typing.Awaitable[operations.Operation]],
-    ]:
+    def update_database_ddl(self) -> typing.Callable[
+            [spanner_database_admin.UpdateDatabaseDdlRequest],
+            typing.Union[
+                operations.Operation,
+                typing.Awaitable[operations.Operation]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def drop_database(
-        self,
-    ) -> typing.Callable[
-        [spanner_database_admin.DropDatabaseRequest],
-        typing.Union[empty.Empty, typing.Awaitable[empty.Empty]],
-    ]:
+    def drop_database(self) -> typing.Callable[
+            [spanner_database_admin.DropDatabaseRequest],
+            typing.Union[
+                empty.Empty,
+                typing.Awaitable[empty.Empty]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def get_database_ddl(
-        self,
-    ) -> typing.Callable[
-        [spanner_database_admin.GetDatabaseDdlRequest],
-        typing.Union[
-            spanner_database_admin.GetDatabaseDdlResponse,
-            typing.Awaitable[spanner_database_admin.GetDatabaseDdlResponse],
-        ],
-    ]:
+    def get_database_ddl(self) -> typing.Callable[
+            [spanner_database_admin.GetDatabaseDdlRequest],
+            typing.Union[
+                spanner_database_admin.GetDatabaseDdlResponse,
+                typing.Awaitable[spanner_database_admin.GetDatabaseDdlResponse]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> typing.Callable[
-        [iam_policy.SetIamPolicyRequest],
-        typing.Union[policy.Policy, typing.Awaitable[policy.Policy]],
-    ]:
+    def set_iam_policy(self) -> typing.Callable[
+            [iam_policy.SetIamPolicyRequest],
+            typing.Union[
+                policy.Policy,
+                typing.Awaitable[policy.Policy]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> typing.Callable[
-        [iam_policy.GetIamPolicyRequest],
-        typing.Union[policy.Policy, typing.Awaitable[policy.Policy]],
-    ]:
+    def get_iam_policy(self) -> typing.Callable[
+            [iam_policy.GetIamPolicyRequest],
+            typing.Union[
+                policy.Policy,
+                typing.Awaitable[policy.Policy]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> typing.Callable[
-        [iam_policy.TestIamPermissionsRequest],
-        typing.Union[
-            iam_policy.TestIamPermissionsResponse,
-            typing.Awaitable[iam_policy.TestIamPermissionsResponse],
-        ],
-    ]:
+    def test_iam_permissions(self) -> typing.Callable[
+            [iam_policy.TestIamPermissionsRequest],
+            typing.Union[
+                iam_policy.TestIamPermissionsResponse,
+                typing.Awaitable[iam_policy.TestIamPermissionsResponse]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def create_backup(
-        self,
-    ) -> typing.Callable[
-        [gsad_backup.CreateBackupRequest],
-        typing.Union[operations.Operation, typing.Awaitable[operations.Operation]],
-    ]:
+    def create_backup(self) -> typing.Callable[
+            [gsad_backup.CreateBackupRequest],
+            typing.Union[
+                operations.Operation,
+                typing.Awaitable[operations.Operation]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def get_backup(
-        self,
-    ) -> typing.Callable[
-        [backup.GetBackupRequest],
-        typing.Union[backup.Backup, typing.Awaitable[backup.Backup]],
-    ]:
+    def get_backup(self) -> typing.Callable[
+            [backup.GetBackupRequest],
+            typing.Union[
+                backup.Backup,
+                typing.Awaitable[backup.Backup]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def update_backup(
-        self,
-    ) -> typing.Callable[
-        [gsad_backup.UpdateBackupRequest],
-        typing.Union[gsad_backup.Backup, typing.Awaitable[gsad_backup.Backup]],
-    ]:
+    def update_backup(self) -> typing.Callable[
+            [gsad_backup.UpdateBackupRequest],
+            typing.Union[
+                gsad_backup.Backup,
+                typing.Awaitable[gsad_backup.Backup]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def delete_backup(
-        self,
-    ) -> typing.Callable[
-        [backup.DeleteBackupRequest],
-        typing.Union[empty.Empty, typing.Awaitable[empty.Empty]],
-    ]:
+    def delete_backup(self) -> typing.Callable[
+            [backup.DeleteBackupRequest],
+            typing.Union[
+                empty.Empty,
+                typing.Awaitable[empty.Empty]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def list_backups(
-        self,
-    ) -> typing.Callable[
-        [backup.ListBackupsRequest],
-        typing.Union[
-            backup.ListBackupsResponse, typing.Awaitable[backup.ListBackupsResponse]
-        ],
-    ]:
+    def list_backups(self) -> typing.Callable[
+            [backup.ListBackupsRequest],
+            typing.Union[
+                backup.ListBackupsResponse,
+                typing.Awaitable[backup.ListBackupsResponse]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def restore_database(
-        self,
-    ) -> typing.Callable[
-        [spanner_database_admin.RestoreDatabaseRequest],
-        typing.Union[operations.Operation, typing.Awaitable[operations.Operation]],
-    ]:
+    def restore_database(self) -> typing.Callable[
+            [spanner_database_admin.RestoreDatabaseRequest],
+            typing.Union[
+                operations.Operation,
+                typing.Awaitable[operations.Operation]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def list_database_operations(
-        self,
-    ) -> typing.Callable[
-        [spanner_database_admin.ListDatabaseOperationsRequest],
-        typing.Union[
-            spanner_database_admin.ListDatabaseOperationsResponse,
-            typing.Awaitable[spanner_database_admin.ListDatabaseOperationsResponse],
-        ],
-    ]:
+    def list_database_operations(self) -> typing.Callable[
+            [spanner_database_admin.ListDatabaseOperationsRequest],
+            typing.Union[
+                spanner_database_admin.ListDatabaseOperationsResponse,
+                typing.Awaitable[spanner_database_admin.ListDatabaseOperationsResponse]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def list_backup_operations(
-        self,
-    ) -> typing.Callable[
-        [backup.ListBackupOperationsRequest],
-        typing.Union[
-            backup.ListBackupOperationsResponse,
-            typing.Awaitable[backup.ListBackupOperationsResponse],
-        ],
-    ]:
+    def list_backup_operations(self) -> typing.Callable[
+            [backup.ListBackupOperationsRequest],
+            typing.Union[
+                backup.ListBackupOperationsResponse,
+                typing.Awaitable[backup.ListBackupOperationsResponse]
+            ]]:
         raise NotImplementedError()
 
 
-__all__ = ("DatabaseAdminTransport",)
+__all__ = (
+    'DatabaseAdminTransport',
+)

@@ -19,6 +19,6 @@ from .client import InstanceAdminClient
 from .async_client import InstanceAdminAsyncClient
 
 __all__ = (
-    "InstanceAdminClient",
-    "InstanceAdminAsyncClient",
+    'InstanceAdminClient',
+    'InstanceAdminAsyncClient',
 )

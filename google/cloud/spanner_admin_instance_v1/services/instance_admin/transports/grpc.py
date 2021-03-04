@@ -18,11 +18,11 @@
 import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple
 
-from google.api_core import grpc_helpers  # type: ignore
+from google.api_core import grpc_helpers   # type: ignore
 from google.api_core import operations_v1  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
-from google import auth  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.api_core import gapic_v1       # type: ignore
+from google import auth                    # type: ignore
+from google.auth import credentials        # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
@@ -68,24 +68,21 @@ class InstanceAdminGrpcTransport(InstanceAdminTransport):
     It sends protocol buffers over the wire using gRPC (which is built on
     top of HTTP/2); the ``grpcio`` package must be installed.
     """
-
     _stubs: Dict[str, Callable]
 
-    def __init__(
-        self,
-        *,
-        host: str = "spanner.googleapis.com",
-        credentials: credentials.Credentials = None,
-        credentials_file: str = None,
-        scopes: Sequence[str] = None,
-        channel: grpc.Channel = None,
-        api_mtls_endpoint: str = None,
-        client_cert_source: Callable[[], Tuple[bytes, bytes]] = None,
-        ssl_channel_credentials: grpc.ChannelCredentials = None,
-        client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
-        quota_project_id: Optional[str] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-    ) -> None:
+    def __init__(self, *,
+            host: str = 'spanner.googleapis.com',
+            credentials: credentials.Credentials = None,
+            credentials_file: str = None,
+            scopes: Sequence[str] = None,
+            channel: grpc.Channel = None,
+            api_mtls_endpoint: str = None,
+            client_cert_source: Callable[[], Tuple[bytes, bytes]] = None,
+            ssl_channel_credentials: grpc.ChannelCredentials = None,
+            client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
+            quota_project_id: Optional[str] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            ) -> None:
         """Instantiate the transport.
 
         Args:
@@ -147,16 +144,10 @@ class InstanceAdminGrpcTransport(InstanceAdminTransport):
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
         elif api_mtls_endpoint:
-            host = (
-                api_mtls_endpoint
-                if ":" in api_mtls_endpoint
-                else api_mtls_endpoint + ":443"
-            )
+            host = api_mtls_endpoint if ":" in api_mtls_endpoint else api_mtls_endpoint + ":443"
 
             if credentials is None:
-                credentials, _ = auth.default(
-                    scopes=self.AUTH_SCOPES, quota_project_id=quota_project_id
-                )
+                credentials, _ = auth.default(scopes=self.AUTH_SCOPES, quota_project_id=quota_project_id)
 
             # Create SSL credentials with client_cert_source or application
             # default SSL credentials.
@@ -186,9 +177,7 @@ class InstanceAdminGrpcTransport(InstanceAdminTransport):
             host = host if ":" in host else host + ":443"
 
             if credentials is None:
-                credentials, _ = auth.default(
-                    scopes=self.AUTH_SCOPES, quota_project_id=quota_project_id
-                )
+                credentials, _ = auth.default(scopes=self.AUTH_SCOPES, quota_project_id=quota_project_id)
 
             if client_cert_source_for_mtls and not ssl_channel_credentials:
                 cert, key = client_cert_source_for_mtls()
@@ -224,15 +213,13 @@ class InstanceAdminGrpcTransport(InstanceAdminTransport):
         )
 
     @classmethod
-    def create_channel(
-        cls,
-        host: str = "spanner.googleapis.com",
-        credentials: credentials.Credentials = None,
-        credentials_file: str = None,
-        scopes: Optional[Sequence[str]] = None,
-        quota_project_id: Optional[str] = None,
-        **kwargs,
-    ) -> grpc.Channel:
+    def create_channel(cls,
+                       host: str = 'spanner.googleapis.com',
+                       credentials: credentials.Credentials = None,
+                       credentials_file: str = None,
+                       scopes: Optional[Sequence[str]] = None,
+                       quota_project_id: Optional[str] = None,
+                       **kwargs) -> grpc.Channel:
         """Create and return a gRPC channel object.
         Args:
             address (Optional[str]): The host for the channel to use.
@@ -265,7 +252,7 @@ class InstanceAdminGrpcTransport(InstanceAdminTransport):
             credentials_file=credentials_file,
             scopes=scopes,
             quota_project_id=quota_project_id,
-            **kwargs,
+            **kwargs
         )
 
     @property
@@ -283,18 +270,17 @@ class InstanceAdminGrpcTransport(InstanceAdminTransport):
         """
         # Sanity check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
+            self._operations_client = operations_v1.OperationsClient(
+                self.grpc_channel
+            )
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def list_instance_configs(
-        self,
-    ) -> Callable[
-        [spanner_instance_admin.ListInstanceConfigsRequest],
-        spanner_instance_admin.ListInstanceConfigsResponse,
-    ]:
+    def list_instance_configs(self) -> Callable[
+            [spanner_instance_admin.ListInstanceConfigsRequest],
+            spanner_instance_admin.ListInstanceConfigsResponse]:
         r"""Return a callable for the list instance configs method over gRPC.
 
         Lists the supported instance configurations for a
@@ -310,21 +296,18 @@ class InstanceAdminGrpcTransport(InstanceAdminTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "list_instance_configs" not in self._stubs:
-            self._stubs["list_instance_configs"] = self.grpc_channel.unary_unary(
-                "/google.spanner.admin.instance.v1.InstanceAdmin/ListInstanceConfigs",
+        if 'list_instance_configs' not in self._stubs:
+            self._stubs['list_instance_configs'] = self.grpc_channel.unary_unary(
+                '/google.spanner.admin.instance.v1.InstanceAdmin/ListInstanceConfigs',
                 request_serializer=spanner_instance_admin.ListInstanceConfigsRequest.serialize,
                 response_deserializer=spanner_instance_admin.ListInstanceConfigsResponse.deserialize,
             )
-        return self._stubs["list_instance_configs"]
+        return self._stubs['list_instance_configs']
 
     @property
-    def get_instance_config(
-        self,
-    ) -> Callable[
-        [spanner_instance_admin.GetInstanceConfigRequest],
-        spanner_instance_admin.InstanceConfig,
-    ]:
+    def get_instance_config(self) -> Callable[
+            [spanner_instance_admin.GetInstanceConfigRequest],
+            spanner_instance_admin.InstanceConfig]:
         r"""Return a callable for the get instance config method over gRPC.
 
         Gets information about a particular instance
@@ -340,21 +323,18 @@ class InstanceAdminGrpcTransport(InstanceAdminTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "get_instance_config" not in self._stubs:
-            self._stubs["get_instance_config"] = self.grpc_channel.unary_unary(
-                "/google.spanner.admin.instance.v1.InstanceAdmin/GetInstanceConfig",
+        if 'get_instance_config' not in self._stubs:
+            self._stubs['get_instance_config'] = self.grpc_channel.unary_unary(
+                '/google.spanner.admin.instance.v1.InstanceAdmin/GetInstanceConfig',
                 request_serializer=spanner_instance_admin.GetInstanceConfigRequest.serialize,
                 response_deserializer=spanner_instance_admin.InstanceConfig.deserialize,
             )
-        return self._stubs["get_instance_config"]
+        return self._stubs['get_instance_config']
 
     @property
-    def list_instances(
-        self,
-    ) -> Callable[
-        [spanner_instance_admin.ListInstancesRequest],
-        spanner_instance_admin.ListInstancesResponse,
-    ]:
+    def list_instances(self) -> Callable[
+            [spanner_instance_admin.ListInstancesRequest],
+            spanner_instance_admin.ListInstancesResponse]:
         r"""Return a callable for the list instances method over gRPC.
 
         Lists all instances in the given project.
@@ -369,20 +349,18 @@ class InstanceAdminGrpcTransport(InstanceAdminTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "list_instances" not in self._stubs:
-            self._stubs["list_instances"] = self.grpc_channel.unary_unary(
-                "/google.spanner.admin.instance.v1.InstanceAdmin/ListInstances",
+        if 'list_instances' not in self._stubs:
+            self._stubs['list_instances'] = self.grpc_channel.unary_unary(
+                '/google.spanner.admin.instance.v1.InstanceAdmin/ListInstances',
                 request_serializer=spanner_instance_admin.ListInstancesRequest.serialize,
                 response_deserializer=spanner_instance_admin.ListInstancesResponse.deserialize,
             )
-        return self._stubs["list_instances"]
+        return self._stubs['list_instances']
 
     @property
-    def get_instance(
-        self,
-    ) -> Callable[
-        [spanner_instance_admin.GetInstanceRequest], spanner_instance_admin.Instance
-    ]:
+    def get_instance(self) -> Callable[
+            [spanner_instance_admin.GetInstanceRequest],
+            spanner_instance_admin.Instance]:
         r"""Return a callable for the get instance method over gRPC.
 
         Gets information about a particular instance.
@@ -397,18 +375,18 @@ class InstanceAdminGrpcTransport(InstanceAdminTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "get_instance" not in self._stubs:
-            self._stubs["get_instance"] = self.grpc_channel.unary_unary(
-                "/google.spanner.admin.instance.v1.InstanceAdmin/GetInstance",
+        if 'get_instance' not in self._stubs:
+            self._stubs['get_instance'] = self.grpc_channel.unary_unary(
+                '/google.spanner.admin.instance.v1.InstanceAdmin/GetInstance',
                 request_serializer=spanner_instance_admin.GetInstanceRequest.serialize,
                 response_deserializer=spanner_instance_admin.Instance.deserialize,
             )
-        return self._stubs["get_instance"]
+        return self._stubs['get_instance']
 
     @property
-    def create_instance(
-        self,
-    ) -> Callable[[spanner_instance_admin.CreateInstanceRequest], operations.Operation]:
+    def create_instance(self) -> Callable[
+            [spanner_instance_admin.CreateInstanceRequest],
+            operations.Operation]:
         r"""Return a callable for the create instance method over gRPC.
 
         Creates an instance and begins preparing it to begin serving.
@@ -460,18 +438,18 @@ class InstanceAdminGrpcTransport(InstanceAdminTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "create_instance" not in self._stubs:
-            self._stubs["create_instance"] = self.grpc_channel.unary_unary(
-                "/google.spanner.admin.instance.v1.InstanceAdmin/CreateInstance",
+        if 'create_instance' not in self._stubs:
+            self._stubs['create_instance'] = self.grpc_channel.unary_unary(
+                '/google.spanner.admin.instance.v1.InstanceAdmin/CreateInstance',
                 request_serializer=spanner_instance_admin.CreateInstanceRequest.serialize,
                 response_deserializer=operations.Operation.FromString,
             )
-        return self._stubs["create_instance"]
+        return self._stubs['create_instance']
 
     @property
-    def update_instance(
-        self,
-    ) -> Callable[[spanner_instance_admin.UpdateInstanceRequest], operations.Operation]:
+    def update_instance(self) -> Callable[
+            [spanner_instance_admin.UpdateInstanceRequest],
+            operations.Operation]:
         r"""Return a callable for the update instance method over gRPC.
 
         Updates an instance, and begins allocating or releasing
@@ -530,18 +508,18 @@ class InstanceAdminGrpcTransport(InstanceAdminTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "update_instance" not in self._stubs:
-            self._stubs["update_instance"] = self.grpc_channel.unary_unary(
-                "/google.spanner.admin.instance.v1.InstanceAdmin/UpdateInstance",
+        if 'update_instance' not in self._stubs:
+            self._stubs['update_instance'] = self.grpc_channel.unary_unary(
+                '/google.spanner.admin.instance.v1.InstanceAdmin/UpdateInstance',
                 request_serializer=spanner_instance_admin.UpdateInstanceRequest.serialize,
                 response_deserializer=operations.Operation.FromString,
             )
-        return self._stubs["update_instance"]
+        return self._stubs['update_instance']
 
     @property
-    def delete_instance(
-        self,
-    ) -> Callable[[spanner_instance_admin.DeleteInstanceRequest], empty.Empty]:
+    def delete_instance(self) -> Callable[
+            [spanner_instance_admin.DeleteInstanceRequest],
+            empty.Empty]:
         r"""Return a callable for the delete instance method over gRPC.
 
         Deletes an instance.
@@ -566,18 +544,18 @@ class InstanceAdminGrpcTransport(InstanceAdminTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "delete_instance" not in self._stubs:
-            self._stubs["delete_instance"] = self.grpc_channel.unary_unary(
-                "/google.spanner.admin.instance.v1.InstanceAdmin/DeleteInstance",
+        if 'delete_instance' not in self._stubs:
+            self._stubs['delete_instance'] = self.grpc_channel.unary_unary(
+                '/google.spanner.admin.instance.v1.InstanceAdmin/DeleteInstance',
                 request_serializer=spanner_instance_admin.DeleteInstanceRequest.serialize,
                 response_deserializer=empty.Empty.FromString,
             )
-        return self._stubs["delete_instance"]
+        return self._stubs['delete_instance']
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[iam_policy.SetIamPolicyRequest], policy.Policy]:
+    def set_iam_policy(self) -> Callable[
+            [iam_policy.SetIamPolicyRequest],
+            policy.Policy]:
         r"""Return a callable for the set iam policy method over gRPC.
 
         Sets the access control policy on an instance resource. Replaces
@@ -596,18 +574,18 @@ class InstanceAdminGrpcTransport(InstanceAdminTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "set_iam_policy" not in self._stubs:
-            self._stubs["set_iam_policy"] = self.grpc_channel.unary_unary(
-                "/google.spanner.admin.instance.v1.InstanceAdmin/SetIamPolicy",
+        if 'set_iam_policy' not in self._stubs:
+            self._stubs['set_iam_policy'] = self.grpc_channel.unary_unary(
+                '/google.spanner.admin.instance.v1.InstanceAdmin/SetIamPolicy',
                 request_serializer=iam_policy.SetIamPolicyRequest.SerializeToString,
                 response_deserializer=policy.Policy.FromString,
             )
-        return self._stubs["set_iam_policy"]
+        return self._stubs['set_iam_policy']
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[iam_policy.GetIamPolicyRequest], policy.Policy]:
+    def get_iam_policy(self) -> Callable[
+            [iam_policy.GetIamPolicyRequest],
+            policy.Policy]:
         r"""Return a callable for the get iam policy method over gRPC.
 
         Gets the access control policy for an instance resource. Returns
@@ -627,20 +605,18 @@ class InstanceAdminGrpcTransport(InstanceAdminTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "get_iam_policy" not in self._stubs:
-            self._stubs["get_iam_policy"] = self.grpc_channel.unary_unary(
-                "/google.spanner.admin.instance.v1.InstanceAdmin/GetIamPolicy",
+        if 'get_iam_policy' not in self._stubs:
+            self._stubs['get_iam_policy'] = self.grpc_channel.unary_unary(
+                '/google.spanner.admin.instance.v1.InstanceAdmin/GetIamPolicy',
                 request_serializer=iam_policy.GetIamPolicyRequest.SerializeToString,
                 response_deserializer=policy.Policy.FromString,
             )
-        return self._stubs["get_iam_policy"]
+        return self._stubs['get_iam_policy']
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [iam_policy.TestIamPermissionsRequest], iam_policy.TestIamPermissionsResponse
-    ]:
+    def test_iam_permissions(self) -> Callable[
+            [iam_policy.TestIamPermissionsRequest],
+            iam_policy.TestIamPermissionsResponse]:
         r"""Return a callable for the test iam permissions method over gRPC.
 
         Returns permissions that the caller has on the specified
@@ -661,13 +637,15 @@ class InstanceAdminGrpcTransport(InstanceAdminTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "test_iam_permissions" not in self._stubs:
-            self._stubs["test_iam_permissions"] = self.grpc_channel.unary_unary(
-                "/google.spanner.admin.instance.v1.InstanceAdmin/TestIamPermissions",
+        if 'test_iam_permissions' not in self._stubs:
+            self._stubs['test_iam_permissions'] = self.grpc_channel.unary_unary(
+                '/google.spanner.admin.instance.v1.InstanceAdmin/TestIamPermissions',
                 request_serializer=iam_policy.TestIamPermissionsRequest.SerializeToString,
                 response_deserializer=iam_policy.TestIamPermissionsResponse.FromString,
             )
-        return self._stubs["test_iam_permissions"]
+        return self._stubs['test_iam_permissions']
 
 
-__all__ = ("InstanceAdminGrpcTransport",)
+__all__ = (
+    'InstanceAdminGrpcTransport',
+)

@@ -23,22 +23,22 @@ from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.spanner.admin.instance.v1",
+    package='google.spanner.admin.instance.v1',
     manifest={
-        "ReplicaInfo",
-        "InstanceConfig",
-        "Instance",
-        "ListInstanceConfigsRequest",
-        "ListInstanceConfigsResponse",
-        "GetInstanceConfigRequest",
-        "GetInstanceRequest",
-        "CreateInstanceRequest",
-        "ListInstancesRequest",
-        "ListInstancesResponse",
-        "UpdateInstanceRequest",
-        "DeleteInstanceRequest",
-        "CreateInstanceMetadata",
-        "UpdateInstanceMetadata",
+        'ReplicaInfo',
+        'InstanceConfig',
+        'Instance',
+        'ListInstanceConfigsRequest',
+        'ListInstanceConfigsResponse',
+        'GetInstanceConfigRequest',
+        'GetInstanceRequest',
+        'CreateInstanceRequest',
+        'ListInstancesRequest',
+        'ListInstancesResponse',
+        'UpdateInstanceRequest',
+        'DeleteInstanceRequest',
+        'CreateInstanceMetadata',
+        'UpdateInstanceMetadata',
     },
 )
 
@@ -59,7 +59,6 @@ class ReplicaInfo(proto.Message):
             documentation <https://cloud.google.com/spanner/docs/instances#region_types>`__
             for more details.
     """
-
     class ReplicaType(proto.Enum):
         r"""Indicates the type of replica. See the `replica types
         documentation <https://cloud.google.com/spanner/docs/replication#replica_types>`__
@@ -72,7 +71,9 @@ class ReplicaInfo(proto.Message):
 
     location = proto.Field(proto.STRING, number=1)
 
-    type_ = proto.Field(proto.ENUM, number=2, enum=ReplicaType,)
+    type_ = proto.Field(proto.ENUM, number=2,
+        enum=ReplicaType,
+    )
 
     default_leader_location = proto.Field(proto.BOOL, number=3)
 
@@ -100,7 +101,9 @@ class InstanceConfig(proto.Message):
 
     display_name = proto.Field(proto.STRING, number=2)
 
-    replicas = proto.RepeatedField(proto.MESSAGE, number=3, message="ReplicaInfo",)
+    replicas = proto.RepeatedField(proto.MESSAGE, number=3,
+        message='ReplicaInfo',
+    )
 
 
 class Instance(proto.Message):
@@ -174,7 +177,6 @@ class Instance(proto.Message):
         endpoint_uris (Sequence[str]):
             Deprecated. This field is not populated.
     """
-
     class State(proto.Enum):
         r"""Indicates the current state of the instance."""
         STATE_UNSPECIFIED = 0
@@ -189,7 +191,9 @@ class Instance(proto.Message):
 
     node_count = proto.Field(proto.INT32, number=5)
 
-    state = proto.Field(proto.ENUM, number=6, enum=State,)
+    state = proto.Field(proto.ENUM, number=6,
+        enum=State,
+    )
 
     labels = proto.MapField(proto.STRING, proto.STRING, number=7)
 
@@ -241,8 +245,8 @@ class ListInstanceConfigsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    instance_configs = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="InstanceConfig",
+    instance_configs = proto.RepeatedField(proto.MESSAGE, number=1,
+        message='InstanceConfig',
     )
 
     next_page_token = proto.Field(proto.STRING, number=2)
@@ -280,7 +284,9 @@ class GetInstanceRequest(proto.Message):
 
     name = proto.Field(proto.STRING, number=1)
 
-    field_mask = proto.Field(proto.MESSAGE, number=2, message=gp_field_mask.FieldMask,)
+    field_mask = proto.Field(proto.MESSAGE, number=2,
+        message=gp_field_mask.FieldMask,
+    )
 
 
 class CreateInstanceRequest(proto.Message):
@@ -305,7 +311,9 @@ class CreateInstanceRequest(proto.Message):
 
     instance_id = proto.Field(proto.STRING, number=2)
 
-    instance = proto.Field(proto.MESSAGE, number=3, message="Instance",)
+    instance = proto.Field(proto.MESSAGE, number=3,
+        message='Instance',
+    )
 
 
 class ListInstancesRequest(proto.Message):
@@ -376,7 +384,9 @@ class ListInstancesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    instances = proto.RepeatedField(proto.MESSAGE, number=1, message="Instance",)
+    instances = proto.RepeatedField(proto.MESSAGE, number=1,
+        message='Instance',
+    )
 
     next_page_token = proto.Field(proto.STRING, number=2)
 
@@ -401,9 +411,13 @@ class UpdateInstanceRequest(proto.Message):
             them.
     """
 
-    instance = proto.Field(proto.MESSAGE, number=1, message="Instance",)
+    instance = proto.Field(proto.MESSAGE, number=1,
+        message='Instance',
+    )
 
-    field_mask = proto.Field(proto.MESSAGE, number=2, message=gp_field_mask.FieldMask,)
+    field_mask = proto.Field(proto.MESSAGE, number=2,
+        message=gp_field_mask.FieldMask,
+    )
 
 
 class DeleteInstanceRequest(proto.Message):
@@ -440,13 +454,21 @@ class CreateInstanceMetadata(proto.Message):
             was completed successfully.
     """
 
-    instance = proto.Field(proto.MESSAGE, number=1, message="Instance",)
+    instance = proto.Field(proto.MESSAGE, number=1,
+        message='Instance',
+    )
 
-    start_time = proto.Field(proto.MESSAGE, number=2, message=timestamp.Timestamp,)
+    start_time = proto.Field(proto.MESSAGE, number=2,
+        message=timestamp.Timestamp,
+    )
 
-    cancel_time = proto.Field(proto.MESSAGE, number=3, message=timestamp.Timestamp,)
+    cancel_time = proto.Field(proto.MESSAGE, number=3,
+        message=timestamp.Timestamp,
+    )
 
-    end_time = proto.Field(proto.MESSAGE, number=4, message=timestamp.Timestamp,)
+    end_time = proto.Field(proto.MESSAGE, number=4,
+        message=timestamp.Timestamp,
+    )
 
 
 class UpdateInstanceMetadata(proto.Message):
@@ -470,13 +492,21 @@ class UpdateInstanceMetadata(proto.Message):
             was completed successfully.
     """
 
-    instance = proto.Field(proto.MESSAGE, number=1, message="Instance",)
+    instance = proto.Field(proto.MESSAGE, number=1,
+        message='Instance',
+    )
 
-    start_time = proto.Field(proto.MESSAGE, number=2, message=timestamp.Timestamp,)
+    start_time = proto.Field(proto.MESSAGE, number=2,
+        message=timestamp.Timestamp,
+    )
 
-    cancel_time = proto.Field(proto.MESSAGE, number=3, message=timestamp.Timestamp,)
+    cancel_time = proto.Field(proto.MESSAGE, number=3,
+        message=timestamp.Timestamp,
+    )
 
-    end_time = proto.Field(proto.MESSAGE, number=4, message=timestamp.Timestamp,)
+    end_time = proto.Field(proto.MESSAGE, number=4,
+        message=timestamp.Timestamp,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

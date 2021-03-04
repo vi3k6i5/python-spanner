@@ -18,13 +18,13 @@
 import warnings
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple
 
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import grpc_helpers_async  # type: ignore
-from google import auth  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.api_core import gapic_v1                   # type: ignore
+from google.api_core import grpc_helpers_async         # type: ignore
+from google import auth                                # type: ignore
+from google.auth import credentials                    # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
-import grpc  # type: ignore
+import grpc                        # type: ignore
 from grpc.experimental import aio  # type: ignore
 
 from google.cloud.spanner_v1.types import result_set
@@ -55,15 +55,13 @@ class SpannerGrpcAsyncIOTransport(SpannerTransport):
     _stubs: Dict[str, Callable] = {}
 
     @classmethod
-    def create_channel(
-        cls,
-        host: str = "spanner.googleapis.com",
-        credentials: credentials.Credentials = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        quota_project_id: Optional[str] = None,
-        **kwargs,
-    ) -> aio.Channel:
+    def create_channel(cls,
+                       host: str = 'spanner.googleapis.com',
+                       credentials: credentials.Credentials = None,
+                       credentials_file: Optional[str] = None,
+                       scopes: Optional[Sequence[str]] = None,
+                       quota_project_id: Optional[str] = None,
+                       **kwargs) -> aio.Channel:
         """Create and return a gRPC AsyncIO channel object.
         Args:
             address (Optional[str]): The host for the channel to use.
@@ -92,24 +90,22 @@ class SpannerGrpcAsyncIOTransport(SpannerTransport):
             credentials_file=credentials_file,
             scopes=scopes,
             quota_project_id=quota_project_id,
-            **kwargs,
+            **kwargs
         )
 
-    def __init__(
-        self,
-        *,
-        host: str = "spanner.googleapis.com",
-        credentials: credentials.Credentials = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        channel: aio.Channel = None,
-        api_mtls_endpoint: str = None,
-        client_cert_source: Callable[[], Tuple[bytes, bytes]] = None,
-        ssl_channel_credentials: grpc.ChannelCredentials = None,
-        client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
-        quota_project_id=None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-    ) -> None:
+    def __init__(self, *,
+            host: str = 'spanner.googleapis.com',
+            credentials: credentials.Credentials = None,
+            credentials_file: Optional[str] = None,
+            scopes: Optional[Sequence[str]] = None,
+            channel: aio.Channel = None,
+            api_mtls_endpoint: str = None,
+            client_cert_source: Callable[[], Tuple[bytes, bytes]] = None,
+            ssl_channel_credentials: grpc.ChannelCredentials = None,
+            client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
+            quota_project_id=None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            ) -> None:
         """Instantiate the transport.
 
         Args:
@@ -172,16 +168,10 @@ class SpannerGrpcAsyncIOTransport(SpannerTransport):
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
         elif api_mtls_endpoint:
-            host = (
-                api_mtls_endpoint
-                if ":" in api_mtls_endpoint
-                else api_mtls_endpoint + ":443"
-            )
+            host = api_mtls_endpoint if ":" in api_mtls_endpoint else api_mtls_endpoint + ":443"
 
             if credentials is None:
-                credentials, _ = auth.default(
-                    scopes=self.AUTH_SCOPES, quota_project_id=quota_project_id
-                )
+                credentials, _ = auth.default(scopes=self.AUTH_SCOPES, quota_project_id=quota_project_id)
 
             # Create SSL credentials with client_cert_source or application
             # default SSL credentials.
@@ -211,9 +201,7 @@ class SpannerGrpcAsyncIOTransport(SpannerTransport):
             host = host if ":" in host else host + ":443"
 
             if credentials is None:
-                credentials, _ = auth.default(
-                    scopes=self.AUTH_SCOPES, quota_project_id=quota_project_id
-                )
+                credentials, _ = auth.default(scopes=self.AUTH_SCOPES, quota_project_id=quota_project_id)
 
             if client_cert_source_for_mtls and not ssl_channel_credentials:
                 cert, key = client_cert_source_for_mtls()
@@ -258,9 +246,9 @@ class SpannerGrpcAsyncIOTransport(SpannerTransport):
         return self._grpc_channel
 
     @property
-    def create_session(
-        self,
-    ) -> Callable[[spanner.CreateSessionRequest], Awaitable[spanner.Session]]:
+    def create_session(self) -> Callable[
+            [spanner.CreateSessionRequest],
+            Awaitable[spanner.Session]]:
         r"""Return a callable for the create session method over gRPC.
 
         Creates a new session. A session can be used to perform
@@ -293,21 +281,18 @@ class SpannerGrpcAsyncIOTransport(SpannerTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "create_session" not in self._stubs:
-            self._stubs["create_session"] = self.grpc_channel.unary_unary(
-                "/google.spanner.v1.Spanner/CreateSession",
+        if 'create_session' not in self._stubs:
+            self._stubs['create_session'] = self.grpc_channel.unary_unary(
+                '/google.spanner.v1.Spanner/CreateSession',
                 request_serializer=spanner.CreateSessionRequest.serialize,
                 response_deserializer=spanner.Session.deserialize,
             )
-        return self._stubs["create_session"]
+        return self._stubs['create_session']
 
     @property
-    def batch_create_sessions(
-        self,
-    ) -> Callable[
-        [spanner.BatchCreateSessionsRequest],
-        Awaitable[spanner.BatchCreateSessionsResponse],
-    ]:
+    def batch_create_sessions(self) -> Callable[
+            [spanner.BatchCreateSessionsRequest],
+            Awaitable[spanner.BatchCreateSessionsResponse]]:
         r"""Return a callable for the batch create sessions method over gRPC.
 
         Creates multiple new sessions.
@@ -325,18 +310,18 @@ class SpannerGrpcAsyncIOTransport(SpannerTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "batch_create_sessions" not in self._stubs:
-            self._stubs["batch_create_sessions"] = self.grpc_channel.unary_unary(
-                "/google.spanner.v1.Spanner/BatchCreateSessions",
+        if 'batch_create_sessions' not in self._stubs:
+            self._stubs['batch_create_sessions'] = self.grpc_channel.unary_unary(
+                '/google.spanner.v1.Spanner/BatchCreateSessions',
                 request_serializer=spanner.BatchCreateSessionsRequest.serialize,
                 response_deserializer=spanner.BatchCreateSessionsResponse.deserialize,
             )
-        return self._stubs["batch_create_sessions"]
+        return self._stubs['batch_create_sessions']
 
     @property
-    def get_session(
-        self,
-    ) -> Callable[[spanner.GetSessionRequest], Awaitable[spanner.Session]]:
+    def get_session(self) -> Callable[
+            [spanner.GetSessionRequest],
+            Awaitable[spanner.Session]]:
         r"""Return a callable for the get session method over gRPC.
 
         Gets a session. Returns ``NOT_FOUND`` if the session does not
@@ -353,20 +338,18 @@ class SpannerGrpcAsyncIOTransport(SpannerTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "get_session" not in self._stubs:
-            self._stubs["get_session"] = self.grpc_channel.unary_unary(
-                "/google.spanner.v1.Spanner/GetSession",
+        if 'get_session' not in self._stubs:
+            self._stubs['get_session'] = self.grpc_channel.unary_unary(
+                '/google.spanner.v1.Spanner/GetSession',
                 request_serializer=spanner.GetSessionRequest.serialize,
                 response_deserializer=spanner.Session.deserialize,
             )
-        return self._stubs["get_session"]
+        return self._stubs['get_session']
 
     @property
-    def list_sessions(
-        self,
-    ) -> Callable[
-        [spanner.ListSessionsRequest], Awaitable[spanner.ListSessionsResponse]
-    ]:
+    def list_sessions(self) -> Callable[
+            [spanner.ListSessionsRequest],
+            Awaitable[spanner.ListSessionsResponse]]:
         r"""Return a callable for the list sessions method over gRPC.
 
         Lists all sessions in a given database.
@@ -381,18 +364,18 @@ class SpannerGrpcAsyncIOTransport(SpannerTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "list_sessions" not in self._stubs:
-            self._stubs["list_sessions"] = self.grpc_channel.unary_unary(
-                "/google.spanner.v1.Spanner/ListSessions",
+        if 'list_sessions' not in self._stubs:
+            self._stubs['list_sessions'] = self.grpc_channel.unary_unary(
+                '/google.spanner.v1.Spanner/ListSessions',
                 request_serializer=spanner.ListSessionsRequest.serialize,
                 response_deserializer=spanner.ListSessionsResponse.deserialize,
             )
-        return self._stubs["list_sessions"]
+        return self._stubs['list_sessions']
 
     @property
-    def delete_session(
-        self,
-    ) -> Callable[[spanner.DeleteSessionRequest], Awaitable[empty.Empty]]:
+    def delete_session(self) -> Callable[
+            [spanner.DeleteSessionRequest],
+            Awaitable[empty.Empty]]:
         r"""Return a callable for the delete session method over gRPC.
 
         Ends a session, releasing server resources associated
@@ -409,18 +392,18 @@ class SpannerGrpcAsyncIOTransport(SpannerTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "delete_session" not in self._stubs:
-            self._stubs["delete_session"] = self.grpc_channel.unary_unary(
-                "/google.spanner.v1.Spanner/DeleteSession",
+        if 'delete_session' not in self._stubs:
+            self._stubs['delete_session'] = self.grpc_channel.unary_unary(
+                '/google.spanner.v1.Spanner/DeleteSession',
                 request_serializer=spanner.DeleteSessionRequest.serialize,
                 response_deserializer=empty.Empty.FromString,
             )
-        return self._stubs["delete_session"]
+        return self._stubs['delete_session']
 
     @property
-    def execute_sql(
-        self,
-    ) -> Callable[[spanner.ExecuteSqlRequest], Awaitable[result_set.ResultSet]]:
+    def execute_sql(self) -> Callable[
+            [spanner.ExecuteSqlRequest],
+            Awaitable[result_set.ResultSet]]:
         r"""Return a callable for the execute sql method over gRPC.
 
         Executes an SQL statement, returning all results in a single
@@ -448,18 +431,18 @@ class SpannerGrpcAsyncIOTransport(SpannerTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "execute_sql" not in self._stubs:
-            self._stubs["execute_sql"] = self.grpc_channel.unary_unary(
-                "/google.spanner.v1.Spanner/ExecuteSql",
+        if 'execute_sql' not in self._stubs:
+            self._stubs['execute_sql'] = self.grpc_channel.unary_unary(
+                '/google.spanner.v1.Spanner/ExecuteSql',
                 request_serializer=spanner.ExecuteSqlRequest.serialize,
                 response_deserializer=result_set.ResultSet.deserialize,
             )
-        return self._stubs["execute_sql"]
+        return self._stubs['execute_sql']
 
     @property
-    def execute_streaming_sql(
-        self,
-    ) -> Callable[[spanner.ExecuteSqlRequest], Awaitable[result_set.PartialResultSet]]:
+    def execute_streaming_sql(self) -> Callable[
+            [spanner.ExecuteSqlRequest],
+            Awaitable[result_set.PartialResultSet]]:
         r"""Return a callable for the execute streaming sql method over gRPC.
 
         Like [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql], except
@@ -479,20 +462,18 @@ class SpannerGrpcAsyncIOTransport(SpannerTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "execute_streaming_sql" not in self._stubs:
-            self._stubs["execute_streaming_sql"] = self.grpc_channel.unary_stream(
-                "/google.spanner.v1.Spanner/ExecuteStreamingSql",
+        if 'execute_streaming_sql' not in self._stubs:
+            self._stubs['execute_streaming_sql'] = self.grpc_channel.unary_stream(
+                '/google.spanner.v1.Spanner/ExecuteStreamingSql',
                 request_serializer=spanner.ExecuteSqlRequest.serialize,
                 response_deserializer=result_set.PartialResultSet.deserialize,
             )
-        return self._stubs["execute_streaming_sql"]
+        return self._stubs['execute_streaming_sql']
 
     @property
-    def execute_batch_dml(
-        self,
-    ) -> Callable[
-        [spanner.ExecuteBatchDmlRequest], Awaitable[spanner.ExecuteBatchDmlResponse]
-    ]:
+    def execute_batch_dml(self) -> Callable[
+            [spanner.ExecuteBatchDmlRequest],
+            Awaitable[spanner.ExecuteBatchDmlResponse]]:
         r"""Return a callable for the execute batch dml method over gRPC.
 
         Executes a batch of SQL DML statements. This method allows many
@@ -520,16 +501,18 @@ class SpannerGrpcAsyncIOTransport(SpannerTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "execute_batch_dml" not in self._stubs:
-            self._stubs["execute_batch_dml"] = self.grpc_channel.unary_unary(
-                "/google.spanner.v1.Spanner/ExecuteBatchDml",
+        if 'execute_batch_dml' not in self._stubs:
+            self._stubs['execute_batch_dml'] = self.grpc_channel.unary_unary(
+                '/google.spanner.v1.Spanner/ExecuteBatchDml',
                 request_serializer=spanner.ExecuteBatchDmlRequest.serialize,
                 response_deserializer=spanner.ExecuteBatchDmlResponse.deserialize,
             )
-        return self._stubs["execute_batch_dml"]
+        return self._stubs['execute_batch_dml']
 
     @property
-    def read(self) -> Callable[[spanner.ReadRequest], Awaitable[result_set.ResultSet]]:
+    def read(self) -> Callable[
+            [spanner.ReadRequest],
+            Awaitable[result_set.ResultSet]]:
         r"""Return a callable for the read method over gRPC.
 
         Reads rows from the database using key lookups and scans, as a
@@ -558,18 +541,18 @@ class SpannerGrpcAsyncIOTransport(SpannerTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "read" not in self._stubs:
-            self._stubs["read"] = self.grpc_channel.unary_unary(
-                "/google.spanner.v1.Spanner/Read",
+        if 'read' not in self._stubs:
+            self._stubs['read'] = self.grpc_channel.unary_unary(
+                '/google.spanner.v1.Spanner/Read',
                 request_serializer=spanner.ReadRequest.serialize,
                 response_deserializer=result_set.ResultSet.deserialize,
             )
-        return self._stubs["read"]
+        return self._stubs['read']
 
     @property
-    def streaming_read(
-        self,
-    ) -> Callable[[spanner.ReadRequest], Awaitable[result_set.PartialResultSet]]:
+    def streaming_read(self) -> Callable[
+            [spanner.ReadRequest],
+            Awaitable[result_set.PartialResultSet]]:
         r"""Return a callable for the streaming read method over gRPC.
 
         Like [Read][google.spanner.v1.Spanner.Read], except returns the
@@ -589,20 +572,18 @@ class SpannerGrpcAsyncIOTransport(SpannerTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "streaming_read" not in self._stubs:
-            self._stubs["streaming_read"] = self.grpc_channel.unary_stream(
-                "/google.spanner.v1.Spanner/StreamingRead",
+        if 'streaming_read' not in self._stubs:
+            self._stubs['streaming_read'] = self.grpc_channel.unary_stream(
+                '/google.spanner.v1.Spanner/StreamingRead',
                 request_serializer=spanner.ReadRequest.serialize,
                 response_deserializer=result_set.PartialResultSet.deserialize,
             )
-        return self._stubs["streaming_read"]
+        return self._stubs['streaming_read']
 
     @property
-    def begin_transaction(
-        self,
-    ) -> Callable[
-        [spanner.BeginTransactionRequest], Awaitable[transaction.Transaction]
-    ]:
+    def begin_transaction(self) -> Callable[
+            [spanner.BeginTransactionRequest],
+            Awaitable[transaction.Transaction]]:
         r"""Return a callable for the begin transaction method over gRPC.
 
         Begins a new transaction. This step can often be skipped:
@@ -621,18 +602,18 @@ class SpannerGrpcAsyncIOTransport(SpannerTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "begin_transaction" not in self._stubs:
-            self._stubs["begin_transaction"] = self.grpc_channel.unary_unary(
-                "/google.spanner.v1.Spanner/BeginTransaction",
+        if 'begin_transaction' not in self._stubs:
+            self._stubs['begin_transaction'] = self.grpc_channel.unary_unary(
+                '/google.spanner.v1.Spanner/BeginTransaction',
                 request_serializer=spanner.BeginTransactionRequest.serialize,
                 response_deserializer=transaction.Transaction.deserialize,
             )
-        return self._stubs["begin_transaction"]
+        return self._stubs['begin_transaction']
 
     @property
-    def commit(
-        self,
-    ) -> Callable[[spanner.CommitRequest], Awaitable[spanner.CommitResponse]]:
+    def commit(self) -> Callable[
+            [spanner.CommitRequest],
+            Awaitable[spanner.CommitResponse]]:
         r"""Return a callable for the commit method over gRPC.
 
         Commits a transaction. The request includes the mutations to be
@@ -662,16 +643,18 @@ class SpannerGrpcAsyncIOTransport(SpannerTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "commit" not in self._stubs:
-            self._stubs["commit"] = self.grpc_channel.unary_unary(
-                "/google.spanner.v1.Spanner/Commit",
+        if 'commit' not in self._stubs:
+            self._stubs['commit'] = self.grpc_channel.unary_unary(
+                '/google.spanner.v1.Spanner/Commit',
                 request_serializer=spanner.CommitRequest.serialize,
                 response_deserializer=spanner.CommitResponse.deserialize,
             )
-        return self._stubs["commit"]
+        return self._stubs['commit']
 
     @property
-    def rollback(self) -> Callable[[spanner.RollbackRequest], Awaitable[empty.Empty]]:
+    def rollback(self) -> Callable[
+            [spanner.RollbackRequest],
+            Awaitable[empty.Empty]]:
         r"""Return a callable for the rollback method over gRPC.
 
         Rolls back a transaction, releasing any locks it holds. It is a
@@ -695,20 +678,18 @@ class SpannerGrpcAsyncIOTransport(SpannerTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "rollback" not in self._stubs:
-            self._stubs["rollback"] = self.grpc_channel.unary_unary(
-                "/google.spanner.v1.Spanner/Rollback",
+        if 'rollback' not in self._stubs:
+            self._stubs['rollback'] = self.grpc_channel.unary_unary(
+                '/google.spanner.v1.Spanner/Rollback',
                 request_serializer=spanner.RollbackRequest.serialize,
                 response_deserializer=empty.Empty.FromString,
             )
-        return self._stubs["rollback"]
+        return self._stubs['rollback']
 
     @property
-    def partition_query(
-        self,
-    ) -> Callable[
-        [spanner.PartitionQueryRequest], Awaitable[spanner.PartitionResponse]
-    ]:
+    def partition_query(self) -> Callable[
+            [spanner.PartitionQueryRequest],
+            Awaitable[spanner.PartitionResponse]]:
         r"""Return a callable for the partition query method over gRPC.
 
         Creates a set of partition tokens that can be used to execute a
@@ -736,18 +717,18 @@ class SpannerGrpcAsyncIOTransport(SpannerTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "partition_query" not in self._stubs:
-            self._stubs["partition_query"] = self.grpc_channel.unary_unary(
-                "/google.spanner.v1.Spanner/PartitionQuery",
+        if 'partition_query' not in self._stubs:
+            self._stubs['partition_query'] = self.grpc_channel.unary_unary(
+                '/google.spanner.v1.Spanner/PartitionQuery',
                 request_serializer=spanner.PartitionQueryRequest.serialize,
                 response_deserializer=spanner.PartitionResponse.deserialize,
             )
-        return self._stubs["partition_query"]
+        return self._stubs['partition_query']
 
     @property
-    def partition_read(
-        self,
-    ) -> Callable[[spanner.PartitionReadRequest], Awaitable[spanner.PartitionResponse]]:
+    def partition_read(self) -> Callable[
+            [spanner.PartitionReadRequest],
+            Awaitable[spanner.PartitionResponse]]:
         r"""Return a callable for the partition read method over gRPC.
 
         Creates a set of partition tokens that can be used to execute a
@@ -778,13 +759,15 @@ class SpannerGrpcAsyncIOTransport(SpannerTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "partition_read" not in self._stubs:
-            self._stubs["partition_read"] = self.grpc_channel.unary_unary(
-                "/google.spanner.v1.Spanner/PartitionRead",
+        if 'partition_read' not in self._stubs:
+            self._stubs['partition_read'] = self.grpc_channel.unary_unary(
+                '/google.spanner.v1.Spanner/PartitionRead',
                 request_serializer=spanner.PartitionReadRequest.serialize,
                 response_deserializer=spanner.PartitionResponse.deserialize,
             )
-        return self._stubs["partition_read"]
+        return self._stubs['partition_read']
 
 
-__all__ = ("SpannerGrpcAsyncIOTransport",)
+__all__ = (
+    'SpannerGrpcAsyncIOTransport',
+)

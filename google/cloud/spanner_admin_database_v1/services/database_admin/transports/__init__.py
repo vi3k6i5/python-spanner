@@ -25,11 +25,11 @@ from .grpc_asyncio import DatabaseAdminGrpcAsyncIOTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[DatabaseAdminTransport]]
-_transport_registry["grpc"] = DatabaseAdminGrpcTransport
-_transport_registry["grpc_asyncio"] = DatabaseAdminGrpcAsyncIOTransport
+_transport_registry['grpc'] = DatabaseAdminGrpcTransport
+_transport_registry['grpc_asyncio'] = DatabaseAdminGrpcAsyncIOTransport
 
 __all__ = (
-    "DatabaseAdminTransport",
-    "DatabaseAdminGrpcTransport",
-    "DatabaseAdminGrpcAsyncIOTransport",
+    'DatabaseAdminTransport',
+    'DatabaseAdminGrpcTransport',
+    'DatabaseAdminGrpcAsyncIOTransport',
 )

@@ -25,11 +25,11 @@ from .grpc_asyncio import SpannerGrpcAsyncIOTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[SpannerTransport]]
-_transport_registry["grpc"] = SpannerGrpcTransport
-_transport_registry["grpc_asyncio"] = SpannerGrpcAsyncIOTransport
+_transport_registry['grpc'] = SpannerGrpcTransport
+_transport_registry['grpc_asyncio'] = SpannerGrpcAsyncIOTransport
 
 __all__ = (
-    "SpannerTransport",
-    "SpannerGrpcTransport",
-    "SpannerGrpcAsyncIOTransport",
+    'SpannerTransport',
+    'SpannerGrpcTransport',
+    'SpannerGrpcAsyncIOTransport',
 )

@@ -15,7 +15,7 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple, Optional
 
 from google.cloud.spanner_admin_instance_v1.types import spanner_instance_admin
 
@@ -37,15 +37,12 @@ class ListInstanceConfigsPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[..., spanner_instance_admin.ListInstanceConfigsResponse],
-        request: spanner_instance_admin.ListInstanceConfigsRequest,
-        response: spanner_instance_admin.ListInstanceConfigsResponse,
-        *,
-        metadata: Sequence[Tuple[str, str]] = ()
-    ):
+    def __init__(self,
+            method: Callable[..., spanner_instance_admin.ListInstanceConfigsResponse],
+            request: spanner_instance_admin.ListInstanceConfigsRequest,
+            response: spanner_instance_admin.ListInstanceConfigsResponse,
+            *,
+            metadata: Sequence[Tuple[str, str]] = ()):
         """Instantiate the pager.
 
         Args:
@@ -79,7 +76,7 @@ class ListInstanceConfigsPager:
             yield from page.instance_configs
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
 class ListInstanceConfigsAsyncPager:
@@ -99,17 +96,12 @@ class ListInstanceConfigsAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[
-            ..., Awaitable[spanner_instance_admin.ListInstanceConfigsResponse]
-        ],
-        request: spanner_instance_admin.ListInstanceConfigsRequest,
-        response: spanner_instance_admin.ListInstanceConfigsResponse,
-        *,
-        metadata: Sequence[Tuple[str, str]] = ()
-    ):
+    def __init__(self,
+            method: Callable[..., Awaitable[spanner_instance_admin.ListInstanceConfigsResponse]],
+            request: spanner_instance_admin.ListInstanceConfigsRequest,
+            response: spanner_instance_admin.ListInstanceConfigsResponse,
+            *,
+            metadata: Sequence[Tuple[str, str]] = ()):
         """Instantiate the pager.
 
         Args:
@@ -131,9 +123,7 @@ class ListInstanceConfigsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterable[spanner_instance_admin.ListInstanceConfigsResponse]:
+    async def pages(self) -> AsyncIterable[spanner_instance_admin.ListInstanceConfigsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
@@ -149,7 +139,7 @@ class ListInstanceConfigsAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
 class ListInstancesPager:
@@ -169,15 +159,12 @@ class ListInstancesPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[..., spanner_instance_admin.ListInstancesResponse],
-        request: spanner_instance_admin.ListInstancesRequest,
-        response: spanner_instance_admin.ListInstancesResponse,
-        *,
-        metadata: Sequence[Tuple[str, str]] = ()
-    ):
+    def __init__(self,
+            method: Callable[..., spanner_instance_admin.ListInstancesResponse],
+            request: spanner_instance_admin.ListInstancesRequest,
+            response: spanner_instance_admin.ListInstancesResponse,
+            *,
+            metadata: Sequence[Tuple[str, str]] = ()):
         """Instantiate the pager.
 
         Args:
@@ -211,7 +198,7 @@ class ListInstancesPager:
             yield from page.instances
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
 class ListInstancesAsyncPager:
@@ -231,15 +218,12 @@ class ListInstancesAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-
-    def __init__(
-        self,
-        method: Callable[..., Awaitable[spanner_instance_admin.ListInstancesResponse]],
-        request: spanner_instance_admin.ListInstancesRequest,
-        response: spanner_instance_admin.ListInstancesResponse,
-        *,
-        metadata: Sequence[Tuple[str, str]] = ()
-    ):
+    def __init__(self,
+            method: Callable[..., Awaitable[spanner_instance_admin.ListInstancesResponse]],
+            request: spanner_instance_admin.ListInstancesRequest,
+            response: spanner_instance_admin.ListInstancesResponse,
+            *,
+            metadata: Sequence[Tuple[str, str]] = ()):
         """Instantiate the pager.
 
         Args:
@@ -261,9 +245,7 @@ class ListInstancesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterable[spanner_instance_admin.ListInstancesResponse]:
+    async def pages(self) -> AsyncIterable[spanner_instance_admin.ListInstancesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
@@ -279,4 +261,4 @@ class ListInstancesAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
