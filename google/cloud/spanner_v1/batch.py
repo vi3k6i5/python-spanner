@@ -17,6 +17,7 @@
 from google.cloud.spanner_v1 import CommitRequest
 from google.cloud.spanner_v1 import Mutation
 from google.cloud.spanner_v1 import TransactionOptions
+from google.cloud.spanner_v1 import RequestOptions
 
 # pylint: disable=ungrouped-imports
 from google.cloud.spanner_v1._helpers import _SessionWrapper
@@ -138,12 +139,17 @@ class Batch(_BatchBase):
         if self.committed is not None:
             raise ValueError("Batch already committed")
 
-    def commit(self, return_commit_stats=False):
+    def commit(self, return_commit_stats=False, request_options=None):
         """Commit mutations to the database.
 
         :type return_commit_stats: bool
         :param return_commit_stats:
           If true, the response will return commit stats which can be accessed though commit_stats.
+
+        :type request_options:
+            :class:`~google.cloud.spanner_v1.ExecuteSqlRequest.RequestOptions`
+            or :class:`dict`
+        :param request_options: (Optional) Tags that are provided for request.
 
         :rtype: datetime
         :returns: timestamp of the committed changes.
@@ -159,6 +165,7 @@ class Batch(_BatchBase):
             mutations=self._mutations,
             single_use_transaction=txn_options,
             return_commit_stats=return_commit_stats,
+            request_options=request_options,
         )
         with trace_call("CloudSpanner.Commit", self._session, trace_attributes):
             response = api.commit(request=request, metadata=metadata,)

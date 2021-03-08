@@ -22,6 +22,7 @@ from google.cloud.spanner_v1 import ReadRequest
 from google.cloud.spanner_v1 import TransactionOptions
 from google.cloud.spanner_v1 import TransactionSelector
 from google.cloud.spanner_v1 import PartitionOptions
+from google.cloud.spanner_v1 import RequestOptions
 from google.cloud.spanner_v1 import PartitionQueryRequest
 from google.cloud.spanner_v1 import PartitionReadRequest
 
@@ -109,7 +110,16 @@ class _SnapshotBase(_SessionWrapper):
         """
         raise NotImplementedError
 
-    def read(self, table, columns, keyset, index="", limit=0, partition=None):
+    def read(
+        self,
+        table,
+        columns,
+        keyset,
+        index="",
+        limit=0,
+        partition=None,
+        request_options=None,
+    ):
         """Perform a ``StreamingRead`` API request for rows in a table.
 
         :type table: str
@@ -133,6 +143,11 @@ class _SnapshotBase(_SessionWrapper):
         :param partition: (Optional) one of the partition tokens returned
                           from :meth:`partition_read`.  Incompatible with
                           ``limit``.
+
+        :type request_options:
+            :class:`~google.cloud.spanner_v1.ExecuteSqlRequest.RequestOptions`
+            or :class:`dict`
+        :param request_options: (Optional) Tags that are provided for request.
 
         :rtype: :class:`~google.cloud.spanner_v1.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
@@ -161,6 +176,7 @@ class _SnapshotBase(_SessionWrapper):
             index=index,
             limit=limit,
             partition_token=partition,
+            request_options=request_options,
         )
         restart = functools.partial(
             api.streaming_read, request=request, metadata=metadata,
@@ -188,6 +204,7 @@ class _SnapshotBase(_SessionWrapper):
         partition=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
+        request_options=None,
     ):
         """Perform an ``ExecuteStreamingSql`` API request.
 
@@ -220,6 +237,11 @@ class _SnapshotBase(_SessionWrapper):
         :type partition: bytes
         :param partition: (Optional) one of the partition tokens returned
                           from :meth:`partition_query`.
+
+        :type request_options:
+            :class:`~google.cloud.spanner_v1.ExecuteSqlRequest.RequestOptions`
+            or :class:`dict`
+        :param request_options: (Optional) Tags that are provided for request.
 
         :rtype: :class:`~google.cloud.spanner_v1.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
@@ -263,6 +285,7 @@ class _SnapshotBase(_SessionWrapper):
             partition_token=partition,
             seqno=self._execute_sql_count,
             query_options=query_options,
+            request_options=request_options,
         )
         restart = functools.partial(
             api.execute_streaming_sql,
