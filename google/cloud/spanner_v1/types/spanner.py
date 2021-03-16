@@ -39,6 +39,7 @@ __protobuf__ = proto.module(
         "ListSessionsRequest",
         "ListSessionsResponse",
         "DeleteSessionRequest",
+        "RequestOptions",
         "ExecuteSqlRequest",
         "ExecuteBatchDmlRequest",
         "ExecuteBatchDmlResponse",
@@ -240,6 +241,35 @@ class DeleteSessionRequest(proto.Message):
     name = proto.Field(proto.STRING, number=1)
 
 
+class RequestOptions(proto.Message):
+    r"""Common request options for various APIs.
+
+    Attributes:
+        request_tag (str):
+            A per-request tag which can be applied to queries or reads,
+            used for statistics collection. Both request_tag and
+            transaction_tag can be specified for a read or query that
+            belongs to a transaction. This field is ignored for requests
+            where it's not applicable (e.g. CommitRequest).
+            ``request_tag`` must be a valid identifier of the form:
+            ``[a-zA-Z][a-zA-Z0-9_\-]`` between 2 and 64 characters in
+            length
+        transaction_tag (str):
+            A tag used for statistics collection about this transaction.
+            Both request_tag and transaction_tag can be specified for a
+            read or query that belongs to a transaction. The value of
+            transaction_tag should be the same for all requests
+            belonging to the same transaction. If this request doesn’t
+            belong to any transaction, transaction_tag will be ignored.
+            ``transaction_tag`` must be a valid identifier of the
+            format: [a-zA-Z][a-zA-Z0-9_-]{0,49}
+    """
+
+    request_tag = proto.Field(proto.STRING, number=2)
+
+    transaction_tag = proto.Field(proto.STRING, number=3)
+
+
 class ExecuteSqlRequest(proto.Message):
     r"""The request for [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql]
     and
@@ -335,6 +365,8 @@ class ExecuteSqlRequest(proto.Message):
         query_options (google.cloud.spanner_v1.types.ExecuteSqlRequest.QueryOptions):
             Query optimizer configuration to use for the
             given query.
+        request_options (google.cloud.spanner_v1.types.RequestOptions):
+            Common options for this request.
     """
 
     class QueryMode(proto.Enum):
@@ -396,6 +428,8 @@ class ExecuteSqlRequest(proto.Message):
 
     query_options = proto.Field(proto.MESSAGE, number=10, message=QueryOptions,)
 
+    request_options = proto.Field(proto.MESSAGE, number=11, message="RequestOptions",)
+
 
 class ExecuteBatchDmlRequest(proto.Message):
     r"""The request for
@@ -434,6 +468,8 @@ class ExecuteBatchDmlRequest(proto.Message):
             sequence number, the transaction may be aborted.
             Replays of previously handled requests will
             yield the same response as the first execution.
+        request_options (google.cloud.spanner_v1.types.RequestOptions):
+            Common options for this request.
     """
 
     class Statement(proto.Message):
@@ -490,6 +526,8 @@ class ExecuteBatchDmlRequest(proto.Message):
     statements = proto.RepeatedField(proto.MESSAGE, number=3, message=Statement,)
 
     seqno = proto.Field(proto.INT64, number=4)
+
+    request_options = proto.Field(proto.MESSAGE, number=5, message="RequestOptions",)
 
 
 class ExecuteBatchDmlResponse(proto.Message):
@@ -835,6 +873,8 @@ class ReadRequest(proto.Message):
             must be an exact match for the values of fields common to
             this message and the PartitionReadRequest message used to
             create this partition_token.
+        request_options (google.cloud.spanner_v1.types.RequestOptions):
+            Common options for this request.
     """
 
     session = proto.Field(proto.STRING, number=1)
@@ -857,6 +897,8 @@ class ReadRequest(proto.Message):
 
     partition_token = proto.Field(proto.BYTES, number=10)
 
+    request_options = proto.Field(proto.MESSAGE, number=11, message="RequestOptions",)
+
 
 class BeginTransactionRequest(proto.Message):
     r"""The request for
@@ -868,6 +910,8 @@ class BeginTransactionRequest(proto.Message):
             transaction runs.
         options (google.cloud.spanner_v1.types.TransactionOptions):
             Required. Options for the new transaction.
+        request_options (google.cloud.spanner_v1.types.RequestOptions):
+            Common options for this request.
     """
 
     session = proto.Field(proto.STRING, number=1)
@@ -875,6 +919,8 @@ class BeginTransactionRequest(proto.Message):
     options = proto.Field(
         proto.MESSAGE, number=2, message=gs_transaction.TransactionOptions,
     )
+
+    request_options = proto.Field(proto.MESSAGE, number=3, message="RequestOptions",)
 
 
 class CommitRequest(proto.Message):
@@ -906,6 +952,8 @@ class CommitRequest(proto.Message):
             be included in the
             [CommitResponse][google.spanner.v1.CommitResponse.commit_stats].
             Default value is ``false``.
+        request_options (google.cloud.spanner_v1.types.RequestOptions):
+            Common options for this request.
     """
 
     session = proto.Field(proto.STRING, number=1)
@@ -922,6 +970,8 @@ class CommitRequest(proto.Message):
     mutations = proto.RepeatedField(proto.MESSAGE, number=4, message=mutation.Mutation,)
 
     return_commit_stats = proto.Field(proto.BOOL, number=5)
+
+    request_options = proto.Field(proto.MESSAGE, number=6, message="RequestOptions",)
 
 
 class CommitResponse(proto.Message):

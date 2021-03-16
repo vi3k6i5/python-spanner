@@ -368,21 +368,16 @@ class TestTransaction(OpenTelemetryBase):
         self._commit_helper(return_commit_stats=True)
 
     def test_commit_w_request_tag_success(self):
-        request_options = RequestOptions(
-            request_tag="tag-1",
-        )
+        request_options = RequestOptions(request_tag="tag-1",)
         self._commit_helper(request_options=request_options)
 
     def test_commit_w_transaction_tag_success(self):
-        request_options = RequestOptions(
-            transaction_tag="tag-1-1",
-        )
+        request_options = RequestOptions(transaction_tag="tag-1-1",)
         self._commit_helper(request_options=request_options)
 
     def test_commit_w_request_and_transaction_tag_success(self):
         request_options = RequestOptions(
-            request_tag="tag-1",
-            transaction_tag="tag-1-1",
+            request_tag="tag-1", transaction_tag="tag-1-1",
         )
         self._commit_helper(request_options=request_options)
 
@@ -522,21 +517,16 @@ class TestTransaction(OpenTelemetryBase):
         self._execute_update_helper()
 
     def test_execute_update_w_request_tag_success(self):
-        request_options = RequestOptions(
-            request_tag="tag-1",
-        )
+        request_options = RequestOptions(request_tag="tag-1",)
         self._execute_update_helper(request_options=request_options)
 
     def test_execute_update_w_transaction_tag_success(self):
-        request_options = RequestOptions(
-            transaction_tag="tag-1-1",
-        )
+        request_options = RequestOptions(transaction_tag="tag-1-1",)
         self._execute_update_helper(request_options=request_options)
 
     def test_execute_update_w_request_and_transaction_tag_success(self):
         request_options = RequestOptions(
-            request_tag="tag-1",
-            transaction_tag="tag-1-1",
+            request_tag="tag-1", transaction_tag="tag-1-1",
         )
         self._execute_update_helper(request_options=request_options)
 
@@ -678,21 +668,16 @@ class TestTransaction(OpenTelemetryBase):
         self._batch_update_helper()
 
     def test_batch_update_w_request_tag_success(self):
-        request_options = RequestOptions(
-            request_tag="tag-1",
-        )
+        request_options = RequestOptions(request_tag="tag-1",)
         self._batch_update_helper(request_options=request_options)
 
     def test_batch_update_w_transaction_tag_success(self):
-        request_options = RequestOptions(
-            transaction_tag="tag-1-1",
-        )
+        request_options = RequestOptions(transaction_tag="tag-1-1",)
         self._batch_update_helper(request_options=request_options)
 
     def test_batch_update_w_request_and_transaction_tag_success(self):
         request_options = RequestOptions(
-            request_tag="tag-1",
-            transaction_tag="tag-1-1",
+            request_tag="tag-1", transaction_tag="tag-1-1",
         )
         self._batch_update_helper(request_options=request_options)
 
@@ -840,9 +825,7 @@ class _FauxSpannerAPI(object):
         return self._rollback_response
 
     def commit(
-        self,
-        request=None,
-        metadata=None,
+        self, request=None, metadata=None,
     ):
         assert not request.single_use_transaction
         self._committed = (
