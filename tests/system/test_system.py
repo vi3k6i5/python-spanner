@@ -51,10 +51,12 @@ from test_utils.system import unique_resource_id
 from tests._fixtures import DDL_STATEMENTS
 from tests._fixtures import EMULATOR_DDL_STATEMENTS
 from tests._helpers import OpenTelemetryBase, HAS_OPENTELEMETRY_INSTALLED
+from google.cloud.spanner_v1 import RequestOptions
 
 
 CREATE_INSTANCE = os.getenv("GOOGLE_CLOUD_TESTS_CREATE_SPANNER_INSTANCE") is not None
 USE_EMULATOR = os.getenv("SPANNER_EMULATOR_HOST") is not None
+STAGING_API_ENDPOINT = os.getenv("SPANNER_STAGING_HOST_API_ENDPOINT") is not None
 SKIP_BACKUP_TESTS = os.getenv("SKIP_BACKUP_TESTS") is not None
 SPANNER_OPERATION_TIMEOUT_IN_SECONDS = int(
     os.getenv("SPANNER_OPERATION_TIMEOUT_IN_SECONDS", 60)
@@ -111,7 +113,14 @@ def setUpModule():
             project=emulator_project, credentials=AnonymousCredentials()
         )
     else:
-        Config.CLIENT = Client()
+        if STAGING_API_ENDPOINT:
+            Config.CLIENT = Client(
+                client_options={
+                    "api_endpoint": STAGING_API_ENDPOINT
+                }
+            )
+        else:
+            Config.CLIENT = Client()
     retry = RetryErrors(exceptions.ServiceUnavailable)
 
     configs = list(retry(Config.CLIENT.list_instance_configs)())
@@ -551,6 +560,41 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
         with self._db.snapshot() as after:
             rows = list(after.execute_sql(self.SQL))
         self._check_rows_data(rows)
+
+    def test_db_run_in_transaction_with_request_options_then_check_request_tags(self,):
+        retry = RetryInstanceState(_has_all_ddl)
+        retry(self._db.reload)()
+
+        with self._db.batch() as batch:
+            batch.delete(self.TABLE, self.ALL)
+
+        def _unit_of_work(transaction, test):
+            rows = list(transaction.read(test.TABLE, test.COLUMNS, self.ALL))
+            test.assertEqual(rows, [])
+
+            transaction.insert_or_update(test.TABLE, test.COLUMNS, test.ROW_DATA)
+
+        self._db.run_in_transaction(_unit_of_work, test=self)
+
+        request_tag = "req-tag" + unique_resource_id("-")
+        with self._db.snapshot() as before:
+            rows = list(
+                before.execute_sql(
+                    self.SQL, request_options={"request_tag": request_tag}
+                )
+            )
+        self._check_rows_data(rows)
+        time.sleep(200)
+        with self._db.snapshot(exact_staleness=datetime.timedelta(seconds=1)) as after:
+            # Read query stats for the request tag using SQL.
+            results = list(
+                after.execute_sql(
+                    "select count(*) from SPANNER_SYS.QUERY_STATS_TOP_MINUTE where request_tag = '{}';".format(
+                        request_tag
+                    )
+                )
+            )
+        self.assertEqual(results[0], [1])
 
     def test_db_run_in_transaction_twice(self):
         retry = RetryInstanceState(_has_all_ddl)
@@ -1613,6 +1657,43 @@ class TestSessionAPI(OpenTelemetryBase, _TestData):
         self._check_rows_data(rows, [])
         # [END spanner_test_dml_with_mutation]
         # [END spanner_test_dml_update]
+
+    def test_transaction_execute_update_with_transaction_tag_success(self):
+        retry = RetryInstanceState(_has_all_ddl)
+        retry(self._db.reload)()
+
+        session = self._db.session()
+        session.create()
+        self.to_delete.append(session)
+
+        with session.batch() as batch:
+            batch.delete(self.TABLE, self.ALL)
+
+        # We only need 1 insert statement for execute_update.
+        insert_statement = list(self._generate_insert_statements())[0]
+
+        transaction_tag = "trx-tag" + unique_resource_id("-")
+        request_options = RequestOptions(transaction_tag=transaction_tag)
+
+        def unit_of_work(transaction, self):
+            row_count = transaction.execute_update(
+                insert_statement, request_options=request_options,
+            )
+            self.assertEqual(row_count, 1)
+
+        session.run_in_transaction(unit_of_work, self)
+
+        time.sleep(200)
+        with self._db.snapshot() as after:
+            # Read transaction stats for the transaction tag using SQL.
+            results = list(
+                after.execute_sql(
+                    "select count(*) from SPANNER_SYS.TXN_STATS_TOP_MINUTE where transaction_tag = '{}';".format(
+                        transaction_tag
+                    )
+                )
+            )
+        self.assertEqual(results[0], [1])
 
     def test_transaction_batch_update_and_execute_dml(self):
         retry = RetryInstanceState(_has_all_ddl)
