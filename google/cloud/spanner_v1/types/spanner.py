@@ -245,6 +245,8 @@ class RequestOptions(proto.Message):
     r"""Common request options for various APIs.
 
     Attributes:
+        priority (google.cloud.spanner_v1.types.RequestOptions.Priority):
+            Priority for the request.
         request_tag (str):
             A per-request tag which can be applied to queries or reads,
             used for statistics collection. Both request_tag and
@@ -262,8 +264,34 @@ class RequestOptions(proto.Message):
             belonging to the same transaction. If this request doesn’t
             belong to any transaction, transaction_tag will be ignored.
             ``transaction_tag`` must be a valid identifier of the
-            format: [a-zA-Z][a-zA-Z0-9_-]{0,49}
+            format: ``[a-zA-Z][a-zA-Z0-9_\-]{0,49}``
     """
+
+    class Priority(proto.Enum):
+        r"""The relative priority for requests. Note that priority is not
+        applicable for
+        [BeginTransaction][google.spanner.v1.Spanner.BeginTransaction].
+
+        The priority acts as a hint to the Cloud Spanner scheduler and does
+        not guarantee priority or order of execution. For example:
+
+        -  Some parts of a write operation always execute at
+           ``PRIORITY_HIGH``, regardless of the specified priority. This may
+           cause you to see an increase in high priority workload even when
+           executing a low priority request. This can also potentially cause
+           a priority inversion where a lower priority request will be
+           fulfilled ahead of a higher priority request.
+        -  If a transaction contains multiple operations with different
+           priorities, Cloud Spanner does not guarantee to process the
+           higher priority operations first. There may be other constraints
+           to satisfy, such as order of operations.
+        """
+        PRIORITY_UNSPECIFIED = 0
+        PRIORITY_LOW = 1
+        PRIORITY_MEDIUM = 2
+        PRIORITY_HIGH = 3
+
+    priority = proto.Field(proto.ENUM, number=1, enum=Priority,)
 
     request_tag = proto.Field(proto.STRING, number=2)
 
@@ -385,24 +413,57 @@ class ExecuteSqlRequest(proto.Message):
                 This parameter allows individual queries to pick different
                 query optimizer versions.
 
-                Specifying "latest" as a value instructs Cloud Spanner to
+                Specifying ``latest`` as a value instructs Cloud Spanner to
                 use the latest supported query optimizer version. If not
-                specified, Cloud Spanner uses optimizer version set at the
-                database level options. Any other positive integer (from the
-                list of supported optimizer versions) overrides the default
-                optimizer version for query execution. The list of supported
-                optimizer versions can be queried from
-                SPANNER_SYS.SUPPORTED_OPTIMIZER_VERSIONS. Executing a SQL
-                statement with an invalid optimizer version will fail with a
-                syntax error (``INVALID_ARGUMENT``) status. See
+                specified, Cloud Spanner uses the optimizer version set at
+                the database level options. Any other positive integer (from
+                the list of supported optimizer versions) overrides the
+                default optimizer version for query execution.
+
+                The list of supported optimizer versions can be queried from
+                SPANNER_SYS.SUPPORTED_OPTIMIZER_VERSIONS.
+
+                Executing a SQL statement with an invalid optimizer version
+                fails with an ``INVALID_ARGUMENT`` error.
+
+                See
                 https://cloud.google.com/spanner/docs/query-optimizer/manage-query-optimizer
                 for more information on managing the query optimizer.
 
                 The ``optimizer_version`` statement hint has precedence over
                 this setting.
+            optimizer_statistics_package (str):
+                An option to control the selection of optimizer statistics
+                package.
+
+                This parameter allows individual queries to use a different
+                query optimizer statistics package.
+
+                Specifying ``latest`` as a value instructs Cloud Spanner to
+                use the latest generated statistics package. If not
+                specified, Cloud Spanner uses the statistics package set at
+                the database level options, or the latest package if the
+                database option is not set.
+
+                The statistics package requested by the query has to be
+                exempt from garbage collection. This can be achieved with
+                the following DDL statement:
+
+                ::
+
+                   ALTER STATISTICS <package_name> SET OPTIONS (allow_gc=false)
+
+                The list of available statistics packages can be queried
+                from ``INFORMATION_SCHEMA.SPANNER_STATISTICS``.
+
+                Executing a SQL statement with an invalid optimizer
+                statistics package or with a statistics package that allows
+                garbage collection fails with an ``INVALID_ARGUMENT`` error.
         """
 
         optimizer_version = proto.Field(proto.STRING, number=1)
+
+        optimizer_statistics_package = proto.Field(proto.STRING, number=2)
 
     session = proto.Field(proto.STRING, number=1)
 
@@ -911,7 +972,11 @@ class BeginTransactionRequest(proto.Message):
         options (google.cloud.spanner_v1.types.TransactionOptions):
             Required. Options for the new transaction.
         request_options (google.cloud.spanner_v1.types.RequestOptions):
-            Common options for this request.
+            Common options for this request. Priority is ignored for
+            this request. Setting the priority in this request_options
+            struct will not do anything. To set the priority for a
+            transaction, set it on the reads and writes that are part of
+            this transaction instead.
     """
 
     session = proto.Field(proto.STRING, number=1)
