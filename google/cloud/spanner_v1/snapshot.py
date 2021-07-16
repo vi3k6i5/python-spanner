@@ -34,6 +34,7 @@ from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 from google.cloud.spanner_v1._helpers import _SessionWrapper
 from google.cloud.spanner_v1._opentelemetry_tracing import trace_call
 from google.cloud.spanner_v1.streamed import StreamedResultSet
+from google.cloud.spanner_v1 import RequestOptions
 
 _STREAM_RESUMPTION_INTERNAL_ERROR_MESSAGES = (
     "RST_STREAM",
@@ -41,16 +42,21 @@ _STREAM_RESUMPTION_INTERNAL_ERROR_MESSAGES = (
 )
 
 
-def _restart_on_unavailable(restart, trace_name=None, session=None, attributes=None):
+def _restart_on_unavailable(
+    method, request, trace_name=None, session=None, attributes=None
+):
     """Restart iteration after :exc:`.ServiceUnavailable`.
 
-    :type restart: callable
-    :param restart: curried function returning iterator
+    :type method: callable
+    :param method: function returning iterator
+
+    :type request: proto
+    :param request: request proto to call the method with
     """
     resume_token = b""
     item_buffer = []
     with trace_call(trace_name, session, attributes):
-        iterator = restart()
+        iterator = method(request=request)
     while True:
         try:
             for item in iterator:
@@ -61,7 +67,8 @@ def _restart_on_unavailable(restart, trace_name=None, session=None, attributes=N
         except ServiceUnavailable:
             del item_buffer[:]
             with trace_call(trace_name, session, attributes):
-                iterator = restart(resume_token=resume_token)
+                request.resume_token = resume_token
+                iterator = method(request=request)
             continue
         except InternalServerError as exc:
             resumable_error = any(
@@ -72,7 +79,8 @@ def _restart_on_unavailable(restart, trace_name=None, session=None, attributes=N
                 raise
             del item_buffer[:]
             with trace_call(trace_name, session, attributes):
-                iterator = restart(resume_token=resume_token)
+                request.resume_token = resume_token
+                iterator = method(request=request)
             continue
 
         if len(item_buffer) == 0:
@@ -147,9 +155,11 @@ class _SnapshotBase(_SessionWrapper):
                           ``limit``.
 
         :type request_options:
-            :class:`~google.cloud.spanner_v1.ExecuteSqlRequest.RequestOptions`
-            or :class:`dict`
-        :param request_options: (Optional) Tags that are provided for request.
+            :class:`google.cloud.spanner_v1.types.RequestOptions`
+        :param request_options:
+                (Optional) Common options for this request.
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.spanner_v1.types.RequestOptions`.
 
         :type retry: :class:`~google.api_core.retry.Retry`
         :param retry: (Optional) The retry settings for this request.
@@ -175,6 +185,9 @@ class _SnapshotBase(_SessionWrapper):
         metadata = _metadata_with_prefix(database.name)
         transaction = self._make_txn_selector()
 
+        if type(request_options) == dict:
+            request_options = RequestOptions(request_options)
+
         request = ReadRequest(
             session=self._session.name,
             table=table,
@@ -196,7 +209,11 @@ class _SnapshotBase(_SessionWrapper):
 
         trace_attributes = {"table_id": table, "columns": columns}
         iterator = _restart_on_unavailable(
-            restart, "CloudSpanner.ReadOnlyTransaction", self._session, trace_attributes
+            restart,
+            request,
+            "CloudSpanner.ReadOnlyTransaction",
+            self._session,
+            trace_attributes,
         )
 
         self._read_request_count += 1
@@ -213,6 +230,7 @@ class _SnapshotBase(_SessionWrapper):
         param_types=None,
         query_mode=None,
         query_options=None,
+        request_options=None,
         partition=None,
         retry=gapic_v1.method.DEFAULT,
         timeout=gapic_v1.method.DEFAULT,
@@ -245,6 +263,13 @@ class _SnapshotBase(_SessionWrapper):
                 (Optional) Query optimizer configuration to use for the given query.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.QueryOptions`
+
+        :type request_options:
+            :class:`google.cloud.spanner_v1.types.RequestOptions`
+        :param request_options:
+                (Optional) Common options for this request.
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.spanner_v1.types.RequestOptions`.
 
         :type partition: bytes
         :param partition: (Optional) one of the partition tokens returned
@@ -293,6 +318,9 @@ class _SnapshotBase(_SessionWrapper):
         default_query_options = database._instance._client._query_options
         query_options = _merge_query_options(default_query_options, query_options)
 
+        if type(request_options) == dict:
+            request_options = RequestOptions(request_options)
+
         request = ExecuteSqlRequest(
             session=self._session.name,
             sql=sql,
@@ -316,6 +344,7 @@ class _SnapshotBase(_SessionWrapper):
         trace_attributes = {"db.statement": sql}
         iterator = _restart_on_unavailable(
             restart,
+            request,
             "CloudSpanner.ReadWriteTransaction",
             self._session,
             trace_attributes,

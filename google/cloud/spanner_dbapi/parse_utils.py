@@ -37,6 +37,7 @@ TYPES_MAP = {
     datetime.date: spanner.param_types.DATE,
     DateStr: spanner.param_types.DATE,
     TimestampStr: spanner.param_types.TIMESTAMP,
+    decimal.Decimal: spanner.param_types.NUMERIC,
 }
 
 SPANNER_RESERVED_KEYWORDS = {
@@ -144,7 +145,7 @@ STMT_UPDATING = "UPDATING"
 STMT_INSERT = "INSERT"
 
 # Heuristic for identifying statements that don't need to be run as updates.
-RE_NON_UPDATE = re.compile(r"^\s*(SELECT)", re.IGNORECASE)
+RE_NON_UPDATE = re.compile(r"^\W*(SELECT)", re.IGNORECASE)
 
 RE_WITH = re.compile(r"^\s*(WITH)", re.IGNORECASE)
 
@@ -198,7 +199,7 @@ def classify_stmt(query):
 
 def parse_insert(insert_sql, params):
     """
-    Parse an INSERT statement an generate a list of tuples of the form:
+    Parse an INSERT statement and generate a list of tuples of the form:
         [
             (SQL, params_per_row1),
             (SQL, params_per_row2),
@@ -224,11 +225,11 @@ def parse_insert(insert_sql, params):
             }
 
     Case b)
-            SQL: 'INSERT INTO T (s, c) SELECT st, zc FROM cus ORDER BY fn, ln',
+        SQL: 'INSERT INTO T (s, c) SELECT st, zc FROM cus WHERE col IN (%s, %s)',
         it produces:
             {
                 'sql_params_list': [
-                    ('INSERT INTO T (s, c) SELECT st, zc FROM cus ORDER BY fn, ln', None),
+                    ('INSERT INTO T (s, c) SELECT st, zc FROM cus ORDER BY fn, ln', ('a', 'b')),
                 ]
             }
 
@@ -276,7 +277,7 @@ def parse_insert(insert_sql, params):
     if not after_values_sql:
         # Case b)
         insert_sql = sanitize_literals_for_upload(insert_sql)
-        return {"sql_params_list": [(insert_sql, None)]}
+        return {"sql_params_list": [(insert_sql, params)]}
 
     if not params:
         # Case a) perhaps?
@@ -508,23 +509,9 @@ def sql_pyformat_args_to_spanner(sql, params):
             resolved_value = pyfmt % params
             named_args[key] = resolved_value
         else:
-            named_args[key] = cast_for_spanner(params[i])
+            named_args[key] = params[i]
 
     return sanitize_literals_for_upload(sql), named_args
-
-
-def cast_for_spanner(value):
-    """Convert the param to its Cloud Spanner equivalent type.
-
-    :type value: Any
-    :param value: The value to convert to a Cloud Spanner type.
-
-    :rtype: Any
-    :returns: The value converted to a Cloud Spanner type.
-    """
-    if isinstance(value, decimal.Decimal):
-        return str(value)
-    return value
 
 
 def get_param_types(params):

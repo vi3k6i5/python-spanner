@@ -14,6 +14,8 @@
 
 """Database cursor for Google Cloud Spanner DB-API."""
 
+import sqlparse
+
 from google.api_core.exceptions import Aborted
 from google.api_core.exceptions import AlreadyExists
 from google.api_core.exceptions import FailedPrecondition
@@ -174,10 +176,16 @@ class Cursor(object):
         try:
             classification = parse_utils.classify_stmt(sql)
             if classification == parse_utils.STMT_DDL:
-                for ddl in sql.split(";"):
-                    ddl = ddl.strip()
+                ddl_statements = []
+                for ddl in sqlparse.split(sql):
                     if ddl:
-                        self.connection._ddl_statements.append(ddl)
+                        if ddl[-1] == ";":
+                            ddl = ddl[:-1]
+                        if parse_utils.classify_stmt(ddl) != parse_utils.STMT_DDL:
+                            raise ValueError("Only DDL statements may be batched.")
+                        ddl_statements.append(ddl)
+                # Only queue DDL statements if they are all correctly classified.
+                self.connection._ddl_statements.extend(ddl_statements)
                 if self.connection.autocommit:
                     self.connection.run_prior_DDL_statements()
                 return
@@ -206,7 +214,12 @@ class Cursor(object):
                 (self._result_set, self._checksum,) = self.connection.run_statement(
                     statement
                 )
-                self._itr = PeekIterator(self._result_set)
+                while True:
+                    try:
+                        self._itr = PeekIterator(self._result_set)
+                        break
+                    except Aborted:
+                        self.connection.retry_transaction()
                 return
 
             if classification == parse_utils.STMT_NON_UPDATING:
@@ -352,7 +365,12 @@ class Cursor(object):
                 self._result_set = res
                 # Read the first element so that the StreamedResultSet can
                 # return the metadata after a DQL statement. See issue #155.
-                self._itr = PeekIterator(self._result_set)
+                while True:
+                    try:
+                        self._itr = PeekIterator(self._result_set)
+                        break
+                    except Aborted:
+                        self.connection.retry_transaction()
                 # Unfortunately, Spanner doesn't seem to send back
                 # information about the number of rows available.
                 self._row_count = _UNSET_COUNT

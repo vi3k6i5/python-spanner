@@ -23,6 +23,7 @@ from google.cloud.spanner_v1._helpers import _SessionWrapper
 from google.cloud.spanner_v1._helpers import _make_list_value_pbs
 from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 from google.cloud.spanner_v1._opentelemetry_tracing import trace_call
+from google.cloud.spanner_v1 import RequestOptions
 
 # pylint: enable=ungrouped-imports
 
@@ -145,9 +146,11 @@ class Batch(_BatchBase):
           If true, the response will return commit stats which can be accessed though commit_stats.
 
         :type request_options:
-            :class:`~google.cloud.spanner_v1.ExecuteSqlRequest.RequestOptions`
-            or :class:`dict`
-        :param request_options: (Optional) Tags that are provided for request.
+            :class:`google.cloud.spanner_v1.types.RequestOptions`
+        :param request_options:
+                (Optional) Common options for this request.
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.spanner_v1.types.RequestOptions`.
 
         :rtype: datetime
         :returns: timestamp of the committed changes.
@@ -158,6 +161,10 @@ class Batch(_BatchBase):
         metadata = _metadata_with_prefix(database.name)
         txn_options = TransactionOptions(read_write=TransactionOptions.ReadWrite())
         trace_attributes = {"num_mutations": len(self._mutations)}
+
+        if type(request_options) == dict:
+            request_options = RequestOptions(request_options)
+
         request = CommitRequest(
             session=self._session.name,
             mutations=self._mutations,
